@@ -1,0 +1,12 @@
+<package>
+  <description brief="MQP__package">
+
+     MQP__package
+
+  </description>
+  <author>yangjack</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/MQP__package</url>
+
+</package>
