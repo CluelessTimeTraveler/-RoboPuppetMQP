@@ -29,9 +29,13 @@ class ExampleFullArmMovement:
 
 	    # Subscriber
             #rospy.Subscriber('/joint_angle',Float32,self.example_send_joint_angles)
-	    rospy.Subscriber('/joy',Joy,self.example_send_joint_angles,queue_size=1,buff_size=52428800)
+	    rospy.Subscriber('/joy',Joy,self.pub_angle,queue_size=1,buff_size=52428800)
+	    self.pub_joint_angle = rospy.Publisher('/my_gen3/in/joint_velocity',JointSpeed ,queue_size=1)
+            self.rate =rospy.Rate(10)
+
+
 	    #rospy.Subscriber('/joy',Joy,self.example_send_gripper_command)
-	    
+		    
             # Get node params
             self.robot_name = rospy.get_param('~robot_name', "my_gen3")
             self.degrees_of_freedom = rospy.get_param("/" + self.robot_name + "/degrees_of_freedom", 7)
@@ -93,6 +97,20 @@ class ExampleFullArmMovement:
                 return False
             #else:
                 #time.sleep(0.01)
+
+    def pub_angle(self, angle_received):
+	rospy.loginfo("Receive Angle:" + str(angle_received.axes[0]))
+	self.send_speed(1)
+
+    def send_speed(self, speed):
+	js = JointSpeed()
+	js.joint_identifier=0
+	js.value=0.5
+	js.duration=0
+	self.pub_joint_angle.publish(js)
+
+
+
 
     def example_subscribe_to_a_robot_notification(self):
         # Activate the publishing of the ActionNotification
@@ -318,6 +336,6 @@ class ExampleFullArmMovement:
 
 if __name__ == "__main__":
     ex = ExampleFullArmMovement()
-    ex.example_home_the_robot()
+    #ex.example_home_the_robot()
     ex.run()
     
