@@ -18,12 +18,16 @@ from design import *
 global angleList
 global velocityList
 global cpList
+recordList = []
 
 class ROS(QThread):
     def __init__(self):
         rospy.init_node('gui', anonymous=True)
         #rospy.Subscriber('/joy',Joy,self.update,queue_size=1,buff_size=52428800)
         rospy.Subscriber('/my_gen3/base_feedback', BaseCyclic_Feedback, self.update, queue_size=1, buff_size=52428800)
+        self.action_topic_sub = rospy.Subscriber("/my_gen3" + "/action_topic", ActionNotification,
+                                                 self.cb_action_topic)
+        self.last_action_notif_type = None
 
         self.robot_name = rospy.get_param('~robot_name', "my_gen3")
         self.degrees_of_freedom = rospy.get_param("/" + self.robot_name + "/degrees_of_freedom", 7)
@@ -45,6 +49,10 @@ class ROS(QThread):
         play_joint_trajectory_full_name = '/' + self.robot_name + '/base/play_joint_trajectory'
         rospy.wait_for_service(play_joint_trajectory_full_name)
         self.play_joint_trajectory = rospy.ServiceProxy(play_joint_trajectory_full_name, PlayJointTrajectory)
+
+
+    def cb_action_topic(self, notif):
+        self.last_action_notif_type = notif.action_event
 
     def update(self,base_feedback):
         global angleList
@@ -77,6 +85,7 @@ class ROS(QThread):
     def wait_for_action_end_or_abort(self):
         while not rospy.is_shutdown():
             if (self.last_action_notif_type == ActionEvent.ACTION_END):
+                updateControlInfo()
                 rospy.loginfo("Received ACTION_END notification")
                 return True
             elif (self.last_action_notif_type == ActionEvent.ACTION_ABORT):
@@ -97,16 +106,14 @@ class ROS(QThread):
             req.input.joint_angles.joint_angles.append(temp_angle)
 
         # Send the angles
-        rospy.loginfo("Sending the robot vertical...")
+        rospy.loginfo("Sending the robot to angle desired...")
         try:
             self.play_joint_trajectory(req)
         except rospy.ServiceException:
             rospy.logerr("Failed to call PlayJointTrajectory")
             return False
         else:
-            sleep(5)
-            updateControlInfo()
-        #     return self.wait_for_action_end_or_abort()
+            return self.wait_for_action_end_or_abort()
 
     def send_cartesian_pose(self, x, y, z):
         self.last_action_notif_type = None
@@ -140,9 +147,7 @@ class ROS(QThread):
             rospy.logerr("Failed to call PlayCartesianTrajectory")
             return False
         else:
-            sleep(5)
-            updateControlInfo()
-            #return self.wait_for_action_end_or_abort()
+            return self.wait_for_action_end_or_abort()
 
     def home_the_robot(self):
         rospy.loginfo("Home robot")
@@ -167,9 +172,7 @@ class ROS(QThread):
                 rospy.logerr("Failed to call ExecuteAction")
                 return False
             else:
-                sleep(5)
-                updateControlInfo()
-            #     return self.wait_for_action_end_or_abort()
+                return self.wait_for_action_end_or_abort()
 
 def updateControlInfo():
     #Slider
@@ -226,7 +229,33 @@ def send_joint_angles():
     daList = [da0,da1,da2,da3,da4,da5,da6]
     ros.send_joint_angles(daList)
 
+def recordAngle():
+
+    recordList.append(angleList)
+    rospy.loginfo("recording")
+
+def recordCP():
+
+    recordList.append(cpList)
+    rospy.loginfo("recording")
+
+def record():
+    recordList=[]
+    record_timer.start(1000)    # Record angeles every 1 second
+
+def stop():
+    record_timer.stop()
+    rospy.loginfo("recording terminated")
+
+def play():
+    rospy.loginfo("playing")
+    for i in recordList:
+        #ros.send_joint_angles(i)
+        ros.send_cartesian_pose(i[0],i[1],i[2])
+
+
 if __name__ == "__main__":
+    recording = False
     ros = ROS()
     app = QtWidgets.QApplication(sys.argv)
     widget = QtWidgets.QWidget()
@@ -235,14 +264,18 @@ if __name__ == "__main__":
     window.pushButton.clicked.connect(send_cartesian_pose)
     window.pushButton_2.clicked.connect(home_robot)
     window.setAngleButton.clicked.connect(send_joint_angles) #TODO
+    window.recordButton.clicked.connect(record)
+    window.stopButton.clicked.connect(stop)
+    window.playButton.clicked.connect(play)
     window.lineEdit.setText("0")
     window.lineEdit_2.setText("0")
     window.lineEdit_3.setText("0")
     updateControlInfo()
     widget.show()
     timer = QTimer()
+    record_timer = QTimer()
     timer.timeout.connect(updateInfo)
-
+    record_timer.timeout.connect(recordCP)
     timer.start(100)
 
     sys.exit(app.exec_())
