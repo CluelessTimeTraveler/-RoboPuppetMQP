@@ -106,6 +106,7 @@ class plotwindows(QtWidgets.QWidget):
         self.label6 = QLabel()
         self.homeButton = QPushButton("Home Kinova Arm")
         self.homeButton.clicked.connect(self.Home_Robot)
+
         layout.addRow("Joint0_Angle", self.label0)
         layout.addRow("Joint1_Angle", self.label1)
         layout.addRow("Joint2_Angle", self.label2)
