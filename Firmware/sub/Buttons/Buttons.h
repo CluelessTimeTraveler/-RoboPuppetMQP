@@ -8,6 +8,7 @@
 namespace Buttons
 {
   void init();
-  bool holdStatus();
-  bool toggleStatus();
+  bool getHoldStatus();
+  bool getGripperStatus();
+  void update();
 }

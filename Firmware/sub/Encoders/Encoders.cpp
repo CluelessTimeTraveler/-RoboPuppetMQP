@@ -1,5 +1,6 @@
 #include <SPI.h>
 #include "Encoders.h"
+#include <Arduino.h>
 
 /**
  * Private subsystem info
@@ -124,45 +125,45 @@ uint16_t Encoders::getPositionSPI(uint8_t encoder, uint8_t resolution)
   return currentPosition;
 }
 
-void setup()
-{
-    Encoders::init();
-}
+// void setup()
+// {
+//     Encoders::init();
+// }
 
-void loop() 
-{
-  //create a 16 bit variable to hold the encoders position
-  uint16_t encoderPosition;
-  //let's also create a variable where we can count how many times we've tried to obtain the position in case there are errors
-  uint8_t attempts;
+// void loop() 
+// {
+//   //create a 16 bit variable to hold the encoders position
+//   uint16_t encoderPosition;
+//   //let's also create a variable where we can count how many times we've tried to obtain the position in case there are errors
+//   uint8_t attempts;
 
-  //once we enter this loop we will run forever
-  while(1)
-  {
-    //set attemps counter at 0 so we can try again if we get bad position    
-    attempts = 0;
+//   //once we enter this loop we will run forever
+//   while(1)
+//   {
+//     //set attemps counter at 0 so we can try again if we get bad position    
+//     attempts = 0;
 
-    //send the function either res12 or res14 for your encoders resolution
-    encoderPosition = Encoders::getPositionSPI(Encoders::encoder1, 14); 
+//     //send the function either res12 or res14 for your encoders resolution
+//     encoderPosition = Encoders::getPositionSPI(Encoders::encoder1, 14); 
 
-    //if the position returned was 0xFFFF we know that there was an error calculating the checksum
-    //make 3 attempts for position. we will pre-increment attempts because we'll use the number later and want an accurate count
-    while (encoderPosition == 0xFFFF && ++attempts < 3)
-    {
-      encoderPosition = Encoders::getPositionSPI(Encoders::encoder1, 14); //try again
-    }
+//     //if the position returned was 0xFFFF we know that there was an error calculating the checksum
+//     //make 3 attempts for position. we will pre-increment attempts because we'll use the number later and want an accurate count
+//     while (encoderPosition == 0xFFFF && ++attempts < 3)
+//     {
+//       encoderPosition = Encoders::getPositionSPI(Encoders::encoder1, 14); //try again
+//     }
 
-    if (encoderPosition == 0xFFFF) //position is bad, let the user know how many times we tried
-    {
-      Serial.print("Encoder 0 error. Attempts: ");
-      Serial.print(attempts, DEC); //print out the number in decimal format. attempts - 1 is used since we post incremented the loop
-    }
-    else //position was good, print to serial stream
-    {
-      Serial.print("Encoder 0: ");
-      Serial.print(encoderPosition, DEC); //print the position in decimal format
-    }
+//     if (encoderPosition == 0xFFFF) //position is bad, let the user know how many times we tried
+//     {
+//       Serial.print("Encoder 0 error. Attempts: ");
+//       Serial.print(attempts, DEC); //print out the number in decimal format. attempts - 1 is used since we post incremented the loop
+//     }
+//     else //position was good, print to serial stream
+//     {
+//       Serial.print("Encoder 0: ");
+//       Serial.print(encoderPosition, DEC); //print the position in decimal format
+//     }
 
-  }
-}
+//   }
+//}
 

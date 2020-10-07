@@ -1,6 +1,8 @@
 
 #include "SerialInterface.h"
-
+#include <Encoders.h>
+#include <Buttons.h>
+#include <Arduino.h>
 
 #define SEND_EVERY_MS 1000
 
@@ -15,7 +17,7 @@ bool SerialInterface::init() {
 
   pinMode(sensorPin, INPUT);
   Serial.begin(9600);
-
+  return true;
 }
 void SerialInterface::update() {
 
