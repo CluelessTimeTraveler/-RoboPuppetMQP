@@ -23,6 +23,10 @@ namespace Encoders
   const uint8_t AMT22_RESET = 0x60;
   const uint8_t AMT22_ZERO = 0x70;
 
+  //Encoders 
+  const uint8_t num_enc = 4;
+  float angles[num_enc];
+
   // Init flag
   bool init_complete = false;
 
@@ -62,9 +66,35 @@ void Encoders::init()
     
     SPI.end();
 
+    //initalize joint angles
+    for (uint8_t j = 0; j < num_enc; j++)
+		{
+			angles[j] = 0.0f;
+		}
+
     // Set init flag
     init_complete = true;
   }
+}
+
+/**
+ * @brief Reads and stores each encoder angle
+ */
+void Encoders::update()
+{
+	for (uint8_t j = 0; j < Encoders::num_enc; j++)
+	{
+		Encoders::angles[j] = Encoders::getPositionSPI(j, 12);
+	}
+}
+
+/**
+ * @brief Transmits encoder value to RosComms
+ * @param encoder number [1,2,3,4]
+ */
+float Encoders::getStatus(uint8_t encoder)
+{
+  return Encoders::angles[encoder];
 }
 
 /**
@@ -125,6 +155,7 @@ uint16_t Encoders::getPositionSPI(uint8_t encoder, uint8_t resolution)
   return currentPosition;
 }
 
+//Previous iteration... saving for now
 // void setup()
 // {
 //     Encoders::init();
