@@ -5,7 +5,7 @@
 #pragma once
 #include <stdint.h>
 
-namespace Buttons
+namespace Servos
 {
   void init();
   bool getStatus();

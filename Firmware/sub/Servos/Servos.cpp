@@ -10,12 +10,12 @@ namespace Servos
   //Variables
   const uint8_t sensorPin = A0;
   const uint8_t pos = 0; // variable to store the servo position
-  const uint8_t sensorValue;
+  uint8_t sensorValue;
 
   //Servos
   const uint8_t num_servos = 4;
-  const uint8_t servoPints[num_servos] = [2, 3, 4, 5];
-  float angles[num_servos;
+  const uint8_t servoPins[num_servos] = {2, 3, 4, 5};
+  float angles[num_servos];
   Servo myservo[num_servos];  // create servo objects to control the servos
 
   // Init flag
@@ -36,7 +36,7 @@ void Servos::init()
     // attaches the servo pins to the servo objects
       for (uint8_t j = 0; j < Servos::num_servos; j++)
       {
-        myservo[j].attach(servoPin(j))
+        myservo[j].attach(servoPins[j]);
       }
   
     //Initalize the serial connection - check baud rate for microcontroller
