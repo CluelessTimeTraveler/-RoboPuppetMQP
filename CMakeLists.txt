@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.4.6)
 include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
-
+add_compile_options(-std=c++11)
 # Set the build type.  Options are:
 #  Coverage       : w/ debug symbols, w/o optimization, w/ code-coverage
 #  Debug          : w/ debug symbols, w/o optimization
@@ -16,6 +16,10 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 #set the default path for built libraries to the "lib" directory
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
+
+add_executable(kortex_arm_driver src/main.cpp)
+target_link_libraries(kortex_arm_driver KortexApiCpp ${catkin_LIBRARIES} gcov kortex_arm_driver_implementation)
+add_dependencies(kortex_arm_driver kortex_arm_driver_implementation)
 
 #uncomment if you have defined messages
 #rosbuild_genmsg()
