@@ -79,12 +79,13 @@ void Encoders::init()
 
 /**
  * @brief Reads and stores each encoder angle
+ * Default to 12 bit resolution
  */
 void Encoders::update()
 {
 	for (uint8_t j = 0; j < Encoders::num_enc; j++)
 	{
-		Encoders::angles[j] = Encoders::getPositionSPI(j, 12);
+		Encoders::angles[j] = ((Encoders::getPositionSPI(j, 12) / 4096) * 360);
 	}
 }
 
