@@ -22,8 +22,8 @@ bool SerialInterface::init() {
 void SerialInterface::update() {
 
   //Set each of these equal to the correct values coming from the arm
-  toSend[0] = analogRead(sensorPin); // Servo One
-  toSend[1] = 10; //Servo Two
+  toSend[0] = Encoders::getStatus(0); // Servo One
+  toSend[1] = Encoders::getStatus(1);; //Servo Two
   toSend[2] = 20; //Servo Three
   toSend[3] = 30; //Encoder One
   toSend[4] = 40; //Encoder Two
