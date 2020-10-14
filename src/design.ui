@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>4</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -1083,8 +1083,1777 @@
      </property>
     </widget>
    </widget>
+   <widget class="QWidget" name="tab_7">
+    <attribute name="title">
+     <string>Plots</string>
+    </attribute>
+    <widget class="QTabWidget" name="tabWidget_3">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>891</width>
+       <height>501</height>
+      </rect>
+     </property>
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <widget class="QWidget" name="tab_8">
+      <attribute name="title">
+       <string>Left Arm</string>
+      </attribute>
+      <widget class="QTabWidget" name="tabWidget_5">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>891</width>
+         <height>471</height>
+        </rect>
+       </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <widget class="QWidget" name="tab_17">
+        <attribute name="title">
+         <string>Base</string>
+        </attribute>
+        <widget class="QGroupBox" name="groupBox_22">
+         <property name="geometry">
+          <rect>
+           <x>600</x>
+           <y>10</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Velocity</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_22">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_110">
+          <property name="geometry">
+           <rect>
+            <x>70</x>
+            <y>240</y>
+            <width>181</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Velocity Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_23">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Angle</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_23">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>30</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_111">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>230</y>
+            <width>171</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Angle Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_24">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>150</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Voltage</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_24">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_112">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>240</y>
+            <width>171</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Voltage Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="tab_18">
+        <attribute name="title">
+         <string>Joint 1</string>
+        </attribute>
+        <widget class="QGroupBox" name="groupBox_25">
+         <property name="geometry">
+          <rect>
+           <x>600</x>
+           <y>10</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Velocity</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_25">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_113">
+          <property name="geometry">
+           <rect>
+            <x>70</x>
+            <y>240</y>
+            <width>181</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Velocity Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_26">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Angle</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_26">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>30</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_114">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>230</y>
+            <width>171</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Angle Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_27">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>150</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Voltage</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_27">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_115">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>240</y>
+            <width>171</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Voltage Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="tab_19">
+        <attribute name="title">
+         <string>Joint 2</string>
+        </attribute>
+        <widget class="QGroupBox" name="groupBox_28">
+         <property name="geometry">
+          <rect>
+           <x>600</x>
+           <y>10</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Velocity</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_28">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_116">
+          <property name="geometry">
+           <rect>
+            <x>70</x>
+            <y>240</y>
+            <width>181</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Velocity Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_29">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Angle</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_29">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>30</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_117">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>230</y>
+            <width>171</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Angle Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_30">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>150</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Voltage</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_30">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_118">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>240</y>
+            <width>171</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Voltage Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="tab_20">
+        <attribute name="title">
+         <string>Joint 3</string>
+        </attribute>
+        <widget class="QGroupBox" name="groupBox_31">
+         <property name="geometry">
+          <rect>
+           <x>600</x>
+           <y>10</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Velocity</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_31">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_119">
+          <property name="geometry">
+           <rect>
+            <x>70</x>
+            <y>240</y>
+            <width>181</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Velocity Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_32">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Angle</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_32">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>30</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_120">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>230</y>
+            <width>171</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Angle Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_33">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>150</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Voltage</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_33">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_121">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>240</y>
+            <width>171</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Voltage Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="tab_21">
+        <attribute name="title">
+         <string>Joint 4</string>
+        </attribute>
+        <widget class="QGroupBox" name="groupBox_34">
+         <property name="geometry">
+          <rect>
+           <x>600</x>
+           <y>10</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Velocity</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_34">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_122">
+          <property name="geometry">
+           <rect>
+            <x>70</x>
+            <y>240</y>
+            <width>181</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Velocity Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_35">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Angle</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_35">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>30</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_123">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>230</y>
+            <width>171</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Angle Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_36">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>150</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Voltage</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_36">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_124">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>240</y>
+            <width>171</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Voltage Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="tab_22">
+        <attribute name="title">
+         <string>Joint 5</string>
+        </attribute>
+        <widget class="QGroupBox" name="groupBox_37">
+         <property name="geometry">
+          <rect>
+           <x>600</x>
+           <y>10</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Velocity</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_37">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_125">
+          <property name="geometry">
+           <rect>
+            <x>70</x>
+            <y>240</y>
+            <width>181</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Velocity Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_38">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Angle</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_38">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>30</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_126">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>230</y>
+            <width>171</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Angle Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_39">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>150</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Voltage</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_39">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_127">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>240</y>
+            <width>171</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Voltage Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="tab_23">
+        <attribute name="title">
+         <string>Joint 6</string>
+        </attribute>
+        <widget class="QGroupBox" name="groupBox_40">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Angle</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_40">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>30</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_128">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>230</y>
+            <width>171</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Angle Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_41">
+         <property name="geometry">
+          <rect>
+           <x>600</x>
+           <y>10</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Velocity</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_41">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_129">
+          <property name="geometry">
+           <rect>
+            <x>70</x>
+            <y>240</y>
+            <width>181</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Velocity Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_42">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>150</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Voltage</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_42">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_130">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>240</y>
+            <width>171</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Voltage Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QWidget" name="tab_9">
+      <attribute name="title">
+       <string>Right Arm</string>
+      </attribute>
+      <widget class="QTabWidget" name="tabWidget_4">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>891</width>
+         <height>471</height>
+        </rect>
+       </property>
+       <property name="currentIndex">
+        <number>4</number>
+       </property>
+       <widget class="QWidget" name="tab_10">
+        <attribute name="title">
+         <string>Base</string>
+        </attribute>
+        <widget class="QGroupBox" name="groupBox_19">
+         <property name="geometry">
+          <rect>
+           <x>600</x>
+           <y>10</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Velocity</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_19">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_107">
+          <property name="geometry">
+           <rect>
+            <x>70</x>
+            <y>240</y>
+            <width>181</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Velocity Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_20">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Angle</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_20">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>30</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_108">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>230</y>
+            <width>171</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Angle Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_21">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>150</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Voltage</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_21">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_109">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>240</y>
+            <width>171</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Voltage Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="tab_11">
+        <attribute name="title">
+         <string>Joint 1</string>
+        </attribute>
+        <widget class="QGroupBox" name="groupBox_16">
+         <property name="geometry">
+          <rect>
+           <x>600</x>
+           <y>10</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Velocity</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_16">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_104">
+          <property name="geometry">
+           <rect>
+            <x>70</x>
+            <y>240</y>
+            <width>181</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Velocity Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_17">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Angle</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_17">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>30</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_105">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>230</y>
+            <width>171</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Angle Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_18">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>150</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Voltage</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_18">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_106">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>240</y>
+            <width>171</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Voltage Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="tab_12">
+        <attribute name="title">
+         <string>Joint 2</string>
+        </attribute>
+        <widget class="QGroupBox" name="groupBox_13">
+         <property name="geometry">
+          <rect>
+           <x>600</x>
+           <y>10</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Velocity</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_13">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_101">
+          <property name="geometry">
+           <rect>
+            <x>70</x>
+            <y>240</y>
+            <width>181</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Velocity Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_14">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Angle</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_14">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>30</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_102">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>230</y>
+            <width>171</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Angle Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_15">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>150</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Voltage</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_15">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_103">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>240</y>
+            <width>171</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Voltage Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="tab_13">
+        <attribute name="title">
+         <string>Joint 3</string>
+        </attribute>
+        <widget class="QGroupBox" name="groupBox_10">
+         <property name="geometry">
+          <rect>
+           <x>600</x>
+           <y>10</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Velocity</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_10">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_98">
+          <property name="geometry">
+           <rect>
+            <x>70</x>
+            <y>240</y>
+            <width>181</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Velocity Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_11">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Angle</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_11">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>30</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_99">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>230</y>
+            <width>171</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Angle Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_12">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>150</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Voltage</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_12">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_100">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>240</y>
+            <width>171</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Voltage Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="tab_14">
+        <attribute name="title">
+         <string>Joint 4</string>
+        </attribute>
+        <widget class="QGroupBox" name="groupBox_7">
+         <property name="geometry">
+          <rect>
+           <x>600</x>
+           <y>10</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Velocity</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_7">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_83">
+          <property name="geometry">
+           <rect>
+            <x>70</x>
+            <y>240</y>
+            <width>181</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Velocity Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_8">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Angle</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_8">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>30</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_84">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>230</y>
+            <width>171</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Angle Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_9">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>150</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Voltage</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_9">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_97">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>240</y>
+            <width>171</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Voltage Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="tab_15">
+        <attribute name="title">
+         <string>Joint 5</string>
+        </attribute>
+        <widget class="QGroupBox" name="groupBox_4">
+         <property name="geometry">
+          <rect>
+           <x>600</x>
+           <y>10</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Velocity</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_4">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_80">
+          <property name="geometry">
+           <rect>
+            <x>70</x>
+            <y>240</y>
+            <width>181</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Velocity Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_5">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Angle</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_5">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>30</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_81">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>230</y>
+            <width>171</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Angle Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_6">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>150</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Voltage</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_6">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_82">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>240</y>
+            <width>171</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Voltage Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="tab_16">
+        <attribute name="title">
+         <string>Joint 6</string>
+        </attribute>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Angle</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>30</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_77">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>230</y>
+            <width>171</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Angle Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_3">
+         <property name="geometry">
+          <rect>
+           <x>600</x>
+           <y>10</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Velocity</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_3">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_79">
+          <property name="geometry">
+           <rect>
+            <x>70</x>
+            <y>240</y>
+            <width>181</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Velocity Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="geometry">
+          <rect>
+           <x>300</x>
+           <y>150</y>
+           <width>280</width>
+           <height>290</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>Joint Voltage</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <widget class="QwtPlot" name="qwtPlot_2">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>40</y>
+            <width>270</width>
+            <height>190</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_78">
+          <property name="geometry">
+           <rect>
+            <x>80</x>
+            <y>240</y>
+            <width>171</width>
+            <height>17</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Joint Voltage Over Time(s)</string>
+          </property>
+         </widget>
+        </widget>
+       </widget>
+      </widget>
+     </widget>
+    </widget>
+   </widget>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QwtPlot</class>
+   <extends>QFrame</extends>
+   <header>qwt_plot.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
