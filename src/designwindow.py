@@ -235,7 +235,6 @@ def recordAngle():
     rospy.loginfo("recording")
 
 def recordCP():
-
     recordList.append(cpList)
     rospy.loginfo("recording")
 

@@ -1,5 +1,6 @@
 import numpy as np
 import math
+from RelaxedIK.relaxedIK import RelaxedIK
 
 def c(number):
     return math.cos(number)
@@ -51,3 +52,12 @@ def angleToCP(angles):
     tBE = tB1.dot(t12).dot(t23).dot(t34).dot(t45).dot(t56).dot(t67).dot(t7E)
 
     return tBE[0:3,-1]
+
+def inverseKinematics(cartesian_pose):
+    goal_pos = [[0,0,0],cartesian_pose]
+    goal_quat = [[1,0,0,0],[1,0,0,0]]
+    rik = RelaxedIK.init_from_config('relaxedIK.config')
+    xopt = rik.solve(goal_pos,goal_quat)
+    return xopt
+
+

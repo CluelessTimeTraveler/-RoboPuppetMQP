@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import sys
 import random
 import numpy as np
@@ -17,9 +18,22 @@ from kortex_driver.srv import *
 from design import *
 from std_msgs.msg import Float32, Float64
 from gazebo_msgs.srv import GetJointProperties, GetLinkState
-from kinematics import angleToCP
+#from kinematics import angleToCP, inverseKinematics
+from constants import *
+#from PyQt5.QtChart import QCandlestickSeries, QChart, QChartView, QCandlestickSet
+from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtCore import Qt, QPointF
+#from PyQt5 import QtChart as qc
+from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtWidgets import QMainWindow, QLabel, QSlider
+from PyQt5.QtCore import QSize, Qt, pyqtSlot,pyqtSignal
+from PyQt5.uic import loadUi
 
-
+from pyqtgraph import PlotWidget, plot
+from pyqtgraph import PlotWidget, plot
+#from qwt.qt.QtGui import QApplication, QPen
+#from qwt.qt.QtCore import Qt
+from qwt import QwtPlot, QwtPlotMarker, QwtLegend, QwtPlotCurve, QwtText
 global leftAngleList
 global rightAngleList
 global leftVelocityList
@@ -118,7 +132,7 @@ class ROS(QThread):
             print
             "Service call failed: %s" % e
 
-        perSecond = 1000/updateRate
+        perSecond = 1000/ui_update_rate
         jv1 = (ja1-leftAngleList[0]) * perSecond
         jv2 = (ja2 - leftAngleList[1]) * perSecond
         jv3 = (ja3 - leftAngleList[2]) * perSecond
@@ -156,7 +170,7 @@ class ROS(QThread):
             print
             "Service call failed: %s" % e
 
-        perSecond = 1000/updateRate
+        perSecond = 1000/ui_update_rate
         jv1 = (ja1-rightAngleList[0]) * perSecond
         jv2 = (ja2 - rightAngleList[1]) * perSecond
         jv3 = (ja3 - rightAngleList[2]) * perSecond
@@ -211,43 +225,13 @@ class ROS(QThread):
 
 
     def send_cartesian_pose(self, x, y, z):
-        self.last_action_notif_type = None
-        # Get the actual cartesian pose to increment it
-        # You can create a subscriber to listen to the base_feedback
-        # Here we only need the latest message in the topic though
-        feedback = rospy.wait_for_message("/" + self.robot_name + "/base_feedback", BaseCyclic_Feedback)
-
-        req = PlayCartesianTrajectoryRequest()
-        # dx,dy,dz should all be something like 0.1-0.5 the unit is probably meter
-        req.input.target_pose.x = x
-        req.input.target_pose.y = y
-        req.input.target_pose.z = z
-        req.input.target_pose.theta_x = feedback.base.commanded_tool_pose_theta_x
-        req.input.target_pose.theta_y = feedback.base.commanded_tool_pose_theta_y
-        req.input.target_pose.theta_z = feedback.base.commanded_tool_pose_theta_z
-
-        pose_speed = CartesianSpeed()
-        pose_speed.translation = 0.1
-        pose_speed.orientation = 15
-
-        # The constraint is a one_of in Protobuf. The one_of concept does not exist in ROS
-        # To specify a one_of, create it and put it in the appropriate list of the oneof_type member of the ROS object :
-        req.input.constraint.oneof_type.speed.append(pose_speed)
-
-        # Call the service
-        rospy.loginfo("Sending the robot to the cartesian pose...")
-        try:
-            self.play_cartesian_trajectory(req)
-        except rospy.ServiceException:
-            rospy.logerr("Failed to call PlayCartesianTrajectory")
-            return False
-        else:
-            return self.wait_for_action_end_or_abort()
+        xopt = inverseKinematics([x,y,z])
+        rospy.loginfo(xopt[7:])
 
     def home_the_robot(self):
         rospy.loginfo("Home robot")
-        rightArmJointPositions = [-2.8, 1.57, 0, 1.15, .2, 1.95, -3.05]
-        leftArmJointPositions = [-1.57, 1.57, 1.57, 1.57, 0, 0, 1.57]
+        rightArmJointPositions = right_arm_homepos
+        leftArmJointPositions = left_arm_homepos
         self.rightJoint1.publish(rightArmJointPositions[0])
         self.rightJoint2.publish(rightArmJointPositions[1])
         self.rightJoint3.publish(rightArmJointPositions[2])
@@ -378,7 +362,7 @@ def recordCP():
 def record():
     leftRecordList=[]
     rightRecordList=[]
-    record_timer.start(1000)    # Record angeles every 1 second
+    record_timer.start(record_rate)    # Record angeles every 1 second
 
 def stop():
     record_timer.stop()
@@ -396,7 +380,6 @@ if __name__ == "__main__":
     recording = False
     leftAngleList=[0,0,0,0,0,0,0]
     rightAngleList=[0,0,0,0,0,0,0]
-    updateRate = 100
 
 
     ros = ROS()
@@ -404,9 +387,9 @@ if __name__ == "__main__":
     widget = QtWidgets.QWidget()
     window = Ui_Dialog()
     window.setupUi(widget)
-    #window.pushButton.clicked.connect(send_cartesian_pose)
+    window.pushButton.clicked.connect(send_cartesian_pose)
     window.pushButton_2.clicked.connect(home_robot)
-    window.setAngleButton.clicked.connect(send_joint_angles) #TODO
+    window.setAngleButton.clicked.connect(send_joint_angles)
     window.refreshButton.clicked.connect(updateControlInfo)
     window.recordButton.clicked.connect(record)
     window.stopButton.clicked.connect(stop)
@@ -425,13 +408,6 @@ if __name__ == "__main__":
     record_timer = QTimer()
     timer.timeout.connect(updateInfo)
     record_timer.timeout.connect(recordAngle)
-    timer.start(updateRate)
+    timer.start(ui_update_rate)
 
     sys.exit(app.exec_())
-
-
-
-
-
-
-
