@@ -13,14 +13,22 @@
 
 import rospy
 import serial
+import sys
 from std_msgs.msg import String
 from msg_arduino.msg import JointPositions
 
 def PuppetSerialComms():
     pub = rospy.Publisher('potAngles', JointPositions, queue_size=10)
+    if(len(sys.argv) != 4):
+        print("Argv = " + str(len(sys.argv)) + str(sys.argv))
+        print("NO SERIAL PORT GIVEN OR INVALID PORT")
+        return;
+
+    port = sys.argv[1]
     try:
-        serialInterface = serial.Serial("/dev/ttyUSB0", baudrate=9600)
-    except SerialException:
+        print("Attemping connection with " + str(port))
+        serialInterface = serial.Serial(port, baudrate=9600)
+    except serial.SerialException:
         print("----------ERROR------------Unable to open Serial Port -----------ERROR---------")
         return;
 
