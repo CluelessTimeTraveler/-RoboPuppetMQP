@@ -33,7 +33,6 @@ from pyqtgraph import PlotWidget, plot
 from pyqtgraph import PlotWidget, plot
 #from qwt.qt.QtGui import QApplication, QPen
 #from qwt.qt.QtCore import Qt
-from qwt import QwtPlot, QwtPlotMarker, QwtLegend, QwtPlotCurve, QwtText
 global leftAngleList
 global rightAngleList
 global leftVelocityList
@@ -41,6 +40,10 @@ global rightVelocityList
 global leftCpList
 global rightCpList
 global updateControlPanel
+global leftMode
+global rightMode
+global states
+
 updateControlPanel = True
 leftRecordList = []
 rightRecordList = []
@@ -48,7 +51,7 @@ rightRecordList = []
 class ROS(QThread):
     def __init__(self):
         rospy.init_node('gui', anonymous=True)
-        #rospy.Subscriber('/joy',Joy,self.update,queue_size=1,buff_size=52428800)
+        rospy.Subscriber('/joy',Joy,self.robopuppet,queue_size=1,buff_size=52428800)
         #Feedback currently not working for trina2
         #rospy.Subscriber('/left_arm_/base_feedback', BaseCyclic_Feedback, self.leftUpdate, queue_size=1, buff_size=52428800)
         #rospy.Subscriber('/right_arm_/base_feedback', BaseCyclic_Feedback, self.rightUpdate, queue_size=1, buff_size=52428800)
@@ -104,7 +107,16 @@ class ROS(QThread):
     def cb_action_topic(self, notif):
         self.last_action_notif_type = notif.action_event
 
-
+    def robopuppet(self, data):
+        if states == 'Enabled':
+            angle = data.axes[0]*3.14
+            if leftMode & rightMode:
+                self.leftJoint1.publish(angle)
+                self.rightJoint1.publish(angle)
+            elif leftMode:
+                self.leftJoint1.publish(angle)
+            else:
+                self.rightJoint1.publish(angle)
 
     def leftUpdate(self):
         global leftAngleList
@@ -375,9 +387,37 @@ def play():
         sleep(1)
         #ros.send_cartesian_pose(i[0],i[1],i[2])
 
+def set_RP_mode():
+    if window.radioButton.isChecked():
+        global leftMode, rightMode
+        leftMode = True
+        rightMode = False
+    elif window.radioButton_2.isChecked():
+        global leftMode, rightMode
+        leftMode = False
+        rightMode = True
+    else:
+        global leftMode, rightMode
+        leftMode = True
+        rightMode = True
+
+
+
+
+def connect_RP():
+    global states
+    if states=='Enabled':
+        states = 'Disabled'
+    elif states=='Disabled':
+        states = 'Enabled'
+    window.label_72.setText(states)
 
 if __name__ == "__main__":
     recording = False
+    leftMode = True
+    rightMode = False
+    states = 'Enabled'
+
     leftAngleList=[0,0,0,0,0,0,0]
     rightAngleList=[0,0,0,0,0,0,0]
 
@@ -387,6 +427,7 @@ if __name__ == "__main__":
     widget = QtWidgets.QWidget()
     window = Ui_Dialog()
     window.setupUi(widget)
+    window.label_72.setText(states)
     window.pushButton.clicked.connect(send_cartesian_pose)
     window.pushButton_2.clicked.connect(home_robot)
     window.setAngleButton.clicked.connect(send_joint_angles)
@@ -395,7 +436,8 @@ if __name__ == "__main__":
     window.stopButton.clicked.connect(stop)
     window.playButton.clicked.connect(play)
     ros.send_gripper_cmd(0,0)
-
+    window.setRPButton.clicked.connect(set_RP_mode)
+    window.connectRPButton.clicked.connect(connect_RP)
     window.leftGripperSlider.valueChanged.connect(sendGripperCmd)
     window.rightGripperSlider.valueChanged.connect(sendGripperCmd)
 

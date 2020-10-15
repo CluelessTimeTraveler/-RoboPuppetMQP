@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>4</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -961,7 +961,7 @@
    </widget>
    <widget class="QWidget" name="tab_6">
     <attribute name="title">
-     <string>Performance</string>
+     <string>Robopuppet Settings</string>
     </attribute>
     <widget class="QWidget" name="horizontalLayoutWidget_3">
      <property name="geometry">
@@ -977,22 +977,51 @@
        <layout class="QVBoxLayout" name="verticalLayout_13">
         <item>
          <widget class="QLabel" name="label_71">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>20</height>
+           </size>
+          </property>
           <property name="text">
-           <string>Left Arm</string>
+           <string>Control Mode</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_72">
+         <widget class="QRadioButton" name="radioButton">
           <property name="text">
-           <string>Angle</string>
+           <string>Only left arm</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_73">
+         <widget class="QRadioButton" name="radioButton_2">
           <property name="text">
-           <string>Velocity</string>
+           <string>Only right arm</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="radioButton_3">
+          <property name="text">
+           <string>Both arms</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="setRPButton">
+          <property name="maximumSize">
+           <size>
+            <width>200</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Confirm</string>
           </property>
          </widget>
         </item>
@@ -1001,23 +1030,50 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_14">
         <item>
-         <widget class="QLabel" name="label_74">
+         <widget class="QLabel" name="label_72">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>50</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>24</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
           <property name="text">
-           <string>Right Arm</string>
+           <string>TextLabel</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
           </property>
          </widget>
         </item>
-        <item>
-         <widget class="QLabel" name="label_75">
-          <property name="text">
-           <string>Angle</string>
+        <item alignment="Qt::AlignHCenter">
+         <widget class="QPushButton" name="connectRPButton">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_76">
+          <property name="maximumSize">
+           <size>
+            <width>200</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
           <property name="text">
-           <string>Velocity</string>
+           <string>Enable/Disable Connection</string>
+          </property>
+          <property name="checkable">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
