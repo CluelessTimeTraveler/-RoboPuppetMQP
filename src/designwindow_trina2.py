@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import sys
 import random
 import numpy as np
@@ -17,10 +18,21 @@ from kortex_driver.srv import *
 from design import *
 from std_msgs.msg import Float32, Float64
 from gazebo_msgs.srv import GetJointProperties, GetLinkState
-from kinematics import angleToCP, inverseKinematics
+#from kinematics import angleToCP, inverseKinematics
 from constants import *
+#from PyQt5.QtChart import QCandlestickSeries, QChart, QChartView, QCandlestickSet
+from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtCore import Qt, QPointF
+#from PyQt5 import QtChart as qc
+from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtWidgets import QMainWindow, QLabel, QSlider
+from PyQt5.QtCore import QSize, Qt, pyqtSlot,pyqtSignal
+from PyQt5.uic import loadUi
 
-
+from pyqtgraph import PlotWidget, plot
+from pyqtgraph import PlotWidget, plot
+#from qwt.qt.QtGui import QApplication, QPen
+#from qwt.qt.QtCore import Qt
 global leftAngleList
 global rightAngleList
 global leftVelocityList
@@ -441,10 +453,3 @@ if __name__ == "__main__":
     timer.start(ui_update_rate)
 
     sys.exit(app.exec_())
-
-
-
-
-
-
-
