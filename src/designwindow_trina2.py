@@ -33,7 +33,6 @@ from pyqtgraph import PlotWidget, plot
 from pyqtgraph import PlotWidget, plot
 #from qwt.qt.QtGui import QApplication, QPen
 #from qwt.qt.QtCore import Qt
-from qwt import QwtPlot, QwtPlotMarker, QwtLegend, QwtPlotCurve, QwtText
 global leftAngleList
 global rightAngleList
 global leftVelocityList
