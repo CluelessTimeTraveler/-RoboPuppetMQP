@@ -10,7 +10,7 @@ void setup() {
 }
 
 void loop() {
-  Serial.println("Begin loop:");
+  //Serial.println("Begin loop:");
   Encoders::update();//To-do for bella
   //Buttons::update();
   SerialInterface::update();

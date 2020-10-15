@@ -4,7 +4,7 @@
 #include <Buttons.h>
 #include <Arduino.h>
 
-#define SEND_EVERY_MS 1000
+#define SEND_EVERY_MS 100
 
 
 namespace SerialInterface
