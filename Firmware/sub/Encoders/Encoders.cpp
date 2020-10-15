@@ -105,9 +105,11 @@ void Encoders::update()
  * @brief Transmits encoder value to RosComms
  * @param encoder number [1,2,3,4]
  */
-float Encoders::getStatus(uint8_t encoder)
+int Encoders::getStatus(uint8_t encoder)
 {
-  return Encoders::angles[encoder];
+  float tempMap;
+  tempMap = map(Encoders::angles[encoder], 0, 4096, 1, 360);
+  return (int)tempMap;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////

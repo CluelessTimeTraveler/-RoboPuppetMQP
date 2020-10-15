@@ -22,11 +22,11 @@ bool SerialInterface::init() {
 void SerialInterface::update() {
 
   //Set each of these equal to the correct values coming from the arm
-  toSend[0] = Encoders::getStatus(0); // Servo One
-  toSend[1] = Encoders::getStatus(1);; //Servo Two
+  toSend[0] = 10; // Servo One
+  toSend[1] = 10; //Servo Two
   toSend[2] = 20; //Servo Three
-  toSend[3] = 30; //Encoder One
-  toSend[4] = 40; //Encoder Two
+  toSend[3] = Encoders::getStatus(0);; //Encoder One
+  toSend[4] = Encoders::getStatus(1);; //Encoder Two
   toSend[5] = 50; //Encoder Three
   toSend[6] = 60; //Encoder Four
   toSend[7] = 70; //Gripper Engaged
