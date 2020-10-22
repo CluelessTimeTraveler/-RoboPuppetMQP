@@ -53,4 +53,8 @@ def angleToCP(angles):
 
     return tBE[0:3,-1]
 
-
+a = [1,3,4,5]
+b = []
+for i in a:
+    b.append(-i)
+print(b)

@@ -69,7 +69,7 @@ void Encoders::init()
     //SPI.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0));
   
     //Nice screen things
-    Serial.println("Encoders Initialized");
+    //Serial.println("Encoders Initialized");
 
     //initalize joint angles
     for (uint8_t j = 0; j < num_enc; j++)
@@ -91,13 +91,13 @@ void Encoders::update()
 {
 	for (uint8_t j = 0; j < Encoders::num_enc; j++)
 	{
-    Serial.print("Update encoder:");
-    Serial.println(j);
+    //Serial.print("Update encoder:");
+    //Serial.println(j);
 		angles[j] = Encoders::updateSingle(encoderPins[j]);
-    Serial.println(angles[j], DEC); //print the position in decimal format
+    //Serial.println(angles[j], DEC); //print the position in decimal format
 	}
-  Serial.println();
-  Serial.println();
+  //Serial.println();
+  //Serial.println();
 }
 
 
@@ -105,9 +105,11 @@ void Encoders::update()
  * @brief Transmits encoder value to RosComms
  * @param encoder number [1,2,3,4]
  */
-float Encoders::getStatus(uint8_t encoder)
+int Encoders::getStatus(uint8_t encoder)
 {
-  return Encoders::angles[encoder];
+  float tempMap;
+  tempMap = map(Encoders::angles[encoder], 0, 4096, 1, 360);
+  return (int)tempMap;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -201,8 +203,8 @@ uint16_t Encoders::updateSingle(uint8_t encoder)
 
     if (encoderPosition == 0xFFFF) //position is bad, let the user know how many times we tried
     {
-      Serial.print("Encoder 1 error. Attempts: ");
-      Serial.println(attempts, DEC); //print out the number in decimal format. attempts - 1 is used since we post incremented the loop
+      //Serial.print("Encoder 1 error. Attempts: ");
+      //Serial.println(attempts, DEC); //print out the number in decimal format. attempts - 1 is used since we post incremented the loop
     }
     else //position was good, print to serial stream
     {
@@ -212,5 +214,5 @@ uint16_t Encoders::updateSingle(uint8_t encoder)
     return encoderPosition;
     //For the purpose of this demo we don't need the position returned that quickly so let's wait a half second between reads
     //delay() is in milliseconds
-    delay(500);
+    //delay(500);
 }

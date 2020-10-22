@@ -18,16 +18,17 @@ from std_msgs.msg import String
 from msg_arduino.msg import JointPositions
 
 def PuppetSerialComms():
-    pub = rospy.Publisher('potAngles', JointPositions, queue_size=10)
-    if(len(sys.argv) != 4):
-        print("Argv = " + str(len(sys.argv)) + str(sys.argv))
-        print("NO SERIAL PORT GIVEN OR INVALID PORT")
-        return;
+    pub = rospy.Publisher('potAngles', JointPositions, queue_size=1)
+#    if(len(sys.argv) != 4):
+#        print("Argv = " + str(len(sys.argv)) + str(sys.argv))
+#        print("NO SERIAL PORT GIVEN OR INVALID PORT")
+#        return;
 
-    port = sys.argv[1]
+    #port = sys.argv[1]
+    port = '/dev/ttyACM0'
     try:
         print("Attemping connection with " + str(port))
-        serialInterface = serial.Serial(port, baudrate=9600)
+        serialInterface = serial.Serial('/dev/ttyACM0', baudrate=9600)
     except serial.SerialException:
         print("----------ERROR------------Unable to open Serial Port -----------ERROR---------")
         return;
