@@ -5,7 +5,7 @@
 
 void setup() {
   SerialInterface::init();
-  Encoders::init();
+  //Encoders::init();
   //Buttons::init();
 }
 
