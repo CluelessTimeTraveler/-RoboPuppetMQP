@@ -41,6 +41,25 @@ global rightVelocityList
 global leftCpList
 global rightCpList
 global updateControlPanel
+
+global time
+
+# Joint angles for plots
+global angleList_lb
+global angleList_l1
+global angleList_l2
+global angleList_l3
+global angleList_l4
+global angleList_l5
+global angleList_l6
+
+global angleList_rb
+global angleList_r1
+global angleList_r2
+global angleList_r3
+global angleList_r4
+global angleList_r5
+
 global leftMode
 global rightMode
 global states
@@ -153,6 +172,22 @@ class ROS(QThread):
         global leftAngleList
         global leftVelocityList
         global leftCpList
+        global angleList_lb
+        global angleList_l1
+        global angleList_l2
+        global angleList_l3
+        global angleList_l4
+        global angleList_l5
+        global angleList_l6
+
+    def plot(self):
+        global angleList_lb
+        global angleList_l1
+        global angleList_l2
+        global angleList_l3
+        global angleList_l4
+        global angleList_l5
+        global angleList_l6
 
         rospy.wait_for_service('gazebo/get_joint_properties')
         try:
@@ -184,6 +219,19 @@ class ROS(QThread):
         jv6 = (ja6 - leftAngleList[5]) * perSecond
         jv7 = (ja7 - leftAngleList[6]) * perSecond
 
+        # if (len(angleList_lb) > 7):
+        #     angleList_lb.remove(0)
+
+        angleList_lb[0] = ja1;
+        angleList_l1.append(ja2)
+        angleList_l2.append(ja3)
+        angleList_l3.append(ja4)
+        angleList_l4.append(ja5)
+        angleList_l5.append(ja6)
+        angleList_l6.append(ja7)
+
+
+
         leftAngleList = [ja1,ja2,ja3,ja4,ja5,ja6,ja7]
         leftVelocityList = [jv1,jv2,jv3,jv4,jv5,jv6,jv7]
         leftCpList = angleToCP(leftAngleList)
@@ -192,6 +240,22 @@ class ROS(QThread):
         global rightAngleList
         global rightVelocityList
         global rightCpList
+        global angleList_rb
+        global angleList_r1
+        global angleList_r2
+        global angleList_r3
+        global angleList_r4
+        global angleList_r5
+        global angleList_r6
+
+    def plot(self):
+        global angleList_rb
+        global angleList_r1
+        global angleList_r2
+        global angleList_r3
+        global angleList_r4
+        global angleList_r5
+        global angleList_r6
         rospy.wait_for_service('gazebo/get_joint_properties')
         try:
             joints_properties = rospy.ServiceProxy('gazebo/get_joint_properties', GetJointProperties)
@@ -221,6 +285,17 @@ class ROS(QThread):
         jv5 = (ja5 - rightAngleList[4]) * perSecond
         jv6 = (ja6 - rightAngleList[5]) * perSecond
         jv7 = (ja7 - rightAngleList[6]) * perSecond
+
+        #if (len(angleList_rb) > 7):
+        #    angleList_rb.remove(1)
+
+        angleList_rb.append(ja1)
+        angleList_r1.append(ja2)
+        angleList_r2.append(ja3)
+        angleList_r3.append(ja4)
+        angleList_r4.append(ja5)
+        angleList_r5.append(ja6)
+        angleList_r6.append(ja7)
 
         rightAngleList = [ja1, ja2, ja3, ja4, ja5, ja6, ja7]
         rightVelocityList = [jv1,jv2,jv3,jv4,jv5,jv6,jv7]
@@ -405,6 +480,7 @@ def play():
     color = 'green'
     window.label_72.setStyleSheet("QLabel {color:" + color + ";}")
 
+
 def estimate():
     lda0 = float(window.lineEdit_4.text())
     lda1 = float(window.lineEdit_5.text())
@@ -414,6 +490,7 @@ def estimate():
     lda5 = float(window.lineEdit_9.text())
     lda6 = float(window.lineEdit_10.text())
     left_daList = [lda0,lda1,lda2,lda3,lda4,lda5,lda6]
+
 
     rda0 = float(window.lineEdit_11.text())
     rda1 = float(window.lineEdit_12.text())
@@ -485,6 +562,7 @@ def var_init():
     plot_time = [0]
 
 
+
 def window_init(window):
     window.setupUi(widget)
     window.label_72.setText(states)
@@ -514,6 +592,7 @@ if __name__ == "__main__":
     record_timer = QTimer()
     plot_timer =QTimer()            # Jason
     timer.timeout.connect(updateInfo)
+    timer.timeout.connect(plot)
     record_timer.timeout.connect(recordAngle)
     plot_timer.timeout.connect(plot)    # Jason
     plot_timer.start(plot_rate)     # Jason update once per sec
