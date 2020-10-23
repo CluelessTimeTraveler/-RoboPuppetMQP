@@ -1,9 +1,0 @@
-int16 servoOne
-int16 servoTwo
-int16 servoThree
-int16 encoderOne
-int16 encoderTwo
-int16 encoderThree
-int16 encoderFour
-uint8 gripperToggle
-uint8 holdToggle

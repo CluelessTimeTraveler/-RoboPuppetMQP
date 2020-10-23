@@ -11,6 +11,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 import rospy
+import math
 from sensor_msgs.msg import Joy
 from control_msgs.msg import GripperCommandActionGoal
 from kortex_driver.msg import *
@@ -18,7 +19,7 @@ from kortex_driver.srv import *
 from design import *
 from std_msgs.msg import Float32, Float64
 from gazebo_msgs.srv import GetJointProperties, GetLinkState
-#from kinematics import angleToCP, inverseKinematics
+from kinematics import angleToCP
 from constants import *
 #from PyQt5.QtChart import QCandlestickSeries, QChart, QChartView, QCandlestickSet
 from PyQt5.QtWidgets import QApplication, QMainWindow
@@ -30,10 +31,9 @@ from PyQt5.QtCore import QSize, Qt, pyqtSlot,pyqtSignal
 from PyQt5.uic import loadUi
 
 from pyqtgraph import PlotWidget, plot
-from pyqtgraph import PlotWidget, plot
+from msg_arduino.msg import JointPositions
 #from qwt.qt.QtGui import QApplication, QPen
 #from qwt.qt.QtCore import Qt
-from qwt import QwtPlot, QwtPlotMarker, QwtLegend, QwtPlotCurve, QwtText
 global leftAngleList
 global rightAngleList
 global leftVelocityList
@@ -41,6 +41,7 @@ global rightVelocityList
 global leftCpList
 global rightCpList
 global updateControlPanel
+
 global time
 
 # Joint angles for plots
@@ -58,7 +59,13 @@ global angleList_r2
 global angleList_r3
 global angleList_r4
 global angleList_r5
-global angleList_r6
+
+global leftMode
+global rightMode
+global states
+global mirror
+
+
 updateControlPanel = True
 leftRecordList = []
 rightRecordList = []
@@ -66,7 +73,8 @@ rightRecordList = []
 class ROS(QThread):
     def __init__(self):
         rospy.init_node('gui', anonymous=True)
-        #rospy.Subscriber('/joy',Joy,self.update,queue_size=1,buff_size=52428800)
+        #rospy.Subscriber('/joy',Joy,self.robopuppet,queue_size=1,buff_size=52428800)
+        rospy.Subscriber('/potAngles', JointPositions,self.robopuppet, queue_size=1)
         #Feedback currently not working for trina2
         #rospy.Subscriber('/left_arm_/base_feedback', BaseCyclic_Feedback, self.leftUpdate, queue_size=1, buff_size=52428800)
         #rospy.Subscriber('/right_arm_/base_feedback', BaseCyclic_Feedback, self.rightUpdate, queue_size=1, buff_size=52428800)
@@ -122,7 +130,42 @@ class ROS(QThread):
     def cb_action_topic(self, notif):
         self.last_action_notif_type = notif.action_event
 
+    def publish_to_left(self,angles):
+        self.leftJoint1.publish(angles[0])
+        self.leftJoint2.publish(angles[1])
+        self.leftJoint3.publish(angles[2])
+        self.leftJoint4.publish(angles[3])
+        self.leftJoint5.publish(angles[4])
+        self.leftJoint6.publish(angles[5])
+        self.leftJoint7.publish(angles[6])
 
+    def publish_to_right(self, angles):
+        self.rightJoint1.publish(angles[0])
+        self.rightJoint2.publish(angles[1])
+        self.rightJoint3.publish(angles[2])
+        self.rightJoint4.publish(angles[3])
+        self.rightJoint5.publish(angles[4])
+        self.rightJoint6.publish(angles[5])
+        self.rightJoint7.publish(angles[6])
+
+    def robopuppet(self, data):
+        if states == 'Enabled':
+            angles = [] #angles from robopuppet
+            if mirror:
+                angles_right = []
+                for i in angles:
+                    angles_right.append(-i)
+            else:
+                angles_right = angles
+                
+            if leftMode & rightMode:
+                self.publish_to_left(angles)
+                self.publish_to_right(angles_right)
+
+            elif leftMode:
+                self.publish_to_left(angles)
+            else:
+                self.publish_to_right(angles)
 
     def leftUpdate(self):
         global leftAngleList
@@ -270,21 +313,8 @@ class ROS(QThread):
                 sleep(0.01)
 
     def send_joint_angles(self,leftDesireAngle,rightDesireAngle):
-        self.leftJoint1.publish(leftDesireAngle[0])
-        self.leftJoint2.publish(leftDesireAngle[1])
-        self.leftJoint3.publish(leftDesireAngle[2])
-        self.leftJoint4.publish(leftDesireAngle[3])
-        self.leftJoint5.publish(leftDesireAngle[4])
-        self.leftJoint6.publish(leftDesireAngle[5])
-        self.leftJoint7.publish(leftDesireAngle[6])
-
-        self.rightJoint1.publish(rightDesireAngle[0])
-        self.rightJoint2.publish(rightDesireAngle[1])
-        self.rightJoint3.publish(rightDesireAngle[2])
-        self.rightJoint4.publish(rightDesireAngle[3])
-        self.rightJoint5.publish(rightDesireAngle[4])
-        self.rightJoint6.publish(rightDesireAngle[5])
-        self.rightJoint7.publish(rightDesireAngle[6])
+        self.publish_to_left(leftDesireAngle)
+        self.publish_to_right(rightDesireAngle)
 
     def send_gripper_cmd(self,left,right):
         rospy.loginfo("Send Gripper Command")
@@ -306,22 +336,8 @@ class ROS(QThread):
         rospy.loginfo("Home robot")
         rightArmJointPositions = right_arm_homepos
         leftArmJointPositions = left_arm_homepos
-        self.rightJoint1.publish(rightArmJointPositions[0])
-        self.rightJoint2.publish(rightArmJointPositions[1])
-        self.rightJoint3.publish(rightArmJointPositions[2])
-        self.rightJoint4.publish(rightArmJointPositions[3])
-        self.rightJoint5.publish(rightArmJointPositions[4])
-        self.rightJoint6.publish(rightArmJointPositions[5])
-        self.rightJoint7.publish(rightArmJointPositions[6])
-
-        self.leftJoint1.publish(leftArmJointPositions[0])
-        self.leftJoint2.publish(leftArmJointPositions[1])
-        self.leftJoint3.publish(leftArmJointPositions[2])
-        self.leftJoint4.publish(leftArmJointPositions[3])
-        self.leftJoint5.publish(leftArmJointPositions[4])
-        self.leftJoint6.publish(leftArmJointPositions[5])
-        self.leftJoint7.publish(leftArmJointPositions[6])
-
+        self.publish_to_right(rightArmJointPositions)
+        self.publish_to_left(leftArmJointPositions)
 
 
 def updateControlInfo():
@@ -369,6 +385,10 @@ def updateInfo():
     window.label_35.setText("x_pose: %.2f" % leftCpList[0])
     window.label_36.setText("y_pose: %.2f" % leftCpList[1])
     window.label_37.setText("z_pose: %.2f" % leftCpList[2])
+    window.label_38.setText("x_pose: %.2f" % leftCpList[0])
+    window.label_39.setText("y_pose: %.2f" % leftCpList[1])
+    window.label_40.setText("z_pose: %.2f" % leftCpList[2])
+
 
     #Right
     #Angles
@@ -391,6 +411,9 @@ def updateInfo():
     window.label_68.setText("x_pose: %.2f" % rightCpList[0])
     window.label_69.setText("y_pose: %.2f" % rightCpList[1])
     window.label_70.setText("z_pose: %.2f" % rightCpList[2])
+    window.label_77.setText("x_pose: %.2f" % rightCpList[0])
+    window.label_78.setText("y_pose: %.2f" % rightCpList[1])
+    window.label_79.setText("z_pose: %.2f" % rightCpList[2])
 
 def home_robot():
     ros.home_the_robot()
@@ -443,70 +466,113 @@ def stop():
     rospy.loginfo("recording terminated")
 
 def play():
+    global states
+    states = 'Disabled'
+    color = 'red'
+    window.label_72.setStyleSheet("QLabel {color:" + color + ";}")
     rospy.loginfo("playing")
     for i in range(len(leftRecordList)):
         ros.send_joint_angles(leftRecordList[i],rightRecordList[i])
         sleep(1)
         #ros.send_cartesian_pose(i[0],i[1],i[2])
+    states = 'Enabled'
+    color = 'green'
+    window.label_72.setStyleSheet("QLabel {color:" + color + ";}")
 
-def plot():
-    window.angleGraph_lb.plot(time, angleList_lb)
-    window.angleGraph_l1.plot(time, angleList_l1)
-    window.angleGraph_l2.plot(time, angleList_l2)
-    window.angleGraph_l4.plot(time, angleList_l3)
-    window.angleGraph_l5.plot(time, angleList_l4)
-    window.angleGraph_l5.plot(time, angleList_l5)
-    window.angleGraph_l6.plot(time, angleList_l6)
 
-    window.angleGraph_rb.plot(time, angleList_rb)
-    window.angleGraph_r1.plot(time, angleList_r1)
-    window.angleGraph_r2.plot(time, angleList_r2)
-    window.angleGraph_r3.plot(time, angleList_r3)
-    window.angleGraph_r4.plot(time, angleList_r4)
-    window.angleGraph_r5.plot(time, angleList_r5)
-    window.angleGraph_r6.plot(time, angleList_r6)
+def estimate():
+    lda0 = float(window.lineEdit_4.text())
+    lda1 = float(window.lineEdit_5.text())
+    lda2 = float(window.lineEdit_6.text())
+    lda3 = float(window.lineEdit_7.text())
+    lda4 = float(window.lineEdit_8.text())
+    lda5 = float(window.lineEdit_9.text())
+    lda6 = float(window.lineEdit_10.text())
+    left_daList = [lda0,lda1,lda2,lda3,lda4,lda5,lda6]
 
-if __name__ == "__main__":
-    recording = False
+
+    rda0 = float(window.lineEdit_11.text())
+    rda1 = float(window.lineEdit_12.text())
+    rda2 = float(window.lineEdit_13.text())
+    rda3 = float(window.lineEdit_14.text())
+    rda4 = float(window.lineEdit_15.text())
+    rda5 = float(window.lineEdit_16.text())
+    rda6 = float(window.lineEdit_17.text())
+    right_daList = [rda0,rda1,rda2,rda3,rda4,rda5,rda6]
+
+    leftEstCpList = angleToCP(left_daList)
+    rightEstCpList = angleToCP(right_daList)
+
+    window.label_75.setText("x_pose: %.2f" % leftEstCpList[0])
+    window.label_76.setText("y_pose: %.2f" % leftEstCpList[1])
+    window.label_80.setText("z_pose: %.2f" % leftEstCpList[2])
+
+    window.label_82.setText("x_pose: %.2f" % rightEstCpList[0])
+    window.label_137.setText("y_pose: %.2f" % rightEstCpList[1])
+    window.label_138.setText("z_pose: %.2f" % rightEstCpList[2])
+
+
+def set_RP_mode():
+    if window.radioButton.isChecked():
+        global leftMode, rightMode, mirror
+        leftMode = True
+        rightMode = False
+    elif window.radioButton_2.isChecked():
+        global leftMode, rightMode
+        leftMode = False
+        rightMode = True
+    else:
+        global leftMode, rightMode
+        leftMode = True
+        rightMode = True
+        if window.checkBox.isChecked():
+            mirror = True
+
+
+def connect_RP():
+    global states
+    color = 'black'
+    if states=='Enabled':
+        states = 'Disabled'
+        color = 'red'
+    elif states=='Disabled':
+        states = 'Enabled'
+        color = 'green'
+    window.label_72.setText(states)
+    window.label_72.setStyleSheet("QLabel {color:"+color+";}")
+
+def var_init():
+    global leftMode, rightMode, leftAngleList, rightAngleList,states
+    states = 'Enabled'
+    leftMode = True
+    rightMode = False
     leftAngleList=[0,0,0,0,0,0,0]
     rightAngleList=[0,0,0,0,0,0,0]
-    time=[-6,-5, -4, -3, -2, -1, 0]
-    angleList_lb = [0, 0, 0, 0, 0, 0, 0]
-    angleList_l1 = [0, 0, 0, 0, 0, 0, 0]
-    angleList_l2 = [0, 0, 0, 0, 0, 0, 0]
-    angleList_l3 = [0, 0, 0, 0, 0, 0, 0]
-    angleList_l4 = [0, 0, 0, 0, 0, 0, 0]
-    angleList_l5 = [0, 0, 0, 0, 0, 0, 0]
-    angleList_l6 = [0, 0, 0, 0, 0, 0, 0]
 
-    angleList_rb = [0, 0, 0, 0, 0, 0, 0]
-    angleList_r1 = [0, 0, 0, 0, 0, 0, 0]
-    angleList_r2 = [0, 0, 0, 0, 0, 0, 0]
-    angleList_r3 = [0, 0, 0, 0, 0, 0, 0]
-    angleList_r4 = [0, 0, 0, 0, 0, 0, 0]
-    angleList_r5 = [0, 0, 0, 0, 0, 0, 0]
-    angleList_r6 = [0, 0, 0, 0, 0, 0, 0]
 
-    ros = ROS()
-    app = QtWidgets.QApplication(sys.argv)
-    widget = QtWidgets.QWidget()
-    window = Ui_Dialog()
+def window_init(window):
     window.setupUi(widget)
-    window.pushButton.clicked.connect(send_cartesian_pose)
+    window.label_72.setText(states)
     window.pushButton_2.clicked.connect(home_robot)
     window.setAngleButton.clicked.connect(send_joint_angles)
     window.refreshButton.clicked.connect(updateControlInfo)
     window.recordButton.clicked.connect(record)
     window.stopButton.clicked.connect(stop)
     window.playButton.clicked.connect(play)
-    ros.send_gripper_cmd(0,0)
-
+    window.estimateButton.clicked.connect(estimate)
+    window.setRPButton.clicked.connect(set_RP_mode)
+    window.connectRPButton.clicked.connect(connect_RP)
     window.leftGripperSlider.valueChanged.connect(sendGripperCmd)
     window.rightGripperSlider.valueChanged.connect(sendGripperCmd)
+    window.label_72.setStyleSheet("QLabel {color:green;}")
 
-    window.lineEdit.setText("0")
-    window.lineEdit_2.setText("0")
-    window.lineEdit_3.setText("0")
+if __name__ == "__main__":
+    var_init()
+    ros = ROS()
+    app = QtWidgets.QApplication(sys.argv)
+    widget = QtWidgets.QWidget()
+    window = Ui_Dialog()
+    window_init(window)
     updateControlInfo()
     widget.show()
     timer = QTimer()
