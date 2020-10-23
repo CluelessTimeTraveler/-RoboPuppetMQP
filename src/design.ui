@@ -1097,7 +1097,7 @@
       </rect>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tab_8">
       <attribute name="title">
@@ -1147,7 +1147,7 @@
            <string>Joint Velocity Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="velocityGraph_8" native="true">
+         <widget class="PlotWidget" name="velocityGraph_lb" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1186,7 +1186,7 @@
            <string>Joint Voltage Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="voltageGraph_8" native="true">
+         <widget class="PlotWidget" name="voltageGraph_lb" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1225,7 +1225,7 @@
            <string>Joint Angle Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="angleGraph_8" native="true">
+         <widget class="PlotWidget" name="angleGraph_lb" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1269,7 +1269,7 @@
            <string>Joint Voltage Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="voltageGraph_9" native="true">
+         <widget class="PlotWidget" name="voltageGraph_l1" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1308,7 +1308,7 @@
            <string>Joint Angle Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="angleGraph_9" native="true">
+         <widget class="PlotWidget" name="angleGraph_l1" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1347,7 +1347,7 @@
            <string>Joint Velocity Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="velocityGraph_9" native="true">
+         <widget class="PlotWidget" name="velocityGraph_l1" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1391,7 +1391,7 @@
            <string>Joint Voltage Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="voltageGraph_10" native="true">
+         <widget class="PlotWidget" name="voltageGraph_l2" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1430,7 +1430,7 @@
            <string>Joint Angle Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="angleGraph_10" native="true">
+         <widget class="PlotWidget" name="angleGraph_l2" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1469,7 +1469,7 @@
            <string>Joint Velocity Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="velocityGraph_10" native="true">
+         <widget class="PlotWidget" name="velocityGraph_l2" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1513,7 +1513,7 @@
            <string>Joint Voltage Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="voltageGraph_11" native="true">
+         <widget class="PlotWidget" name="voltageGraph_l3" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1552,7 +1552,7 @@
            <string>Joint Angle Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="angleGraph_11" native="true">
+         <widget class="PlotWidget" name="angleGraph_l3" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1591,7 +1591,7 @@
            <string>Joint Velocity Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="velocityGraph_11" native="true">
+         <widget class="PlotWidget" name="velocityGraph_l3" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1635,7 +1635,7 @@
            <string>Joint Voltage Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="voltageGraph_12" native="true">
+         <widget class="PlotWidget" name="voltageGraph_l4" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1674,7 +1674,7 @@
            <string>Joint Angle Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="angleGraph_12" native="true">
+         <widget class="PlotWidget" name="angleGraph_l4" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1713,7 +1713,7 @@
            <string>Joint Velocity Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="velocityGraph_12" native="true">
+         <widget class="PlotWidget" name="velocityGraph_l4" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1757,7 +1757,7 @@
            <string>Joint Voltage Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="voltageGraph_13" native="true">
+         <widget class="PlotWidget" name="voltageGraph_l5" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1796,7 +1796,7 @@
            <string>Joint Angle Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="angleGraph_13" native="true">
+         <widget class="PlotWidget" name="angleGraph_l5" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1835,7 +1835,7 @@
            <string>Joint Velocity Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="velocityGraph_13" native="true">
+         <widget class="PlotWidget" name="velocityGraph_l5" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1879,7 +1879,7 @@
            <string>Joint Voltage Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="voltageGraph_14" native="true">
+         <widget class="PlotWidget" name="voltageGraph_l6" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1918,7 +1918,7 @@
            <string>Joint Angle Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="angleGraph_14" native="true">
+         <widget class="PlotWidget" name="angleGraph_l6" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1957,7 +1957,7 @@
            <string>Joint Velocity Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="velocityGraph_14" native="true">
+         <widget class="PlotWidget" name="velocityGraph_l6" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -1985,7 +1985,7 @@
         </rect>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>6</number>
        </property>
        <widget class="QWidget" name="tab_10">
         <attribute name="title">
@@ -2019,7 +2019,7 @@
            <string>Joint Voltage Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="voltageGraph_7" native="true">
+         <widget class="PlotWidget" name="voltageGraph_rb" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2058,7 +2058,7 @@
            <string>Joint Angle Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="angleGraph_7" native="true">
+         <widget class="PlotWidget" name="angleGraph_rb" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2097,7 +2097,7 @@
            <string>Joint Velocity Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="velocityGraph_7" native="true">
+         <widget class="PlotWidget" name="velocityGraph_rb" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2141,7 +2141,7 @@
            <string>Joint Voltage Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="voltageGraph_6" native="true">
+         <widget class="PlotWidget" name="voltageGraph_r1" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2180,7 +2180,7 @@
            <string>Joint Angle Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="angleGraph_6" native="true">
+         <widget class="PlotWidget" name="angleGraph_r1" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2219,7 +2219,7 @@
            <string>Joint Velocity Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="velocityGraph_6" native="true">
+         <widget class="PlotWidget" name="velocityGraph_r1" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2263,7 +2263,7 @@
            <string>Joint Voltage Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="voltageGraph_5" native="true">
+         <widget class="PlotWidget" name="voltageGraph_r2" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2302,7 +2302,7 @@
            <string>Joint Angle Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="angleGraph_5" native="true">
+         <widget class="PlotWidget" name="angleGraph_r2" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2341,7 +2341,7 @@
            <string>Joint Velocity Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="velocityGraph_5" native="true">
+         <widget class="PlotWidget" name="velocityGraph_r2" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2385,7 +2385,7 @@
            <string>Joint Voltage Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="voltageGraph_4" native="true">
+         <widget class="PlotWidget" name="voltageGraph_r3" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2424,7 +2424,7 @@
            <string>Joint Angle Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="angleGraph_4" native="true">
+         <widget class="PlotWidget" name="angleGraph_r3" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2463,7 +2463,7 @@
            <string>Joint Velocity Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="velocityGraph_4" native="true">
+         <widget class="PlotWidget" name="velocityGraph_r3" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2507,7 +2507,7 @@
            <string>Joint Velocity Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="velocityGraph" native="true">
+         <widget class="PlotWidget" name="velocityGraph_r4" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2546,7 +2546,7 @@
            <string>Joint Angle Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="angleGraph" native="true">
+         <widget class="PlotWidget" name="angleGraph_r4" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2585,7 +2585,7 @@
            <string>Joint Voltage Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="voltageGraph" native="true">
+         <widget class="PlotWidget" name="voltageGraph_r4" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2629,7 +2629,7 @@
            <string>Joint Voltage Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="voltageGraph_2" native="true">
+         <widget class="PlotWidget" name="voltageGraph_r5" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2668,7 +2668,7 @@
            <string>Joint Angle Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="angleGraph_2" native="true">
+         <widget class="PlotWidget" name="angleGraph_r5" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2707,7 +2707,7 @@
            <string>Joint Velocity Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="velocityGraph_2" native="true">
+         <widget class="PlotWidget" name="velocityGraph_r5" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2751,7 +2751,7 @@
            <string>Joint Voltage Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="voltageGraph_3" native="true">
+         <widget class="PlotWidget" name="voltageGraph_r6" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2790,7 +2790,7 @@
            <string>Joint Angle Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="angleGraph_3" native="true">
+         <widget class="PlotWidget" name="angleGraph_r6" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -2829,7 +2829,7 @@
            <string>Joint Velocity Over Time(s)</string>
           </property>
          </widget>
-         <widget class="PlotWidget" name="velocityGraph_3" native="true">
+         <widget class="PlotWidget" name="velocityGraph_r6" native="true">
           <property name="geometry">
            <rect>
             <x>10</x>
