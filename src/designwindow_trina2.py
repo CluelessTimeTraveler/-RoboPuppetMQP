@@ -45,7 +45,8 @@ global leftMode
 global rightMode
 global states
 global mirror
-
+global plot_time    # Jason
+global angleList_lb # Jason
 
 updateControlPanel = True
 leftRecordList = []
@@ -464,13 +465,25 @@ def connect_RP():
     window.label_72.setText(states)
     window.label_72.setStyleSheet("QLabel {color:"+color+";}")
 
+# For Jason
+def plot():
+    global plot_time, angleList_lb
+    angleList_lb.append(leftAngleList[0])
+    size = len(plot_time)
+    plot_time.append(size)
+    window.angleGraph_lb.plot(plot_time, angleList_lb)
+
+
 def var_init():
-    global leftMode, rightMode, leftAngleList, rightAngleList,states
+    global leftMode, rightMode, leftAngleList, rightAngleList,states, plot_time,angleList_lb
     states = 'Enabled'
     leftMode = True
     rightMode = False
     leftAngleList=[0,0,0,0,0,0,0]
     rightAngleList=[0,0,0,0,0,0,0]
+    angleList_lb = [0]
+    plot_time = [0]
+
 
 def window_init(window):
     window.setupUi(widget)
@@ -499,8 +512,12 @@ if __name__ == "__main__":
     widget.show()
     timer = QTimer()
     record_timer = QTimer()
+    plot_timer =QTimer()            # Jason
     timer.timeout.connect(updateInfo)
     record_timer.timeout.connect(recordAngle)
+    plot_timer.timeout.connect(plot)    # Jason
+    plot_timer.start(plot_rate)     # Jason update once per sec
     timer.start(ui_update_rate)
+
 
     sys.exit(app.exec_())
