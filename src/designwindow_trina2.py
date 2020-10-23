@@ -21,19 +21,20 @@ from std_msgs.msg import Float32, Float64
 from gazebo_msgs.srv import GetJointProperties, GetLinkState
 from kinematics import angleToCP
 from constants import *
-#from PyQt5.QtChart import QCandlestickSeries, QChart, QChartView, QCandlestickSet
+# from PyQt5.QtChart import QCandlestickSeries, QChart, QChartView, QCandlestickSet
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtCore import Qt, QPointF
-#from PyQt5 import QtChart as qc
+# from PyQt5 import QtChart as qc
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QLabel, QSlider
-from PyQt5.QtCore import QSize, Qt, pyqtSlot,pyqtSignal
+from PyQt5.QtCore import QSize, Qt, pyqtSlot, pyqtSignal
 from PyQt5.uic import loadUi
 
 from pyqtgraph import PlotWidget, plot
 from msg_arduino.msg import JointPositions
-#from qwt.qt.QtGui import QApplication, QPen
-#from qwt.qt.QtCore import Qt
+
+# from qwt.qt.QtGui import QApplication, QPen
+# from qwt.qt.QtCore import Qt
 global leftAngleList
 global rightAngleList
 global leftVelocityList
@@ -41,48 +42,29 @@ global rightVelocityList
 global leftCpList
 global rightCpList
 global updateControlPanel
-
-global time
-
-# Joint angles for plots
-global angleList_lb
-global angleList_l1
-global angleList_l2
-global angleList_l3
-global angleList_l4
-global angleList_l5
-global angleList_l6
-
-global angleList_rb
-global angleList_r1
-global angleList_r2
-global angleList_r3
-global angleList_r4
-global angleList_r5
-
 global leftMode
 global rightMode
 global states
 global mirror
-global plot_time    # Jason
-global angleList_lb # Jason
+global plot_time  # Jason
+global angleList_lb  # Jason
 
 updateControlPanel = True
 leftRecordList = []
 rightRecordList = []
 
+
 class ROS(QThread):
     def __init__(self):
         rospy.init_node('gui', anonymous=True)
-        #rospy.Subscriber('/joy',Joy,self.robopuppet,queue_size=1,buff_size=52428800)
-        rospy.Subscriber('/potAngles', JointPositions,self.robopuppet, queue_size=1)
-        #Feedback currently not working for trina2
-        #rospy.Subscriber('/left_arm_/base_feedback', BaseCyclic_Feedback, self.leftUpdate, queue_size=1, buff_size=52428800)
-        #rospy.Subscriber('/right_arm_/base_feedback', BaseCyclic_Feedback, self.rightUpdate, queue_size=1, buff_size=52428800)
+        # rospy.Subscriber('/joy',Joy,self.robopuppet,queue_size=1,buff_size=52428800)
+        rospy.Subscriber('/potAngles', JointPositions, self.robopuppet, queue_size=1)
+        # Feedback currently not working for trina2
+        # rospy.Subscriber('/left_arm_/base_feedback', BaseCyclic_Feedback, self.leftUpdate, queue_size=1, buff_size=52428800)
+        # rospy.Subscriber('/right_arm_/base_feedback', BaseCyclic_Feedback, self.rightUpdate, queue_size=1, buff_size=52428800)
 
-        #get joint angle from Gazebo Service
+        # get joint angle from Gazebo Service
         joints_properties = rospy.ServiceProxy('gazebo/get_joint_properties', GetJointProperties)
-
 
         self.rightJoint1 = rospy.Publisher('/right_arm_joint_1_position_controller/command', Float64, queue_size=1)
         self.rightJoint2 = rospy.Publisher('/right_arm_joint_2_position_controller/command', Float64, queue_size=1)
@@ -91,7 +73,8 @@ class ROS(QThread):
         self.rightJoint5 = rospy.Publisher('/right_arm_joint_5_position_controller/command', Float64, queue_size=1)
         self.rightJoint6 = rospy.Publisher('/right_arm_joint_6_position_controller/command', Float64, queue_size=1)
         self.rightJoint7 = rospy.Publisher('/right_arm_joint_7_position_controller/command', Float64, queue_size=1)
-        self.rightGripper = rospy.Publisher('/right_arm_robotiq_2f_85_gripper_controller/gripper_cmd/goal', GripperCommandActionGoal, queue_size=1)
+        self.rightGripper = rospy.Publisher('/right_arm_robotiq_2f_85_gripper_controller/gripper_cmd/goal',
+                                            GripperCommandActionGoal, queue_size=1)
 
         self.leftJoint1 = rospy.Publisher('/left_arm_joint_1_position_controller/command', Float64, queue_size=1)
         self.leftJoint2 = rospy.Publisher('/left_arm_joint_2_position_controller/command', Float64, queue_size=1)
@@ -100,8 +83,9 @@ class ROS(QThread):
         self.leftJoint5 = rospy.Publisher('/left_arm_joint_5_position_controller/command', Float64, queue_size=1)
         self.leftJoint6 = rospy.Publisher('/left_arm_joint_6_position_controller/command', Float64, queue_size=1)
         self.leftJoint7 = rospy.Publisher('/left_arm_joint_7_position_controller/command', Float64, queue_size=1)
-        self.leftGripper = rospy.Publisher('/left_arm_robotiq_2f_85_gripper_controller/gripper_cmd/goal', GripperCommandActionGoal,
-                                            queue_size=1)
+        self.leftGripper = rospy.Publisher('/left_arm_robotiq_2f_85_gripper_controller/gripper_cmd/goal',
+                                           GripperCommandActionGoal,
+                                           queue_size=1)
         # self.action_topic_sub = rospy.Subscriber("/my_gen3" + "/action_topic", ActionNotification,
         #                                          self.cb_action_topic)
         # self.last_action_notif_type = None
@@ -127,11 +111,10 @@ class ROS(QThread):
         # rospy.wait_for_service(play_joint_trajectory_full_name)
         # self.play_joint_trajectory = rospy.ServiceProxy(play_joint_trajectory_full_name, PlayJointTrajectory)
 
-
     def cb_action_topic(self, notif):
         self.last_action_notif_type = notif.action_event
 
-    def publish_to_left(self,angles):
+    def publish_to_left(self, angles):
         self.leftJoint1.publish(angles[0])
         self.leftJoint2.publish(angles[1])
         self.leftJoint3.publish(angles[2])
@@ -151,14 +134,14 @@ class ROS(QThread):
 
     def robopuppet(self, data):
         if states == 'Enabled':
-            angles = [] #angles from robopuppet
+            angles = []  # angles from robopuppet
             if mirror:
                 angles_right = []
                 for i in angles:
                     angles_right.append(-i)
             else:
                 angles_right = angles
-                
+
             if leftMode & rightMode:
                 self.publish_to_left(angles)
                 self.publish_to_right(angles_right)
@@ -172,22 +155,6 @@ class ROS(QThread):
         global leftAngleList
         global leftVelocityList
         global leftCpList
-        global angleList_lb
-        global angleList_l1
-        global angleList_l2
-        global angleList_l3
-        global angleList_l4
-        global angleList_l5
-        global angleList_l6
-
-    def plot(self):
-        global angleList_lb
-        global angleList_l1
-        global angleList_l2
-        global angleList_l3
-        global angleList_l4
-        global angleList_l5
-        global angleList_l6
 
         rospy.wait_for_service('gazebo/get_joint_properties')
         try:
@@ -210,8 +177,8 @@ class ROS(QThread):
             print
             "Service call failed: %s" % e
 
-        perSecond = 1000/ui_update_rate
-        jv1 = (ja1-leftAngleList[0]) * perSecond
+        perSecond = 1000 / ui_update_rate
+        jv1 = (ja1 - leftAngleList[0]) * perSecond
         jv2 = (ja2 - leftAngleList[1]) * perSecond
         jv3 = (ja3 - leftAngleList[2]) * perSecond
         jv4 = (ja4 - leftAngleList[3]) * perSecond
@@ -219,43 +186,14 @@ class ROS(QThread):
         jv6 = (ja6 - leftAngleList[5]) * perSecond
         jv7 = (ja7 - leftAngleList[6]) * perSecond
 
-        # if (len(angleList_lb) > 7):
-        #     angleList_lb.remove(0)
-
-        angleList_lb[0] = ja1;
-        angleList_l1.append(ja2)
-        angleList_l2.append(ja3)
-        angleList_l3.append(ja4)
-        angleList_l4.append(ja5)
-        angleList_l5.append(ja6)
-        angleList_l6.append(ja7)
-
-
-
-        leftAngleList = [ja1,ja2,ja3,ja4,ja5,ja6,ja7]
-        leftVelocityList = [jv1,jv2,jv3,jv4,jv5,jv6,jv7]
+        leftAngleList = [ja1, ja2, ja3, ja4, ja5, ja6, ja7]
+        leftVelocityList = [jv1, jv2, jv3, jv4, jv5, jv6, jv7]
         leftCpList = angleToCP(leftAngleList)
 
     def rightUpdate(self):
         global rightAngleList
         global rightVelocityList
         global rightCpList
-        global angleList_rb
-        global angleList_r1
-        global angleList_r2
-        global angleList_r3
-        global angleList_r4
-        global angleList_r5
-        global angleList_r6
-
-    def plot(self):
-        global angleList_rb
-        global angleList_r1
-        global angleList_r2
-        global angleList_r3
-        global angleList_r4
-        global angleList_r5
-        global angleList_r6
         rospy.wait_for_service('gazebo/get_joint_properties')
         try:
             joints_properties = rospy.ServiceProxy('gazebo/get_joint_properties', GetJointProperties)
@@ -277,8 +215,8 @@ class ROS(QThread):
             print
             "Service call failed: %s" % e
 
-        perSecond = 1000/ui_update_rate
-        jv1 = (ja1-rightAngleList[0]) * perSecond
+        perSecond = 1000 / ui_update_rate
+        jv1 = (ja1 - rightAngleList[0]) * perSecond
         jv2 = (ja2 - rightAngleList[1]) * perSecond
         jv3 = (ja3 - rightAngleList[2]) * perSecond
         jv4 = (ja4 - rightAngleList[3]) * perSecond
@@ -286,19 +224,8 @@ class ROS(QThread):
         jv6 = (ja6 - rightAngleList[5]) * perSecond
         jv7 = (ja7 - rightAngleList[6]) * perSecond
 
-        #if (len(angleList_rb) > 7):
-        #    angleList_rb.remove(1)
-
-        angleList_rb.append(ja1)
-        angleList_r1.append(ja2)
-        angleList_r2.append(ja3)
-        angleList_r3.append(ja4)
-        angleList_r4.append(ja5)
-        angleList_r5.append(ja6)
-        angleList_r6.append(ja7)
-
         rightAngleList = [ja1, ja2, ja3, ja4, ja5, ja6, ja7]
-        rightVelocityList = [jv1,jv2,jv3,jv4,jv5,jv6,jv7]
+        rightVelocityList = [jv1, jv2, jv3, jv4, jv5, jv6, jv7]
         rightCpList = angleToCP(rightAngleList)
 
     def wait_for_action_end_or_abort(self):
@@ -313,24 +240,23 @@ class ROS(QThread):
             else:
                 sleep(0.01)
 
-    def send_joint_angles(self,leftDesireAngle,rightDesireAngle):
+    def send_joint_angles(self, leftDesireAngle, rightDesireAngle):
         self.publish_to_left(leftDesireAngle)
         self.publish_to_right(rightDesireAngle)
 
-    def send_gripper_cmd(self,left,right):
+    def send_gripper_cmd(self, left, right):
         rospy.loginfo("Send Gripper Command")
         lgmsg = GripperCommandActionGoal()
-        lgmsg.header.seq=0
-        lgmsg.goal.command.position=left
+        lgmsg.header.seq = 0
+        lgmsg.goal.command.position = left
         rgmsg = GripperCommandActionGoal()
         rgmsg.header.seq = 0
-        rgmsg.goal.command.position=right
+        rgmsg.goal.command.position = right
         self.leftGripper.publish(lgmsg)
         self.rightGripper.publish(rgmsg)
 
-
     def send_cartesian_pose(self, x, y, z):
-        xopt = inverseKinematics([x,y,z])
+        xopt = inverseKinematics([x, y, z])
         rospy.loginfo(xopt[7:])
 
     def home_the_robot(self):
@@ -342,7 +268,7 @@ class ROS(QThread):
 
 
 def updateControlInfo():
-    #Update Control Panel
+    # Update Control Panel
     window.lineEdit_4.setText("%.2f" % leftAngleList[0])
     window.lineEdit_5.setText("%.2f" % leftAngleList[1])
     window.lineEdit_6.setText("%.2f" % leftAngleList[2])
@@ -360,10 +286,9 @@ def updateControlInfo():
     window.lineEdit_17.setText("%.2f" % rightAngleList[6])
 
 
-
 def updateInfo():
-    #Left
-    #Angles
+    # Left
+    # Angles
     ros.leftUpdate()
     ros.rightUpdate()
 
@@ -374,7 +299,7 @@ def updateInfo():
     window.label_19.setText("%.2f" % leftAngleList[4])
     window.label_20.setText("%.2f" % leftAngleList[5])
     window.label_21.setText("%.2f" % leftAngleList[6])
-    #Velocity
+    # Velocity
     window.label_8.setText("%.2f" % leftVelocityList[0])
     window.label_9.setText("%.2f" % leftVelocityList[1])
     window.label_10.setText("%.2f" % leftVelocityList[2])
@@ -382,7 +307,7 @@ def updateInfo():
     window.label_12.setText("%.2f" % leftVelocityList[4])
     window.label_13.setText("%.2f" % leftVelocityList[5])
     window.label_14.setText("%.2f" % leftVelocityList[6])
-    #Cartesian pose
+    # Cartesian pose
     window.label_35.setText("x_pose: %.2f" % leftCpList[0])
     window.label_36.setText("y_pose: %.2f" % leftCpList[1])
     window.label_37.setText("z_pose: %.2f" % leftCpList[2])
@@ -390,9 +315,8 @@ def updateInfo():
     window.label_39.setText("y_pose: %.2f" % leftCpList[1])
     window.label_40.setText("z_pose: %.2f" % leftCpList[2])
 
-
-    #Right
-    #Angles
+    # Right
+    # Angles
     window.label_52.setText("%.2f" % rightAngleList[0])
     window.label_53.setText("%.2f" % rightAngleList[1])
     window.label_54.setText("%.2f" % rightAngleList[2])
@@ -400,7 +324,7 @@ def updateInfo():
     window.label_56.setText("%.2f" % rightAngleList[4])
     window.label_57.setText("%.2f" % rightAngleList[5])
     window.label_58.setText("%.2f" % rightAngleList[6])
-    #Velocity
+    # Velocity
     window.label_60.setText("%.2f" % rightVelocityList[0])
     window.label_61.setText("%.2f" % rightVelocityList[1])
     window.label_62.setText("%.2f" % rightVelocityList[2])
@@ -408,7 +332,7 @@ def updateInfo():
     window.label_64.setText("%.2f" % rightVelocityList[4])
     window.label_65.setText("%.2f" % rightVelocityList[5])
     window.label_66.setText("%.2f" % rightVelocityList[6])
-    #Cartesian pose
+    # Cartesian pose
     window.label_68.setText("x_pose: %.2f" % rightCpList[0])
     window.label_69.setText("y_pose: %.2f" % rightCpList[1])
     window.label_70.setText("z_pose: %.2f" % rightCpList[2])
@@ -416,12 +340,15 @@ def updateInfo():
     window.label_78.setText("y_pose: %.2f" % rightCpList[1])
     window.label_79.setText("z_pose: %.2f" % rightCpList[2])
 
+
 def home_robot():
     ros.home_the_robot()
 
+
 def send_cartesian_pose():
-    ros.send_cartesian_pose(float(window.lineEdit.text()),float(window.lineEdit_2.text()),float(window.lineEdit_3.text()))
-    #ros.example_send_cartesian_pose(0,0,0)
+    ros.send_cartesian_pose(float(window.lineEdit.text()), float(window.lineEdit_2.text()),
+                            float(window.lineEdit_3.text()))
+    # ros.example_send_cartesian_pose(0,0,0)
 
 
 def send_joint_angles():
@@ -432,7 +359,7 @@ def send_joint_angles():
     lda4 = float(window.lineEdit_8.text())
     lda5 = float(window.lineEdit_9.text())
     lda6 = float(window.lineEdit_10.text())
-    left_daList = [lda0,lda1,lda2,lda3,lda4,lda5,lda6]
+    left_daList = [lda0, lda1, lda2, lda3, lda4, lda5, lda6]
 
     rda0 = float(window.lineEdit_11.text())
     rda1 = float(window.lineEdit_12.text())
@@ -441,30 +368,36 @@ def send_joint_angles():
     rda4 = float(window.lineEdit_15.text())
     rda5 = float(window.lineEdit_16.text())
     rda6 = float(window.lineEdit_17.text())
-    right_daList = [rda0,rda1,rda2,rda3,rda4,rda5,rda6]
+    right_daList = [rda0, rda1, rda2, rda3, rda4, rda5, rda6]
 
-    ros.send_joint_angles(left_daList,right_daList)
+    ros.send_joint_angles(left_daList, right_daList)
+
 
 def sendGripperCmd():
-    ros.send_gripper_cmd(window.leftGripperSlider.value()/10.,window.rightGripperSlider.value()/10.)
+    ros.send_gripper_cmd(window.leftGripperSlider.value() / 10., window.rightGripperSlider.value() / 10.)
+
 
 def recordAngle():
     leftRecordList.append(leftAngleList)
     rightRecordList.append(rightAngleList)
     rospy.loginfo("recording")
 
+
 def recordCP():
     recordList.append(cpList)
     rospy.loginfo("recording")
 
+
 def record():
-    leftRecordList=[]
-    rightRecordList=[]
-    record_timer.start(record_rate)    # Record angeles every 1 second
+    leftRecordList = []
+    rightRecordList = []
+    record_timer.start(record_rate)  # Record angeles every 1 second
+
 
 def stop():
     record_timer.stop()
     rospy.loginfo("recording terminated")
+
 
 def play():
     global states
@@ -473,9 +406,9 @@ def play():
     window.label_72.setStyleSheet("QLabel {color:" + color + ";}")
     rospy.loginfo("playing")
     for i in range(len(leftRecordList)):
-        ros.send_joint_angles(leftRecordList[i],rightRecordList[i])
+        ros.send_joint_angles(leftRecordList[i], rightRecordList[i])
         sleep(1)
-        #ros.send_cartesian_pose(i[0],i[1],i[2])
+        # ros.send_cartesian_pose(i[0],i[1],i[2])
     states = 'Enabled'
     color = 'green'
     window.label_72.setStyleSheet("QLabel {color:" + color + ";}")
@@ -489,8 +422,7 @@ def estimate():
     lda4 = float(window.lineEdit_8.text())
     lda5 = float(window.lineEdit_9.text())
     lda6 = float(window.lineEdit_10.text())
-    left_daList = [lda0,lda1,lda2,lda3,lda4,lda5,lda6]
-
+    left_daList = [lda0, lda1, lda2, lda3, lda4, lda5, lda6]
 
     rda0 = float(window.lineEdit_11.text())
     rda1 = float(window.lineEdit_12.text())
@@ -499,7 +431,7 @@ def estimate():
     rda4 = float(window.lineEdit_15.text())
     rda5 = float(window.lineEdit_16.text())
     rda6 = float(window.lineEdit_17.text())
-    right_daList = [rda0,rda1,rda2,rda3,rda4,rda5,rda6]
+    right_daList = [rda0, rda1, rda2, rda3, rda4, rda5, rda6]
 
     leftEstCpList = angleToCP(left_daList)
     rightEstCpList = angleToCP(right_daList)
@@ -533,14 +465,15 @@ def set_RP_mode():
 def connect_RP():
     global states
     color = 'black'
-    if states=='Enabled':
+    if states == 'Enabled':
         states = 'Disabled'
         color = 'red'
-    elif states=='Disabled':
+    elif states == 'Disabled':
         states = 'Enabled'
         color = 'green'
     window.label_72.setText(states)
-    window.label_72.setStyleSheet("QLabel {color:"+color+";}")
+    window.label_72.setStyleSheet("QLabel {color:" + color + ";}")
+
 
 # For Jason
 def plot():
@@ -552,15 +485,14 @@ def plot():
 
 
 def var_init():
-    global leftMode, rightMode, leftAngleList, rightAngleList,states, plot_time,angleList_lb
+    global leftMode, rightMode, leftAngleList, rightAngleList, states, plot_time, angleList_lb
     states = 'Enabled'
     leftMode = True
     rightMode = False
-    leftAngleList=[0,0,0,0,0,0,0]
-    rightAngleList=[0,0,0,0,0,0,0]
+    leftAngleList = [0, 0, 0, 0, 0, 0, 0]
+    rightAngleList = [0, 0, 0, 0, 0, 0, 0]
     angleList_lb = [0]
     plot_time = [0]
-
 
 
 def window_init(window):
@@ -579,6 +511,7 @@ def window_init(window):
     window.rightGripperSlider.valueChanged.connect(sendGripperCmd)
     window.label_72.setStyleSheet("QLabel {color:green;}")
 
+
 if __name__ == "__main__":
     var_init()
     ros = ROS()
@@ -590,13 +523,11 @@ if __name__ == "__main__":
     widget.show()
     timer = QTimer()
     record_timer = QTimer()
-    plot_timer =QTimer()            # Jason
+    plot_timer = QTimer()  # Jason
     timer.timeout.connect(updateInfo)
-    timer.timeout.connect(plot)
     record_timer.timeout.connect(recordAngle)
-    plot_timer.timeout.connect(plot)    # Jason
-    plot_timer.start(plot_rate)     # Jason update once per sec
+    plot_timer.timeout.connect(plot)  # Jason
+    plot_timer.start(plot_rate)  # Jason update once per sec
     timer.start(ui_update_rate)
-
 
     sys.exit(app.exec_())

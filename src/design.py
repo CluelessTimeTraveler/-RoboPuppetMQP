@@ -8,7 +8,6 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
@@ -1087,11 +1086,9 @@ class Ui_Dialog(object):
         self.retranslateUi(Dialog)
         self.tabWidget.setCurrentIndex(0)
         self.tabWidget_2.setCurrentIndex(0)
-
         self.tabWidget_3.setCurrentIndex(1)
-        self.tabWidget_5.setCurrentIndex(6)
+        self.tabWidget_5.setCurrentIndex(0)
         self.tabWidget_4.setCurrentIndex(6)
-
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
