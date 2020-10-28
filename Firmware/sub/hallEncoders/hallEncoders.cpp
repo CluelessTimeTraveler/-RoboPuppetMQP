@@ -1,15 +1,12 @@
 #include <SPI.h>
-#include "Encoders.h"
+#include "hallEncoders.h"
 #include <Arduino.h>
 
 /**
- * Private subsystem info
+ * THIS IS IN PROGRESS SORRY IT IS BROKE :(
  */
-namespace Encoders
+namespace hallEncoders
 {
-  const uint8_t RES12 = 12;
-  const uint8_t RES14 = 14;
-
   // SPI Pins - should be automatically selected
   const uint8_t SPI_MOSI = 11;     // MOSI pin
   const uint8_t SPI_MISO = 12;     // MISO pin
@@ -19,12 +16,11 @@ namespace Encoders
   const uint8_t encoder1 = 2;
   const uint8_t encoder2 = 3;
   const uint8_t encoder3 = 4;
-  const uint8_t encoder4 = 5;
 
   //SPI commands
-  const uint8_t AMT22_NOP = 0x00;
-  const uint8_t AMT22_RESET = 0x60;
-  const uint8_t AMT22_ZERO = 0x70;
+  const uint8_t AS5048_NOP = 0x0000;
+  const uint8_t AS5048_RESET = 0x0001;
+  const uint8_t AS5048_ANGLE = 0x3FFF;
 
   //Encoders 
   const uint8_t num_enc = 2;
@@ -35,20 +31,18 @@ namespace Encoders
   bool init_complete = false;
 
   // Methods
-  uint8_t spiTransmit(uint8_t encoder, uint8_t msg, uint8_t releaseLine);
 }
 
 /**
  * Initializes subsystem
  */
-void Encoders::init()
+void hallEncoders::init()
 {
   if (!init_complete)
   {
     //Set up encoder pins 
     pinMode(encoder1, OUTPUT);
     pinMode(encoder2, OUTPUT);
-    pinMode(encoder3, OUTPUT);
     pinMode(encoder3, OUTPUT);
 
     pinMode(SPI_SCLK, OUTPUT);
@@ -61,15 +55,15 @@ void Encoders::init()
     digitalWrite(encoder1, HIGH);
     digitalWrite(encoder2, HIGH);
     digitalWrite(encoder3, HIGH);
-    digitalWrite(encoder4, HIGH);
+    //digitalWrite(encoder4, HIGH);
 
-    SPI.setClockDivider(SPI_CLOCK_DIV32);    // 500 kHz
+    SPI.setClockDivider(SPI_CLOCK_DIV32);    // 1M Hz
 
     SPI.begin();
-    //SPI.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0));
+    //SPI.beginTransaction(SPISettings(1000000, MSBFIRST, SPI_MODE1));
   
     //Nice screen things
-    //Serial.println("Encoders Initialized");
+    Serial.println("Encoders Initialized");
 
     //initalize joint angles
     for (uint8_t j = 0; j < num_enc; j++)
@@ -82,42 +76,34 @@ void Encoders::init()
   }
 }
 
-/**
- * @brief Reads and stores each encoder angle
- * Default to 12 bit resolution
- */
 
-void Encoders::update()
+/**
+ * @brief Reads and stores each servo angle
+ */
+void hallEncoders::update()
 {
-	for (uint8_t j = 0; j < Encoders::num_enc; j++)
-	{
-    //Serial.print("Update encoder:");
-    //Serial.println(j);
-		angles[j] = Encoders::updateSingle(encoderPins[j]);
-    //Serial.println(angles[j], DEC); //print the position in decimal format
-	}
-  //Serial.println();
-  //Serial.println();
+	
 }
 
-
 /**
- * @brief Transmits encoder value to RosComms
- * @param encoder number [1,2,3,4]
+ * @brief Transmits servo value to RosComms
  */
-int Encoders::getStatus(uint8_t encoder)
+float hallEncoders::getStatus(uint8_t servo)
 {
-  float tempMap;
-  tempMap = map(Encoders::angles[encoder], 0, 4096, 1, 360);
-  return (int)tempMap;
+  return 
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-//BEGIN AMT22 CODE
 /**
- * @brief Transmits message to encoder
- * @param encoder number [1,2,3,4], msg (see SPI Commands above), releaseLine [high, low]
+ * @brief Gets Position value from the Servo
  */
+uint8_t hallEncoders::getPosition(uint8_t servo_num)
+{
+    sensorValue = myservo[servo_num].read();
+    return sensorValue; 
+}
+
+///////////////////////// Begin encoder read /////////////////////////////////////
+
 uint8_t Encoders:: spiWriteRead(uint8_t sendByte, uint8_t encoder, uint8_t releaseLine)
 {
   //holder for the received over SPI
@@ -139,13 +125,13 @@ uint8_t Encoders:: spiWriteRead(uint8_t sendByte, uint8_t encoder, uint8_t relea
   return data;
 }
 
-uint16_t Encoders::getPositionSPI(uint8_t encoder, uint8_t resolution)
+uint16_t hallEncoders::getPositionSPI(uint8_t encoder)
 {
   uint16_t currentPosition;       //16-bit response from encoder
   bool binaryArray[16];           //after receiving the position we will populate this array and use it for calculating the checksum
 
   //get first byte which is the high byte, shift it 8 bits. don't release line for the first byte
-  currentPosition = spiWriteRead(AMT22_NOP, encoder, false) << 8;   
+  currentPosition = spiWriteRead(AS5048_READ, encoder, false) << 8;   
 
   //this is the time required between bytes as specified in the datasheet.
   //We will implement that time delay here, however the arduino is not the fastest device so the delay
@@ -154,7 +140,7 @@ uint16_t Encoders::getPositionSPI(uint8_t encoder, uint8_t resolution)
 
   //OR the low byte with the currentPosition variable. release line after second byte
   uint16_t temp; 
-  temp = spiWriteRead(AMT22_NOP, encoder, true);    
+  temp = spiWriteRead(AS5048_READ, encoder, true);    
   currentPosition |= temp;      
 
   //run through the 16 bits of position and put each bit into a slot in the array so we can do the checksum calculation
@@ -172,13 +158,10 @@ uint16_t Encoders::getPositionSPI(uint8_t encoder, uint8_t resolution)
     currentPosition = 0xFFFF; //bad position
   }
 
-  //If the resolution is 12-bits, and wasn't 0xFFFF, then shift position, otherwise do nothing
-  if ((resolution == RES12) && (currentPosition != 0xFFFF)) currentPosition = currentPosition >> 2;
-
   return currentPosition;
 }
 
-uint16_t Encoders::updateSingle(uint8_t encoder)
+uint16_t hallEncoders::updateSingle(uint8_t encoder)
 {
     //Serial.println("Encoders Update Begin");
     uint16_t encoderPosition;
@@ -190,29 +173,17 @@ uint16_t Encoders::updateSingle(uint8_t encoder)
 
     //this function gets the encoder position and returns it as a uint16_t
     //send the function either res12 or res14 for your encoders resolution
-    encoderPosition = getPositionSPI(encoder, RES12); 
+    encoderPosition = getPositionSPI(encoder); 
 
-    //if the position returned was 0xFFFF we know that there was an error calculating the checksum
+    //check error bit 
     //make 3 attempts for position. we will pre-increment attempts because we'll use the number later and want an accurate count
     while (encoderPosition == 0xFFFF && ++attempts < 3)
     {
-      encoderPosition = getPositionSPI(encoder, RES12); //try again
-    }
-
-    //Serial.println("Attempts Complete");
-
-    if (encoderPosition == 0xFFFF) //position is bad, let the user know how many times we tried
-    {
-      //Serial.print("Encoder 1 error. Attempts: ");
-      //Serial.println(attempts, DEC); //print out the number in decimal format. attempts - 1 is used since we post incremented the loop
-    }
-    else //position was good, print to serial stream
-    {
-      // Serial.println(encoderPosition, DEC); //print the position in decimal format
+      encoderPosition = getPositionSPI(encoder); //try again
     }
 
     return encoderPosition;
     //For the purpose of this demo we don't need the position returned that quickly so let's wait a half second between reads
     //delay() is in milliseconds
-    //delay(500);
+    delay(500);
 }

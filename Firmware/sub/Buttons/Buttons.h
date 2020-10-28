@@ -1,6 +1,4 @@
-/**
- * @file UserBtns.h
- */
+//Buttons
 
 #pragma once
 #include <stdint.h>
