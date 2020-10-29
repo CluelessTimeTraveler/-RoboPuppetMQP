@@ -17,7 +17,7 @@ namespace Buttons
 void Buttons::init(){
   pinMode(gripperToggle, INPUT);
   pinMode(holdToggle, INPUT);
-  holdState = false;
+  holdState = true;
   gripperState = false;
 }
 

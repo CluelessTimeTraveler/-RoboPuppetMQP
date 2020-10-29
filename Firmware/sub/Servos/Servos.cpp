@@ -1,85 +1,61 @@
+/**
+ * @file Servos.cpp
+ */
+
+#include <Servo.h> //The Adruino one
+#include "Servos.h" //The specific header for this file
+#include <Buttons.h>
+#include <Encoders.h>
+#include <hallEncoders.h>
 #include <Arduino.h>
-#include "Servos.h"
-#include <Servo.h>
 
 /**
- * Servos namespace
+ * Private subsystem info
  */
+
 namespace Servos
 {
-  //Variables
-  const uint8_t sensorPin = A0;
-  const uint8_t pos = 0; // variable to store the servo position
-  uint8_t sensorValue;
-
-  //Servos
-  const uint8_t num_servos = 4;
-  const uint8_t servoPins[num_servos] = {2, 3, 4, 5};
-  float angles[num_servos];
-  Servo myservo[num_servos];  // create servo objects to control the servos
-
-  // Init flag
-  bool init_complete = false;
-
+    // define all servo pins
+    const uint8_t numServos = 7;
+    uint8_t servoPins[numServos] = {2, 3, 4, 5, 6, 7, 8};
+    uint8_t setPos[7];
+    bool holdState;
+    Servo myServo[numServos];
+    int* servoAngle;
+    int* getAngles();
 }
 
-/**
- * Initializes subsystem
- */
-void Servos::init()
-{
-  if (!init_complete)
-  {
-    //Set up sensor pin
-    pinMode(sensorPin, INPUT);
-  
-    // attaches the servo pins to the servo objects
-      for (uint8_t j = 0; j < Servos::num_servos; j++)
-      {
-        myservo[j].attach(servoPins[j]);
-      }
-  
-    //Initalize the serial connection - check baud rate for microcontroller
-    Serial.begin(115200);
-  
-    //Nice screen things
-    Serial.println("Servos Initialized");
-
-    //initalize joint angles
-    for (uint8_t j = 0; j < num_servos; j++)
-		{
-			angles[j] = 0.0f;
-		}
-
-    // Set init flag
-    init_complete = true;
-  }
+void Servos::init(){
+    holdState = Buttons::getHoldStatus();
+    //create servo object 
 }
 
-/**
- * @brief Reads and stores each servo angle
- */
-void Servos::update()
-{
-	for (uint8_t j = 0; j < Servos::num_servos; j++)
-	{
-		Servos::angles[j] = Servos::getPosition(j);
-	}
+void Servos::update(){
+    holdState = Buttons::getHoldStatus();
+    if(holdState){
+        //read all encoder  values
+        servoAngle = getAngles(); 
+        for(uint8_t i = 0; i<numServos; i++){
+            myServo[i].write(*(servoAngle+i)); //set servos to each position read in from the encoders
+            myServo[i].attach(servoPins[i]); //attach servo objects 
+        }
+    }
+    else{
+        for(uint8_t i = 0; i<numServos; i++)
+            myServo[i].detach(); //detach all servo objects 
+    }
+    
 }
 
-/**
- * @brief Transmits servo value to RosComms
- */
-float Servos::getStatus(uint8_t servo)
-{
-  return Servos::angles[servo];
-}
+int* Servos::getAngles(){
+    int readAngle[numServos];
+    readAngle[0] = Encoders::getStatus(0);
+    readAngle[1] = 20;
+    readAngle[2] = Encoders::getStatus(1);
+    readAngle[3] = 40;
+    readAngle[4] = Encoders::getStatus(2);
+    readAngle[5] = 60;
+    readAngle[6] = Encoders::getStatus(3);
 
-/**
- * @brief Gets Position value from the Servo
- */
-uint8_t Servos::getPosition(uint8_t servo_num)
-{
-    sensorValue = myservo[servo_num].read();
-    return sensorValue; 
+    return readAngle;
 }
