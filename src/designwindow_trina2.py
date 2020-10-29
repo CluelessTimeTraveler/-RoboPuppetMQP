@@ -29,10 +29,11 @@ from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QLabel, QSlider
 from PyQt5.QtCore import QSize, Qt, pyqtSlot, pyqtSignal
 from PyQt5.uic import loadUi
-
+import cv2
+from cv_bridge import CvBridge, CvBridgeError
 from pyqtgraph import PlotWidget, plot
 from msg_arduino.msg import JointPositions
-
+from sensor_msgs.msg import Image
 # from qwt.qt.QtGui import QApplication, QPen
 # from qwt.qt.QtCore import Qt
 global leftAngleList
@@ -48,7 +49,7 @@ global states
 global mirror
 global plot_time  # Jason
 global angleList_lb  # Jason
-
+global left_cv_image,right_cv_image,main_cv_image
 updateControlPanel = True
 leftRecordList = []
 rightRecordList = []
@@ -62,10 +63,12 @@ class ROS(QThread):
         # Feedback currently not working for trina2
         # rospy.Subscriber('/left_arm_/base_feedback', BaseCyclic_Feedback, self.leftUpdate, queue_size=1, buff_size=52428800)
         # rospy.Subscriber('/right_arm_/base_feedback', BaseCyclic_Feedback, self.rightUpdate, queue_size=1, buff_size=52428800)
-
+        rospy.Subscriber('/right_arm_cam/color/image_raw', Image, self.right_image, queue_size=1)
+        rospy.Subscriber('/left_arm_cam/color/image_raw', Image, self.left_image, queue_size=1)
+        rospy.Subscriber('/main_cam/color/image_raw', Image, self.main_image, queue_size=1)
         # get joint angle from Gazebo Service
         joints_properties = rospy.ServiceProxy('gazebo/get_joint_properties', GetJointProperties)
-
+        self.bridge = CvBridge()
         self.rightJoint1 = rospy.Publisher('/right_arm_joint_1_position_controller/command', Float64, queue_size=1)
         self.rightJoint2 = rospy.Publisher('/right_arm_joint_2_position_controller/command', Float64, queue_size=1)
         self.rightJoint3 = rospy.Publisher('/right_arm_joint_3_position_controller/command', Float64, queue_size=1)
@@ -110,6 +113,17 @@ class ROS(QThread):
         # play_joint_trajectory_full_name = '/' + self.robot_name + '/base/play_joint_trajectory'
         # rospy.wait_for_service(play_joint_trajectory_full_name)
         # self.play_joint_trajectory = rospy.ServiceProxy(play_joint_trajectory_full_name, PlayJointTrajectory)
+    def left_image(self,data):
+        global left_cv_image
+        left_cv_image = self.bridge.imgmsg_to_cv2(data,'bgr8')
+
+    def right_image(self,data):
+        global right_cv_image
+        right_cv_image = self.bridge.imgmsg_to_cv2(data,'bgr8')
+
+    def main_image(self,data):
+        global main_cv_image
+        main_cv_image = self.bridge.imgmsg_to_cv2(data,'bgr8')
 
     def cb_action_topic(self, notif):
         self.last_action_notif_type = notif.action_event
@@ -339,6 +353,24 @@ def updateInfo():
     window.label_77.setText("x_pose: %.2f" % rightCpList[0])
     window.label_78.setText("y_pose: %.2f" % rightCpList[1])
     window.label_79.setText("z_pose: %.2f" % rightCpList[2])
+
+    height, width, channel = main_cv_image.shape
+    bytesPerLine = 3 * width
+    main_qImg = QImage(main_cv_image.data, width, height, bytesPerLine, QImage.Format_RGB888)
+    main_qImg = main_qImg.scaledToWidth(275)
+    window.main_cam_view.setPixmap(QPixmap(main_qImg))
+
+    height, width, channel = left_cv_image.shape
+    bytesPerLine = 3 * width
+    left_qImg = QImage(left_cv_image.data, width, height, bytesPerLine, QImage.Format_RGB888)
+    left_qImg = left_qImg.scaledToWidth(275)
+    window.left_cam_view.setPixmap(QPixmap(left_qImg))
+
+    height, width, channel = right_cv_image.shape
+    bytesPerLine = 3 * width
+    right_qImg = QImage(right_cv_image.data, width, height, bytesPerLine, QImage.Format_RGB888)
+    right_qImg = right_qImg.scaledToWidth(275)
+    window.right_cam_view.setPixmap(QPixmap(right_qImg))
 
 
 def home_robot():
