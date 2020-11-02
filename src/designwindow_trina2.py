@@ -34,6 +34,7 @@ from cv_bridge import CvBridge, CvBridgeError
 from pyqtgraph import PlotWidget, plot
 from msg_arduino.msg import JointPositions
 from sensor_msgs.msg import Image
+from new_MQP.msg import joint_angle
 # from qwt.qt.QtGui import QApplication, QPen
 # from qwt.qt.QtCore import Qt
 global leftAngleList
@@ -50,6 +51,7 @@ global mirror
 global plot_time  # Jason
 global angleList_lb  # Jason
 global left_cv_image,right_cv_image,main_cv_image
+global playcount, playi, play_totalcount
 updateControlPanel = True
 leftRecordList = []
 rightRecordList = []
@@ -63,30 +65,32 @@ class ROS(QThread):
         # Feedback currently not working for trina2
         # rospy.Subscriber('/left_arm_/base_feedback', BaseCyclic_Feedback, self.leftUpdate, queue_size=1, buff_size=52428800)
         # rospy.Subscriber('/right_arm_/base_feedback', BaseCyclic_Feedback, self.rightUpdate, queue_size=1, buff_size=52428800)
-        rospy.Subscriber('/right_arm_cam/color/image_raw', Image, self.right_image, queue_size=1)
-        rospy.Subscriber('/left_arm_cam/color/image_raw', Image, self.left_image, queue_size=1)
-        rospy.Subscriber('/main_cam/color/image_raw', Image, self.main_image, queue_size=1)
+        rospy.Subscriber(robot_prefix+'/right_arm_cam/color/image_raw', Image, self.right_image, queue_size=1)
+        rospy.Subscriber(robot_prefix+'/left_arm_cam/color/image_raw', Image, self.left_image, queue_size=1)
+        rospy.Subscriber(robot_prefix+'/main_cam/color/image_raw', Image, self.main_image, queue_size=1)
         # get joint angle from Gazebo Service
         joints_properties = rospy.ServiceProxy('gazebo/get_joint_properties', GetJointProperties)
         self.bridge = CvBridge()
-        self.rightJoint1 = rospy.Publisher('/right_arm_joint_1_position_controller/command', Float64, queue_size=1)
-        self.rightJoint2 = rospy.Publisher('/right_arm_joint_2_position_controller/command', Float64, queue_size=1)
-        self.rightJoint3 = rospy.Publisher('/right_arm_joint_3_position_controller/command', Float64, queue_size=1)
-        self.rightJoint4 = rospy.Publisher('/right_arm_joint_4_position_controller/command', Float64, queue_size=1)
-        self.rightJoint5 = rospy.Publisher('/right_arm_joint_5_position_controller/command', Float64, queue_size=1)
-        self.rightJoint6 = rospy.Publisher('/right_arm_joint_6_position_controller/command', Float64, queue_size=1)
-        self.rightJoint7 = rospy.Publisher('/right_arm_joint_7_position_controller/command', Float64, queue_size=1)
-        self.rightGripper = rospy.Publisher('/right_arm_robotiq_2f_85_gripper_controller/gripper_cmd/goal',
+        self.pub_angle = rospy.Publisher('/desired_angle', joint_angle, queue_size=1)
+
+        self.rightJoint1 = rospy.Publisher('/'+robot_prefix+'/right_arm_joint_1_position_controller/command', Float64, queue_size=1)
+        self.rightJoint2 = rospy.Publisher('/'+robot_prefix+'/right_arm_joint_2_position_controller/command', Float64, queue_size=1)
+        self.rightJoint3 = rospy.Publisher('/'+robot_prefix+'/right_arm_joint_3_position_controller/command', Float64, queue_size=1)
+        self.rightJoint4 = rospy.Publisher('/'+robot_prefix+'/right_arm_joint_4_position_controller/command', Float64, queue_size=1)
+        self.rightJoint5 = rospy.Publisher('/'+robot_prefix+'/right_arm_joint_5_position_controller/command', Float64, queue_size=1)
+        self.rightJoint6 = rospy.Publisher('/'+robot_prefix+'/right_arm_joint_6_position_controller/command', Float64, queue_size=1)
+        self.rightJoint7 = rospy.Publisher('/'+robot_prefix+'/right_arm_joint_7_position_controller/command', Float64, queue_size=1)
+        self.rightGripper = rospy.Publisher('/'+robot_prefix+'/right_arm_robotiq_2f_85_gripper_controller/gripper_cmd/goal',
                                             GripperCommandActionGoal, queue_size=1)
 
-        self.leftJoint1 = rospy.Publisher('/left_arm_joint_1_position_controller/command', Float64, queue_size=1)
-        self.leftJoint2 = rospy.Publisher('/left_arm_joint_2_position_controller/command', Float64, queue_size=1)
-        self.leftJoint3 = rospy.Publisher('/left_arm_joint_3_position_controller/command', Float64, queue_size=1)
-        self.leftJoint4 = rospy.Publisher('/left_arm_joint_4_position_controller/command', Float64, queue_size=1)
-        self.leftJoint5 = rospy.Publisher('/left_arm_joint_5_position_controller/command', Float64, queue_size=1)
-        self.leftJoint6 = rospy.Publisher('/left_arm_joint_6_position_controller/command', Float64, queue_size=1)
-        self.leftJoint7 = rospy.Publisher('/left_arm_joint_7_position_controller/command', Float64, queue_size=1)
-        self.leftGripper = rospy.Publisher('/left_arm_robotiq_2f_85_gripper_controller/gripper_cmd/goal',
+        self.leftJoint1 = rospy.Publisher('/'+robot_prefix+'/left_arm_joint_1_position_controller/command', Float64, queue_size=1)
+        self.leftJoint2 = rospy.Publisher('/'+robot_prefix+'/left_arm_joint_2_position_controller/command', Float64, queue_size=1)
+        self.leftJoint3 = rospy.Publisher('/'+robot_prefix+'/left_arm_joint_3_position_controller/command', Float64, queue_size=1)
+        self.leftJoint4 = rospy.Publisher('/'+robot_prefix+'/left_arm_joint_4_position_controller/command', Float64, queue_size=1)
+        self.leftJoint5 = rospy.Publisher('/'+robot_prefix+'/left_arm_joint_5_position_controller/command', Float64, queue_size=1)
+        self.leftJoint6 = rospy.Publisher('/'+robot_prefix+'/left_arm_joint_6_position_controller/command', Float64, queue_size=1)
+        self.leftJoint7 = rospy.Publisher('/'+robot_prefix+'/left_arm_joint_7_position_controller/command', Float64, queue_size=1)
+        self.leftGripper = rospy.Publisher('/'+robot_prefix+'/left_arm_robotiq_2f_85_gripper_controller/gripper_cmd/goal',
                                            GripperCommandActionGoal,
                                            queue_size=1)
         # self.action_topic_sub = rospy.Subscriber("/my_gen3" + "/action_topic", ActionNotification,
@@ -115,15 +119,15 @@ class ROS(QThread):
         # self.play_joint_trajectory = rospy.ServiceProxy(play_joint_trajectory_full_name, PlayJointTrajectory)
     def left_image(self,data):
         global left_cv_image
-        left_cv_image = self.bridge.imgmsg_to_cv2(data,'bgr8')
+        left_cv_image = self.bridge.imgmsg_to_cv2(data,'rgb8')
 
     def right_image(self,data):
         global right_cv_image
-        right_cv_image = self.bridge.imgmsg_to_cv2(data,'bgr8')
+        right_cv_image = self.bridge.imgmsg_to_cv2(data,'rgb8')
 
     def main_image(self,data):
         global main_cv_image
-        main_cv_image = self.bridge.imgmsg_to_cv2(data,'bgr8')
+        main_cv_image = self.bridge.imgmsg_to_cv2(data,'rgb8')
 
     def cb_action_topic(self, notif):
         self.last_action_notif_type = notif.action_event
@@ -136,6 +140,9 @@ class ROS(QThread):
         self.leftJoint5.publish(angles[4])
         self.leftJoint6.publish(angles[5])
         self.leftJoint7.publish(angles[6])
+        pub_msg = joint_angle()
+	pub_msg.left = angles
+        self.pub_angle.publish(pub_msg)
 
     def publish_to_right(self, angles):
         self.rightJoint1.publish(angles[0])
@@ -148,7 +155,7 @@ class ROS(QThread):
 
     def robopuppet(self, data):
         if states == 'Enabled':
-            angles = []  # angles from robopuppet
+            angles = [data.servoData1,data.servoData2,data.servoData3,data.encoderData1,data.encoderData2,data.encoderData3,data.encoderData4]  # angles from robopuppet
             if mirror:
                 angles_right = []
                 for i in angles:
@@ -173,19 +180,19 @@ class ROS(QThread):
         rospy.wait_for_service('gazebo/get_joint_properties')
         try:
             joints_properties = rospy.ServiceProxy('gazebo/get_joint_properties', GetJointProperties)
-            joint1_properties = joints_properties("left_arm_joint_1")
+            joint1_properties = joints_properties(robot_prefix+"/left_arm_joint_1")
             ja1 = joint1_properties.position[0]
-            joint2_properties = joints_properties("left_arm_joint_2")
+            joint2_properties = joints_properties(robot_prefix+"/left_arm_joint_2")
             ja2 = joint2_properties.position[0]
-            joint3_properties = joints_properties("left_arm_joint_3")
+            joint3_properties = joints_properties(robot_prefix+"/left_arm_joint_3")
             ja3 = joint3_properties.position[0]
-            joint4_properties = joints_properties("left_arm_joint_4")
+            joint4_properties = joints_properties(robot_prefix+"/left_arm_joint_4")
             ja4 = joint4_properties.position[0]
-            joint5_properties = joints_properties("left_arm_joint_5")
+            joint5_properties = joints_properties(robot_prefix+"/left_arm_joint_5")
             ja5 = joint5_properties.position[0]
-            joint6_properties = joints_properties("left_arm_joint_6")
+            joint6_properties = joints_properties(robot_prefix+"/left_arm_joint_6")
             ja6 = joint6_properties.position[0]
-            joint7_properties = joints_properties("left_arm_joint_7")
+            joint7_properties = joints_properties(robot_prefix+"/left_arm_joint_7")
             ja7 = joint7_properties.position[0]
         except rospy.ServiceException, e:
             print
@@ -211,19 +218,19 @@ class ROS(QThread):
         rospy.wait_for_service('gazebo/get_joint_properties')
         try:
             joints_properties = rospy.ServiceProxy('gazebo/get_joint_properties', GetJointProperties)
-            joint1_properties = joints_properties("right_arm_joint_1")
+            joint1_properties = joints_properties(robot_prefix+"/right_arm_joint_1")
             ja1 = joint1_properties.position[0]
-            joint2_properties = joints_properties("right_arm_joint_2")
+            joint2_properties = joints_properties(robot_prefix+"/right_arm_joint_2")
             ja2 = joint2_properties.position[0]
-            joint3_properties = joints_properties("right_arm_joint_3")
+            joint3_properties = joints_properties(robot_prefix+"/right_arm_joint_3")
             ja3 = joint3_properties.position[0]
-            joint4_properties = joints_properties("right_arm_joint_4")
+            joint4_properties = joints_properties(robot_prefix+"/right_arm_joint_4")
             ja4 = joint4_properties.position[0]
-            joint5_properties = joints_properties("right_arm_joint_5")
+            joint5_properties = joints_properties(robot_prefix+"/right_arm_joint_5")
             ja5 = joint5_properties.position[0]
-            joint6_properties = joints_properties("right_arm_joint_6")
+            joint6_properties = joints_properties(robot_prefix+"/right_arm_joint_6")
             ja6 = joint6_properties.position[0]
-            joint7_properties = joints_properties("right_arm_joint_7")
+            joint7_properties = joints_properties(robot_prefix+"/right_arm_joint_7")
             ja7 = joint7_properties.position[0]
         except rospy.ServiceException, e:
             print
@@ -357,19 +364,19 @@ def updateInfo():
     height, width, channel = main_cv_image.shape
     bytesPerLine = 3 * width
     main_qImg = QImage(main_cv_image.data, width, height, bytesPerLine, QImage.Format_RGB888)
-    main_qImg = main_qImg.scaledToWidth(275)
+    main_qImg = main_qImg.scaledToWidth(cam_width)
     window.main_cam_view.setPixmap(QPixmap(main_qImg))
 
     height, width, channel = left_cv_image.shape
     bytesPerLine = 3 * width
     left_qImg = QImage(left_cv_image.data, width, height, bytesPerLine, QImage.Format_RGB888)
-    left_qImg = left_qImg.scaledToWidth(275)
+    left_qImg = left_qImg.scaledToWidth(cam_width)
     window.left_cam_view.setPixmap(QPixmap(left_qImg))
 
     height, width, channel = right_cv_image.shape
     bytesPerLine = 3 * width
     right_qImg = QImage(right_cv_image.data, width, height, bytesPerLine, QImage.Format_RGB888)
-    right_qImg = right_qImg.scaledToWidth(275)
+    right_qImg = right_qImg.scaledToWidth(cam_width)
     window.right_cam_view.setPixmap(QPixmap(right_qImg))
 
 
@@ -428,22 +435,37 @@ def record():
 
 def stop():
     record_timer.stop()
+    play_timer.stop()
     rospy.loginfo("recording terminated")
+    states = 'Enabled'
+    color = 'green'
+    window.label_72.setStyleSheet("QLabel {color:" + color + ";}")
 
 
 def play():
-    global states
+    global states,playi,playcount, play_totalcount
     states = 'Disabled'
     color = 'red'
     window.label_72.setStyleSheet("QLabel {color:" + color + ";}")
     rospy.loginfo("playing")
-    for i in range(len(leftRecordList)):
-        ros.send_joint_angles(leftRecordList[i], rightRecordList[i])
-        sleep(1)
-        # ros.send_cartesian_pose(i[0],i[1],i[2])
-    states = 'Enabled'
-    color = 'green'
-    window.label_72.setStyleSheet("QLabel {color:" + color + ";}")
+    play_timer.start(record_rate)
+    play_totalcount = int(window.lineEdit.text())
+    playi = 0
+    playcount = 0
+
+
+def playing():
+    global playi, playcount
+    ros.send_joint_angles(leftRecordList[playi], rightRecordList[playi])
+    playi+=1
+    if playi== len(leftRecordList):
+        playi = 0
+        playcount+=1
+    if playcount == play_totalcount:
+        play_timer.stop()
+        return
+
+
 
 
 def estimate():
@@ -556,9 +578,11 @@ if __name__ == "__main__":
     timer = QTimer()
     record_timer = QTimer()
     plot_timer = QTimer()  # Jason
+    play_timer = QTimer()
     timer.timeout.connect(updateInfo)
     record_timer.timeout.connect(recordAngle)
     plot_timer.timeout.connect(plot)  # Jason
+    play_timer.timeout.connect(playing)
     plot_timer.start(plot_rate)  # Jason update once per sec
     timer.start(ui_update_rate)
 
