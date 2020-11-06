@@ -7,15 +7,15 @@
 void setup() {
   SerialInterface::init();
   Encoders::init();
-  Buttons::init();
-  Servos::init();
+  //Buttons::init();
+  //Servos::init();
 }
 
 void loop() {
   //Serial.println("Begin loop:");
   Encoders::update();//To-do for bella
-  Buttons::update();
-  Servos::update();
+  //Buttons::update();
+  //Servos::update();
   SerialInterface::update();
   
 

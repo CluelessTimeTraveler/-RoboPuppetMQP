@@ -6,7 +6,6 @@
 #include "Servos.h" //The specific header for this file
 #include <Buttons.h>
 #include <Encoders.h>
-#include <hallEncoders.h>
 #include <Arduino.h>
 
 /**

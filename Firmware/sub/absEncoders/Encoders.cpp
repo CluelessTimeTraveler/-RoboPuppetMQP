@@ -11,14 +11,14 @@ namespace Encoders
   const uint8_t RES14 = 14;
 
   // SPI Pins - should be automatically selected
-  const uint8_t SPI_MOSI = 11;     // MOSI pin
-  const uint8_t SPI_MISO = 12;     // MISO pin
-  const uint8_t SPI_SCLK = 13;     // SLCK pin
+  const uint8_t SPI_MOSI = 51;     // MOSI pin
+  const uint8_t SPI_MISO = 50;     // MISO pin
+  const uint8_t SPI_SCLK = 52;     // SLCK pin
 
   //Chip or Slave select
-  const uint8_t encoder1 = 10;
-  const uint8_t encoder2 = 11;
-  const uint8_t encoder3 = 20;
+  const uint8_t encoder1 = 2;
+  const uint8_t encoder2 = 3;
+  const uint8_t encoder3 = 4;
   const uint8_t encoder4 = 21;
 
   //SPI commands
@@ -94,7 +94,8 @@ void Encoders::update()
     //Serial.print("Update encoder:");
     //Serial.println(j);
 		angles[j] = Encoders::updateSingle(encoderPins[j]);
-    //Serial.println(angles[j], DEC); //print the position in decimal format
+    //Serial.println(angles[j]); //print the position in decimal format
+    delay(50);
 	}
   //Serial.println();
   //Serial.println();
@@ -208,11 +209,10 @@ uint16_t Encoders::updateSingle(uint8_t encoder)
     }
     else //position was good, print to serial stream
     {
-      // Serial.println(encoderPosition, DEC); //print the position in decimal format
+      //Serial.println(encoderPosition, DEC); //print the position in decimal format
     }
 
     return encoderPosition;
     //For the purpose of this demo we don't need the position returned that quickly so let's wait a half second between reads
     //delay() is in milliseconds
-    //delay(500);
 }
