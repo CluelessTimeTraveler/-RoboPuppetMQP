@@ -77,13 +77,13 @@
 
     <!-- Start the arm trajectory controllers -->
     <node name="$(arg arm)_trajectory_controller_spawner" pkg="controller_manager" type="spawner" 
-        respawn="false" output="screen" args=" 
+        respawn="false" output="screen" args=" --stopped
             right_arm_$(arg arm)_joint_trajectory_controller 
             left_arm_$(arg arm)_joint_trajectory_controller" />
 
     <!-- Start the arm position controllers -->
     <node name="$(arg arm)_position_controllers_spawner" pkg="controller_manager" type="spawner" 
-        respawn="false" output="screen" args=" --stopped
+        respawn="false" output="screen" args=" 
             right_arm_joint_1_position_controller
             right_arm_joint_2_position_controller
             right_arm_joint_3_position_controller
@@ -120,6 +120,7 @@
     respawn="false" output="screen">
     </node>
 
+    <?ignore
     <!-- Start MoveIt main executable -->
     <include file="$(find trina2_moveit_config)/launch/move_group.launch">
         <arg name="publish_monitored_planning_scene" value="true" />
@@ -129,10 +130,10 @@
     </include> 
 
     <!-- Home the robot -->
-    <node name="home_the_arm" pkg="MQP_package" type="control_robot.py" output="screen" respawn="false"/>
+    <node name="home_the_arm" pkg="RoboPuppetMQP" type="control_robot.py" output="screen" respawn="false"/>
     
     <!-- TODO Driver is needed when a real Kinova robot is used-->
-    <?ignore
+
     <!-- Start simulated Kortex Driver -->
     <!--launch-prefix="gdb -ex run args"-->
     <node name="$(arg robot_name)_$(arg right_prefix)_driver" pkg="kortex_driver" type="kortex_arm_driver" output="screen">

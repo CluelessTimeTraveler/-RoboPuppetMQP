@@ -71,7 +71,9 @@ class ROS(QThread):
         # get joint angle from Gazebo Service
         joints_properties = rospy.ServiceProxy('gazebo/get_joint_properties', GetJointProperties)
         self.bridge = CvBridge()
-        self.pub_angle = rospy.Publisher('/desired_angle', joint_angle, queue_size=1)
+
+        # for moveit
+        # self.pub_angle = rospy.Publisher('/desired_angle', joint_angle, queue_size=1)
 
         self.rightJoint1 = rospy.Publisher('/'+robot_prefix+'/right_arm_joint_1_position_controller/command', Float64, queue_size=1)
         self.rightJoint2 = rospy.Publisher('/'+robot_prefix+'/right_arm_joint_2_position_controller/command', Float64, queue_size=1)
@@ -93,30 +95,8 @@ class ROS(QThread):
         self.leftGripper = rospy.Publisher('/'+robot_prefix+'/left_arm_robotiq_2f_85_gripper_controller/gripper_cmd/goal',
                                            GripperCommandActionGoal,
                                            queue_size=1)
-        # self.action_topic_sub = rospy.Subscriber("/my_gen3" + "/action_topic", ActionNotification,
-        #                                          self.cb_action_topic)
-        # self.last_action_notif_type = None
-        #
-        # self.robot_name = rospy.get_param('~robot_name', "my_gen3")
-        # self.degrees_of_freedom = rospy.get_param("/" + self.robot_name + "/degrees_of_freedom", 7)
-        # self.is_gripper_present = rospy.get_param("/" + self.robot_name + "/is_gripper_present", False)
-        #
-        # read_action_full_name = '/' + self.robot_name + '/base/read_action'
-        # rospy.wait_for_service(read_action_full_name)
-        # self.read_action = rospy.ServiceProxy(read_action_full_name, ReadAction)
-        #
-        # execute_action_full_name = '/' + self.robot_name + '/base/execute_action'
-        # rospy.wait_for_service(execute_action_full_name)
-        # self.execute_action = rospy.ServiceProxy(execute_action_full_name, ExecuteAction)
-        #
-        # play_cartesian_trajectory_full_name = '/' + self.robot_name + '/base/play_cartesian_trajectory'
-        # rospy.wait_for_service(play_cartesian_trajectory_full_name)
-        # self.play_cartesian_trajectory = rospy.ServiceProxy(play_cartesian_trajectory_full_name,
-        #                                                     PlayCartesianTrajectory)
-        #
-        # play_joint_trajectory_full_name = '/' + self.robot_name + '/base/play_joint_trajectory'
-        # rospy.wait_for_service(play_joint_trajectory_full_name)
-        # self.play_joint_trajectory = rospy.ServiceProxy(play_joint_trajectory_full_name, PlayJointTrajectory)
+
+
     def left_image(self,data):
         global left_cv_image
         left_cv_image = self.bridge.imgmsg_to_cv2(data,'rgb8')
@@ -140,9 +120,6 @@ class ROS(QThread):
         self.leftJoint5.publish(angles[4])
         self.leftJoint6.publish(angles[5])
         self.leftJoint7.publish(angles[6])
-        pub_msg = joint_angle()
-	pub_msg.left = angles
-        self.pub_angle.publish(pub_msg)
 
     def publish_to_right(self, angles):
         self.rightJoint1.publish(angles[0])
