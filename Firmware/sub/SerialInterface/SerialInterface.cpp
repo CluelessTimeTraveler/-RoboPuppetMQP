@@ -3,8 +3,9 @@
 #include <Encoders.h>
 #include <Buttons.h>
 #include <Arduino.h>
+#include <hallEncoders.h>
 
-#define SEND_EVERY_MS 5000
+#define SEND_EVERY_MS 1000
 
 
 namespace SerialInterface
@@ -26,11 +27,11 @@ void SerialInterface::update() {
 
   //Set each of these equal to the correct values coming from the arm
   toSend[0] = Encoders::getStatus(0); // Servo One
-  toSend[1] = 0; //Servo Two
+  toSend[1] = hallEncoders::getStatus(0); //Servo Two
   toSend[2] = Encoders::getStatus(1); //Servo Three
-  toSend[3] = 0; //Encoder One
+  toSend[3] = hallEncoders::getStatus(1);; //Encoder One
   toSend[4] = Encoders::getStatus(2); //Encoder Two
-  toSend[5] = 0; //Encoder Three
+  toSend[5] = hallEncoders::getStatus(2);; //Encoder Three
   toSend[6] = 0; //Encoder Four
   toSend[7] = 1; //Encoder Three
   toSend[8] = 2; //Encoder Four

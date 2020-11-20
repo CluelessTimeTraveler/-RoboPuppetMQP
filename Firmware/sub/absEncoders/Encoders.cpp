@@ -17,8 +17,8 @@ namespace Encoders
 
   //Chip or Slave select
   const uint8_t encoder1 = 2;
-  const uint8_t encoder2 = 3;
-  const uint8_t encoder3 = 4;
+  const uint8_t encoder2 = 4;
+  const uint8_t encoder3 = 6;
   const uint8_t encoder4 = 21;
 
   //SPI commands

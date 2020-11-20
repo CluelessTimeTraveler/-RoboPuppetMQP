@@ -8,8 +8,8 @@
  */
 namespace Buttons
 {
-  const int gripperToggle = 14;
-  const int holdToggle = 13;
+  const int gripperToggle = 34;
+  const int holdToggle = 35;
   bool gripperState;
   bool holdState;
 }
@@ -23,10 +23,13 @@ void Buttons::init(){
 
 void Buttons::update(){
  
- if(digitalRead(holdToggle))
+ if(digitalRead(holdToggle)){
+    Serial.print("hold toggle: ");
     gripperState =! gripperState;
+    Serial.println(gripperState);
+}
 
-  if(digitalRead(gripperToggle))
+if(digitalRead(gripperToggle))
     gripperState =! gripperState;
 }
 

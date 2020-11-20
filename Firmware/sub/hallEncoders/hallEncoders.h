@@ -1,5 +1,5 @@
 /**
- * @file UserBtns.h
+ * @file hallEncoders.h
  */
 
 #pragma once
@@ -8,7 +8,9 @@
 namespace hallEncoders
 {
   void init();
-  bool getStatus();
-  bool getPosition();
+  uint16_t getPositionSPI(uint8_t, uint8_t);
+  uint16_t updateSingle(uint8_t);
   void update();
+  int getStatus(uint8_t);
+  uint8_t spiWriteRead(uint8_t, uint8_t, uint8_t);
 }

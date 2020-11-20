@@ -16,7 +16,7 @@ namespace Servos
 {
     // define all servo pins
     const uint8_t numServos = 7;
-    uint8_t servoPins[numServos] = {2, 3, 4, 5, 6, 7, 8};
+    uint8_t servoPins[numServos] = {6, 7, 8, 9, 10, 11, 12};
     uint8_t setPos[7];
     bool holdState;
     Servo myServo[numServos];
@@ -48,13 +48,13 @@ void Servos::update(){
 
 int* Servos::getAngles(){
     int readAngle[numServos];
-    readAngle[0] = Encoders::getStatus(0);
-    readAngle[1] = 20;
-    readAngle[2] = Encoders::getStatus(1);
-    readAngle[3] = 40;
-    readAngle[4] = Encoders::getStatus(2);
-    readAngle[5] = 60;
-    readAngle[6] = Encoders::getStatus(3);
+    readAngle[0] = 0; //Encoders::getStatus(0);
+    readAngle[1] = 0; //20;
+    readAngle[2] = 0; //Encoders::getStatus(1);
+    readAngle[3] = 0; //40;
+    readAngle[4] = 0; //Encoders::getStatus(2);
+    readAngle[5] = 0; //60;
+    readAngle[6] = 0; //Encoders::getStatus(3);
 
     return readAngle;
 }
