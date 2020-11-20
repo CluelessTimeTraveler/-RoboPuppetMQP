@@ -1,6 +1,8 @@
 #include <SPI.h>
 #include "Encoders.h"
 #include <Arduino.h>
+#include "pinConfig.h"
+
 
 /**
  * Private subsystem info
@@ -11,15 +13,15 @@ namespace Encoders
   const uint8_t RES14 = 14;
 
   // SPI Pins - should be automatically selected
-  const uint8_t SPI_MOSI = 51;     // MOSI pin
-  const uint8_t SPI_MISO = 50;     // MISO pin
-  const uint8_t SPI_SCLK = 52;     // SLCK pin
+  const uint8_t SPI_MOSI = pinConfig::SPI_MOSI;     // MOSI pin
+  const uint8_t SPI_MISO = pinConfig::SPI_MISO;     // MISO pin
+  const uint8_t SPI_SCLK = pinConfig::SPI_SCLK;     // SLCK pin
 
   //Chip or Slave select
-  const uint8_t encoder1 = 2;
-  const uint8_t encoder2 = 4;
-  const uint8_t encoder3 = 6;
-  const uint8_t encoder4 = 21;
+  const uint8_t encoder1 = pinConfig::encoder1;
+  const uint8_t encoder2 = pinConfig::encoder2;
+  const uint8_t encoder3 = pinConfig::encoder3;
+  const uint8_t encoder4 = pinConfig::encoder4;
 
   //SPI commands
   const uint8_t AMT22_NOP = 0x00;

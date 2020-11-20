@@ -3,13 +3,14 @@
  */
 #include "Buttons.h"
 #include <Arduino.h>
+#include "pinConfig.h"
 /**
  * Private subsystem info
  */
 namespace Buttons
 {
-  const int gripperToggle = 34;
-  const int holdToggle = 35;
+  const int gripperToggle = pinConfig::gripperToggle;
+  const int holdToggle = pinConfig::holdToggle;
   bool gripperState;
   bool holdState;
 }

@@ -2,18 +2,20 @@
 #include "hallEncoders.h"
 #include <Arduino.h>
 #include "AS5048A.h"
+#include "pinConfig.h"
 
 namespace hallEncoders
 {
   // SPI Pins - should be automatically selected
-  const uint8_t SPI_MOSI = 50;     // MOSI pin
-  const uint8_t SPI_MISO = 51;     // MISO pin
-  const uint8_t SPI_SCLK = 52;     // SLCK pin
+  const uint8_t SPI_MOSI = pinConfig::SPI_MOSI;     // MOSI pin
+  const uint8_t SPI_MISO = pinConfig::SPI_MISO;     // MISO pin
+  const uint8_t SPI_SCLK = pinConfig::SPI_SCLK;     // SLCK pin
+
 
   //Chip or Slave select
-  const uint8_t encoder1 = 3;
-  const uint8_t encoder2 = 5;
-  const uint8_t encoder3 = 7;
+  const uint8_t encoder1 = pinConfig::hallEncode1;
+  const uint8_t encoder2 = pinConfig::hallEncode2;
+  const uint8_t encoder3 = pinConfig::hallEncode3;
 
   //Encoders 
   const uint8_t num_enc = 3;
