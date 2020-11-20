@@ -73,7 +73,6 @@ void hallEncoders::init()
     //encoderSingle.init();
 }
 
-
 /**
  * @brief Reads and stores each servo angle
  */
@@ -101,4 +100,9 @@ int hallEncoders::getStatus(uint8_t encoderNumber)
   // float tempMap;
   // tempMap = map(hallEncoders::angle, 0, 16384, 1, 360);
   // return (int)tempMap;
+}
+
+
+void hallEncoders::setZeroFor(int encoder){
+  angleSensor[encoder-1].setZeroPosition(getStatus(encoder-1));
 }

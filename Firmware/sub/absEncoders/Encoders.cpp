@@ -218,3 +218,16 @@ uint16_t Encoders::updateSingle(uint8_t encoder)
     //For the purpose of this demo we don't need the position returned that quickly so let's wait a half second between reads
     //delay() is in milliseconds
 }
+
+void Encoders::setZeroSPI(uint8_t encoder)
+{
+  spiWriteRead(AMT22_NOP, encoder, false);
+
+  //this is the time required between bytes as specified in the datasheet.
+  //We will implement that time delay here, however the arduino is not the fastest device so the delay
+  //is likely inherantly there already
+  delayMicroseconds(3); 
+  
+  spiWriteRead(AMT22_ZERO, encoder, true);
+  delay(250); //250 second delay to allow the encoder to reset
+}
