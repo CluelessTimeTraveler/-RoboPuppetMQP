@@ -11,7 +11,7 @@ namespace pinConfig
     const uint8_t encoder1 = 2;
     const uint8_t encoder2 = 4;
     const uint8_t encoder3 = 6;
-    const uint8_t encoder4 = 21;
+    const uint8_t encoder4 = 44;
 
     //Hall Encoders
     const uint8_t hallEncode1 = 3;

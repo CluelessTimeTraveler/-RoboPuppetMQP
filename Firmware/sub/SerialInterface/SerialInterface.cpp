@@ -25,7 +25,7 @@ void SerialInterface::update() {
   toSend[3] = hallEncoders::getStatus(1);; //Encoder One
   toSend[4] = Encoders::getStatus(2); //Encoder Two
   toSend[5] = hallEncoders::getStatus(2);; //Encoder Three
-  toSend[6] = 0; //Encoder Four
+  toSend[6] = Encoders::getStatus(3); //Encoder Four
   toSend[7] = 1; //Gripper Engaged
   toSend[8] = 2; //Arm Locked
 

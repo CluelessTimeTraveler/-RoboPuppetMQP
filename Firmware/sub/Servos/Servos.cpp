@@ -42,8 +42,8 @@ void Servos::update(){
         servoAngle = getAngles(); 
         for(uint8_t i = 0; i<numServos; i++){
             myServo[i].write(*(servoAngle+i)); //set servos to each position read in from the encoders
-            myServo[i].attach(servoPins[i]); //attach servo objects 
         }
+        attachServos();
     }
     else{
         for(uint8_t i = 0; i<numServos; i++)
@@ -55,12 +55,12 @@ void Servos::update(){
 int* Servos::getAngles(){
     //Map encoder ranges to servo ranges 
     int readAngle[numServos];
-    readAngle[0] = 1500; //Encoders::getStatus(0);
-    readAngle[1] = 0; //;
-    readAngle[2] = 1500; //Encoders::getStatus(1);
-    readAngle[3] = 0; //40;
-    readAngle[4] = 1500; //Encoders::getStatus(2);
-    readAngle[5] = 0; //60;
+    readAngle[0] = 1500; 
+    readAngle[1] = map(Encoders::getStatus(0), -24, 69, 180, 10); 
+    readAngle[2] = 1500; 
+    readAngle[3] = map(Encoders::getStatus(1), -34, 121, 40, 180); 
+    readAngle[4] = 1500; 
+    readAngle[5] = map(Encoders::getStatus(2), -28, 120, 15, 170);
 
     return readAngle;
 }
