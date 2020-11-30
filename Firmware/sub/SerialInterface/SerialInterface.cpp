@@ -10,7 +10,7 @@
 
 namespace SerialInterface
 {
-  uint16_t toSend[9];
+  int toSend[9];
 }
 bool SerialInterface::init() {
   Serial.begin(9600);

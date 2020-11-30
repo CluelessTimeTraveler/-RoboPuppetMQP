@@ -111,8 +111,10 @@ void Encoders::update()
 int Encoders::getStatus(uint8_t encoder)
 {
   float tempMap;
-  tempMap = map(Encoders::angles[encoder], 0, 4096, 1, 360);
-  return (int)tempMap;
+  tempMap = map((int)Encoders::angles[encoder], 0, 4096, 0, 360);
+  if(tempMap >= 180)
+    tempMap = map(tempMap, 180, 360, -180, 0);
+  return tempMap;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -79,7 +79,7 @@ void hallEncoders::init()
 void hallEncoders::update()
 {
 		for (uint8_t j = 0; j < hallEncoders::num_enc; j++){
-		  angles[j] = angleSensor[j].getRawRotation();
+		  angles[j] = angleSensor[j].getRotation();
       delay(50);
 	}
 
@@ -93,16 +93,18 @@ void hallEncoders::update()
  */
 int hallEncoders::getStatus(uint8_t encoderNumber)
 {
-  float tempMap;
-  tempMap = map(hallEncoders::angles[encoderNumber], 0, 16384, 1, 360);
-  return (int)tempMap;
+  int tempMap;
+  //tempMap = map(hallEncoders::angles[encoderNumber], 0, 16384, 0, 359);
+  int angleVal = (int)hallEncoders::angles[encoderNumber];
+  tempMap = map(angleVal, -8152, 8152, 0, 359);
+  tempMap = map(tempMap, 0, 359, -180, 180);
+  return tempMap;
 
   // float tempMap;
   // tempMap = map(hallEncoders::angle, 0, 16384, 1, 360);
   // return (int)tempMap;
 }
 
-
 void hallEncoders::setZeroFor(int encoder){
-  angleSensor[encoder-1].setZeroPosition(getStatus(encoder-1));
+  angleSensor[encoder].setZeroPosition(angleSensor[encoder].getRotation());
 }

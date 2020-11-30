@@ -13,4 +13,5 @@ namespace Encoders
   void update();
   int getStatus(uint8_t);
   uint8_t spiWriteRead(uint8_t, uint8_t, uint8_t);
+  void setZeroSPI(uint8_t encoder);
 }

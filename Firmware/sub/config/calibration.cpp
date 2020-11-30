@@ -2,8 +2,7 @@
  * @file callibration.cpp
  */
 
-#pragma once
-#include "callibration.h"
+#include "calibration.h"
 #include <Encoders.h>
 #include <hallEncoders.h>
 #include "pinConfig.h"
@@ -21,7 +20,7 @@ void calibration::calibrate() {
     Encoders::setZeroSPI(pinConfig::encoder3);
     Encoders::setZeroSPI(pinConfig::encoder4);
 
+    hallEncoders::setZeroFor(0);
     hallEncoders::setZeroFor(1);
     hallEncoders::setZeroFor(2);
-    hallEncoders::setZeroFor(3);
 }

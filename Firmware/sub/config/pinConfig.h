@@ -23,6 +23,9 @@ namespace pinConfig
     const uint8_t SPI_MISO = 50;
     const uint8_t SPI_SCLK = 52;
 
+    //Servos
+    const uint8_t Servos[6] = {8, 9, 10, 11, 12, 13};
+
     //Buttons
     const int gripperToggle = 34;
     const int holdToggle = 35;
