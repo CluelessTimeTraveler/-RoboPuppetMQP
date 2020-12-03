@@ -76,4 +76,6 @@
         <param name="amcl/initial_pose_a" value="1.57" />
     </group>
 
+    <node name="login" pkg="RoboPuppetMQP" type="gui_login.py" output="screen" respawn="false"/>
+    <node name="Serial" pkg="RoboPuppetMQP" type="SerialToRosMessage.py" output="screen" respawn="false"/>
 </launch>

@@ -50,15 +50,16 @@ class ROS(QThread):
     def __init__(self):
         rospy.init_node('gui', anonymous=True)
         #rospy.Subscriber('/joy',Joy,self.robopuppet,queue_size=1,buff_size=52428800)
+        # Subscribe to Robopuppet
         rospy.Subscriber('/potAngles', JointPositions, self.robopuppet, queue_size=1)
-
+        # Subscribe to cameras on the robot
         rospy.Subscriber(robot_prefix + '/right_arm_cam/color/image_raw', Image, self.right_image, queue_size=1)
         rospy.Subscriber(robot_prefix + '/left_arm_cam/color/image_raw', Image, self.left_image, queue_size=1)
         rospy.Subscriber(robot_prefix + '/main_cam/color/image_raw', Image, self.main_image, queue_size=1)
         self.bridge = CvBridge()
         # get joint angle from Gazebo Service
         joints_properties = rospy.ServiceProxy('gazebo/get_joint_properties', GetJointProperties)
-
+        # Control each joint of the arm via publisher
         self.rightJoint1 = rospy.Publisher('/' + robot_prefix + '/right_arm_joint_1_position_controller/command',
                                            Float64, queue_size=1)
         self.rightJoint2 = rospy.Publisher('/' + robot_prefix + '/right_arm_joint_2_position_controller/command',
@@ -91,6 +92,7 @@ class ROS(QThread):
                                           queue_size=1)
         self.leftGripper = rospy.Publisher('/' + robot_prefix + '/left_arm_robotiq_2f_85_gripper_controller/gripper_cmd/goal',GripperCommandActionGoal,queue_size=1)
 
+    # convert raw camera data using CV
     def left_image(self,data):
         global left_cv_image
         left_cv_image = self.bridge.imgmsg_to_cv2(data,'rgb8')
@@ -103,10 +105,7 @@ class ROS(QThread):
         global main_cv_image
         main_cv_image = self.bridge.imgmsg_to_cv2(data,'rgb8')
 
-
-    def cb_action_topic(self, notif):
-        self.last_action_notif_type = notif.action_event
-
+    # This contorls the arm
     def publish_to_left(self, angles):
         self.leftJoint1.publish(angles[0])
         self.leftJoint2.publish(angles[1])
@@ -124,6 +123,10 @@ class ROS(QThread):
         self.rightJoint5.publish(angles[4])
         self.rightJoint6.publish(angles[5])
         self.rightJoint7.publish(angles[6])
+
+    def send_joint_angles(self, leftDesireAngle, rightDesireAngle):
+        self.publish_to_left(leftDesireAngle)
+        self.publish_to_right(rightDesireAngle)
 
     def robopuppet(self, data):
         if states == 'Enabled':
@@ -145,6 +148,7 @@ class ROS(QThread):
             else:
                 self.publish_to_right(angles)
 
+    # This updates the information for GUI
     def leftUpdate(self):
         global leftAngleList
         global leftVelocityList
@@ -223,21 +227,7 @@ class ROS(QThread):
         rightVelocityList = [jv1, jv2, jv3, jv4, jv5, jv6, jv7]
         rightCpList = angleToCP(rightAngleList)
 
-    def wait_for_action_end_or_abort(self):
-        while not rospy.is_shutdown():
-            if (self.last_action_notif_type == ActionEvent.ACTION_END):
-                updateControlInfo()
-                rospy.loginfo("Received ACTION_END notification")
-                return True
-            elif (self.last_action_notif_type == ActionEvent.ACTION_ABORT):
-                rospy.loginfo("Received ACTION_ABORT notification")
-                return False
-            else:
-                sleep(0.01)
 
-    def send_joint_angles(self, leftDesireAngle, rightDesireAngle):
-        self.publish_to_left(leftDesireAngle)
-        self.publish_to_right(rightDesireAngle)
 
     def send_gripper_cmd(self, left, right):
         rospy.loginfo("Send Gripper Command")
@@ -249,10 +239,6 @@ class ROS(QThread):
         rgmsg.goal.command.position = right
         self.leftGripper.publish(lgmsg)
         self.rightGripper.publish(rgmsg)
-
-    def send_cartesian_pose(self, x, y, z):
-        xopt = inverseKinematics([x, y, z])
-        rospy.loginfo(xopt[7:])
 
     def home_the_robot(self):
         rospy.loginfo("Home robot")
@@ -280,7 +266,7 @@ def updateControlInfo():
     window.lineEdit_16.setText("%.2f" % rightAngleList[5])
     window.lineEdit_17.setText("%.2f" % rightAngleList[6])
 
-
+# This actually updates the GUI
 def updateInfo():
     # Left
     # Angles

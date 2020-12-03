@@ -5,4 +5,4 @@ record_rate = 1000  #Every second
 left_arm_homepos = [-1.57, 1.57, 1.57, 1.57, 0, 0, 1.57]
 right_arm_homepos = [-2.8, 1.57, 0, 1.15, .2, 1.95, -3.05]
 robot_prefix = 'trina2_1'
-cam_width = 750
+cam_width = 750 # width of camera view display in GUI
