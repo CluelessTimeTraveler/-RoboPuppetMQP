@@ -33,7 +33,15 @@ void SerialInterface::update() {
     String encoderCompressed = String(toSend[3]) + ',' + String(toSend[4]) + ',' + String(toSend[5]) + ',' + String(toSend[6]); //String of Encoder Data
     String otherData = String(toSend[7]) + ',' + String(toSend[8]); // String of other data
     
-    Serial.println(servoCompressed + ',' + encoderCompressed + ',' + otherData); //Concats all strings together and sends over serial. 
+    Serial.println("Encoder 1: Absolute: " + String(toSend[0]));
+    Serial.println("Encoder 2: Hall: " + String(toSend[1]));
+    Serial.println("Encoder 3: Absolute: " + String(toSend[2]));
+    Serial.println("Encoder 4: Hall: " + String(toSend[3]));
+    Serial.println("Encoder 5: Absolute: " + String(toSend[4]));
+    Serial.println("Encoder 6: Hall: " + String(toSend[5]));
+    Serial.println("Encoder 7: Absolute: " + String(toSend[6]));
+
+    //Serial.println(servoCompressed + ',' + encoderCompressed + ',' + otherData); //Concats all strings together and sends over serial. 
     //Make sure companion Python Script is running to parse and send to ROS
 
     delay(SEND_EVERY_MS);

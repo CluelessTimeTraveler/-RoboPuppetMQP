@@ -2,7 +2,7 @@
 #include "Encoders.h"
 #include <Arduino.h>
 #include "pinConfig.h"
-
+#include <InfoLCD.h>
 
 /**
  * Private subsystem info
@@ -13,8 +13,8 @@ namespace Encoders
   const uint8_t RES14 = 14;
 
   // SPI Pins - should be automatically selected
-  const uint8_t SPI_MOSI = pinConfig::SPI_MOSI;     // MOSI pin
-  const uint8_t SPI_MISO = pinConfig::SPI_MISO;     // MISO pin
+  const uint8_t SPI_COPI = pinConfig::SPI_COPI;     // MOSI pin
+  const uint8_t SPI_CIPO = pinConfig::SPI_CIPO;     // MISO pin
   const uint8_t SPI_SCLK = pinConfig::SPI_SCLK;     // SLCK pin
 
   //Chip or Slave select
@@ -54,8 +54,8 @@ void Encoders::init()
     pinMode(encoder4, OUTPUT);
 
     pinMode(SPI_SCLK, OUTPUT);
-    pinMode(SPI_MOSI, OUTPUT);
-    pinMode(SPI_MISO, INPUT);
+    pinMode(SPI_COPI, OUTPUT);
+    pinMode(SPI_CIPO, INPUT);
 
     //Serial.begin(115200);
     
@@ -65,7 +65,8 @@ void Encoders::init()
     digitalWrite(encoder3, HIGH);
     digitalWrite(encoder4, HIGH);
 
-    SPI.setClockDivider(SPI_CLOCK_DIV32);    // 500 kHz
+    //SPI.setClockDivider(SPI_CLOCK_DIV64);    // use this for teensy
+    SPI.setClockDivider(SPI_CLOCK_DIV32);    // use this for arduino
 
     SPI.begin();
     //SPI.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0));
@@ -78,6 +79,8 @@ void Encoders::init()
 		{
 			angles[j] = 0.0f;
 		}
+
+    InfoLCD::printToLCD("Encoders Initalized");
 
     // Set init flag
     init_complete = true;

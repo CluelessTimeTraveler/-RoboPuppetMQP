@@ -23,15 +23,12 @@ void Buttons::init(){
 }
 
 void Buttons::update(){
- 
- if(digitalRead(holdToggle)){
-    Serial.print("hold toggle: ");
-    gripperState =! gripperState;
-    Serial.println(gripperState);
-}
+  holdState = digitalRead(holdToggle);
+  //Serial.print("Button says: ");
+  Serial.println(holdState);
 
-if(digitalRead(gripperToggle))
-    gripperState =! gripperState;
+  //if(digitalRead(gripperToggle))
+  //  gripperState =! gripperState;
 }
 
 bool Buttons::getHoldStatus()

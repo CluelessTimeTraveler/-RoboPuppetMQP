@@ -6,7 +6,9 @@
 #include "Servos.h" //The specific header for this file
 #include <Buttons.h>
 #include <Encoders.h>
+#include <hallEncoders.h>
 #include <Arduino.h>
+#include <InfoLCD.h>
 
 /**
  * Private subsystem info
@@ -16,14 +18,14 @@ namespace Servos
 {
     // define all servo pins
     const uint8_t numServos = 6;
-    uint8_t servoPins[numServos] = {8, 9, 10, 11, 12, 13};;
+    uint8_t servoPins[numServos] = {8, 9, 10, 11, 12, 46};;
     uint8_t setPos[numServos];
     bool holdState;
     Servo myServo[6];
-    int* servoAngle;
-    int* getAngles();
+    int servoAngles[6];
 
     //Servo methods
+    void getAngles();
     void attachServos();
     void goToHomePosition();
 }
@@ -39,30 +41,30 @@ void Servos::update(){
     holdState = Buttons::getHoldStatus();
     if(holdState){
         //read all encoder  values
-        servoAngle = getAngles(); 
+        getAngles(); 
+        Serial.println("Hold position:");
         for(uint8_t i = 0; i<numServos; i++){
-            myServo[i].write(*(servoAngle+i)); //set servos to each position read in from the encoders
+            myServo[i].write(servoAngles[i]); //set servos to each position read in from the encoders
+            Serial.println((servoAngles[i]));
         }
         attachServos();
     }
     else{
+        Serial.println("Stop hold--");
         for(uint8_t i = 0; i<numServos; i++)
             myServo[i].detach(); //detach all servo objects 
     }
     
 }
 
-int* Servos::getAngles(){
+void Servos::getAngles(){
     //Map encoder ranges to servo ranges 
-    int readAngle[numServos];
-    readAngle[0] = 1500; 
-    readAngle[1] = map(Encoders::getStatus(0), -24, 69, 180, 10); 
-    readAngle[2] = 1500; 
-    readAngle[3] = map(Encoders::getStatus(1), -34, 121, 40, 180); 
-    readAngle[4] = 1500; 
-    readAngle[5] = map(Encoders::getStatus(2), -28, 120, 15, 170);
-
-    return readAngle;
+    servoAngles[0] = 1500; 
+    servoAngles[1] = map(hallEncoders::getStatus(0), -28, -243, 180, 10); 
+    servoAngles[2] = 1500; 
+    servoAngles[3] = map(hallEncoders::getStatus(1), -36, 127, 40, 180); 
+    servoAngles[4] = 1500; 
+    servoAngles[5] = map(hallEncoders::getStatus(2), -45, -253, 15, 170);
 }
 
 void Servos::attachServos(){
@@ -77,7 +79,7 @@ void Servos::attachServos(){
 
 void Servos::goToHomePosition(){
     //Moves arm into completely upright position
-    Serial.println("Goin home");
+    InfoLCD::printToLCD("Going to home position");
     myServo[0].write(1500);
     Serial.println("Lifting...");
     for(int i = 20; i < 170; i++){
@@ -85,7 +87,7 @@ void Servos::goToHomePosition(){
         delay(100);
     }   
     delay(1000);
-    Serial.println("Lift complete");
+    InfoLCD::printToLCD("Lift Complete");
     myServo[2].write(1500);
     myServo[3].write(65);
     delay(1000);

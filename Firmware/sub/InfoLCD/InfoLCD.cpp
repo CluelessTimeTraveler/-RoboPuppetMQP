@@ -8,14 +8,16 @@ namespace InfoLCD
     LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27, 16, 2); // Change to (0x27,16,2) for 16x2 LCD.
 }
 
-
 bool InfoLCD::init(){
   lcd.init();
   lcd.backlight();
   lcd.clear();
+
+  return true;
 }
 
 void InfoLCD::printToLCD(String toPrint){
+
     lcd.clear();
     if(toPrint.length() > 32){
         lcd.setCursor(0,0);
@@ -24,9 +26,11 @@ void InfoLCD::printToLCD(String toPrint){
 
     if(toPrint.length()>16){
         lcd.setCursor(0,0);
-        lcd.print(toPrint.substring(0,15));
-        lcd.setCursor(2,0);
+        lcd.print(toPrint.substring(0,16));
+        lcd.setCursor(0,1);
         lcd.print(toPrint.substring(16));
+    }else{
+        lcd.print(toPrint);
     }
 
     

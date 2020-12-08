@@ -28,7 +28,7 @@ AS5048A::AS5048A(byte arg_cs){
  */
 void AS5048A::init(){
 	// 1MHz clock (AMS should be able to accept up to 10MHz)
-	settings = SPISettings(1000000, MSBFIRST, SPI_MODE1);
+	settings = SPISettings(500000, MSBFIRST, SPI_MODE1);
 	
 	//setup pins
 	pinMode(_cs, OUTPUT);

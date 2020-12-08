@@ -7,10 +7,9 @@
 namespace hallEncoders
 {
   // SPI Pins - should be automatically selected
-  const uint8_t SPI_MOSI = pinConfig::SPI_MOSI;     // MOSI pin
-  const uint8_t SPI_MISO = pinConfig::SPI_MISO;     // MISO pin
+  const uint8_t SPI_COPI = pinConfig::SPI_COPI;     // MOSI pin
+  const uint8_t SPI_CIPO = pinConfig::SPI_CIPO;     // MISO pin
   const uint8_t SPI_SCLK = pinConfig::SPI_SCLK;     // SLCK pin
-
 
   //Chip or Slave select
   const uint8_t encoder1 = pinConfig::hallEncode1;
@@ -78,13 +77,15 @@ void hallEncoders::init()
  */
 void hallEncoders::update()
 {
+    //Serial.println("Hall encoders update!");
 		for (uint8_t j = 0; j < hallEncoders::num_enc; j++){
 		  angles[j] = angleSensor[j].getRotation();
+      int thisAngle = (int) angles[j];
+      Serial.println("Hall Angle: " + String(thisAngle));
+      int thisRawAngle = (int)angleSensor[j].getRawRotation();
+      Serial.println("Hall Raw angle: " + String(thisRawAngle));
       delay(50);
 	}
-
-  //angle = encoderSingle.getRawRotation();
-  //Serial.println(angle);
 
 }
 
@@ -96,15 +97,22 @@ int hallEncoders::getStatus(uint8_t encoderNumber)
   int tempMap;
   //tempMap = map(hallEncoders::angles[encoderNumber], 0, 16384, 0, 359);
   int angleVal = (int)hallEncoders::angles[encoderNumber];
-  tempMap = map(angleVal, -8152, 8152, 0, 359);
-  tempMap = map(tempMap, 0, 359, -180, 180);
+  if(encoderNumber == 1){
+    tempMap = map(angleVal, 0, 16384, 0, 359);
+    //tempMap = map(tempMap, 0, 359, -180, 180);
+  }else{
+    tempMap = map(angleVal, -16384, 0, 0, 359);
+    //tempMap = map(tempMap, 0, 359, -180, 180);
+  }
   return tempMap;
-
   // float tempMap;
   // tempMap = map(hallEncoders::angle, 0, 16384, 1, 360);
   // return (int)tempMap;
 }
 
 void hallEncoders::setZeroFor(int encoder){
+  Serial.print("Zeroing hall encoder:");
+  Serial.println(encoder);
   angleSensor[encoder].setZeroPosition(angleSensor[encoder].getRotation());
+  delay(500);
 }
