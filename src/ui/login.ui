@@ -127,6 +127,7 @@
     <addaction name="separator"/>
     <addaction name="actionTrina2"/>
     <addaction name="actionRobopuppet"/>
+    <addaction name="actionFeedback"/>
    </widget>
    <addaction name="menuAbout"/>
   </widget>
@@ -134,7 +135,7 @@
   <action name="actionTrina2">
    <property name="icon">
     <iconset>
-     <normaloff>pics/Hiro_Logo_WPITheme-300x108.png</normaloff>ui/pics/Hiro_Logo_WPITheme-300x108.png</iconset>
+     <normaloff>pics/Hiro_Logo_WPITheme-300x108.png</normaloff>pics/Hiro_Logo_WPITheme-300x108.png</iconset>
    </property>
    <property name="text">
     <string>Trina2</string>
@@ -143,6 +144,11 @@
   <action name="actionRobopuppet">
    <property name="text">
     <string>Robopuppet</string>
+   </property>
+  </action>
+  <action name="actionFeedback">
+   <property name="text">
+    <string>Feedback</string>
    </property>
   </action>
  </widget>

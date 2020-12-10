@@ -105,8 +105,13 @@ class ROS(QThread):
         self.rightJoint7.publish(angles[6])
 
     def robopuppet(self, data):
+        c = math.pi/180
         if states == 'Enabled':
-            angles = [data.servoData1,data.servoData2,data.servoData3,data.encoderData1,data.encoderData2,data.encoderData3,data.encoderData4]  # angles from robopuppet
+            #!!!!!!!!!!!!!!!!11
+            gripper = data.gripperToggle
+
+            angles = [data.servoOne*c, data.servoTwo*c, data.servoThree*c, data.encoderOne*c, data.encoderTwo*c,
+                      data.encoderThree*c, data.encoderFour*c]  # angles from robopuppet
             if mirror:
                 angles_right = []
                 for i in angles:
@@ -115,6 +120,7 @@ class ROS(QThread):
                 angles_right = angles
 
             if leftMode & rightMode:
+                self.send_gripper_cmd(gripper, gripper)
                 if reverse:
                     self.publish_to_left(angles_right)
                     self.publish_to_right(angles)
@@ -123,8 +129,10 @@ class ROS(QThread):
                     self.publish_to_right(angles_right)
 
             elif leftMode:
+                self.send_gripper_cmd(gripper, 0)
                 self.publish_to_left(angles)
             else:
+                self.send_gripper_cmd(0, gripper)
                 self.publish_to_right(angles)
 
     def leftUpdate(self):
@@ -307,6 +315,7 @@ def set_RP_mode():
     else:
         leftMode = True
         rightMode = True
+	#TODO FIXXXXX
         if window.main_ui.checkBox.isChecked():
             mirror = True
         if window.main_ui.checkBox_2.isChecked():

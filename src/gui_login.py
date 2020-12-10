@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QMainWindow
 from ui.login_ui import *
 import os
 from ui.trina2_intro_ui import Ui_Form
+from ui.feedback import Ui_FeedbackUI
 from constants import *
 from PyQt5.QtWidgets import QDialogButtonBox, QWidget
 from PyQt5.QtWidgets import QFormLayout
@@ -63,11 +64,17 @@ class trina2_intro_window(QWidget):
         self.main_ui.setupUi(self)
 
 
+
+
 def trina2_intro():
     print('t2_intro')
     ti.main_ui.label_2.setPixmap(QtGui.QPixmap(path+"/ui/pics/TRINA-WPI-2.0.png"))
     ti.setWindowTitle('TRINA-WPI-2.0')
     ti.show()
+
+def feedback():
+    window.close()
+    os.popen('python ' + path + '/gui_feedback.py')
 
 
 if __name__ == '__main__':
@@ -84,4 +91,5 @@ if __name__ == '__main__':
     window.main_ui.li_btn.clicked.connect(login)
     window.main_ui.su_btn.clicked.connect(signup)
     window.main_ui.actionTrina2.triggered.connect(trina2_intro)
+    window.main_ui.actionFeedback.triggered.connect(feedback)
     sys.exit(app.exec_())

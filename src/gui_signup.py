@@ -40,7 +40,7 @@ def trina2_intro():
 
 def signup():
     # Check if the uesrname already exist
-    afile = open(path+"/userlist.json","r")
+    afile = open("userlist.json","r")
     json_object = json.load(afile)
     afile.close()
     #print(json_object)

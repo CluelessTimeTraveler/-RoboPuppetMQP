@@ -89,9 +89,12 @@ class Ui_MainWindow(object):
         self.actionTrina2.setObjectName("actionTrina2")
         self.actionRobopuppet = QtWidgets.QAction(MainWindow)
         self.actionRobopuppet.setObjectName("actionRobopuppet")
+        self.actionFeedback = QtWidgets.QAction(MainWindow)
+        self.actionFeedback.setObjectName("actionFeedback")
         self.menuAbout.addSeparator()
         self.menuAbout.addAction(self.actionTrina2)
         self.menuAbout.addAction(self.actionRobopuppet)
+        self.menuAbout.addAction(self.actionFeedback)
         self.menubar.addAction(self.menuAbout.menuAction())
 
         self.retranslateUi(MainWindow)
@@ -110,4 +113,5 @@ class Ui_MainWindow(object):
         self.menuAbout.setTitle(_translate("MainWindow", "About"))
         self.actionTrina2.setText(_translate("MainWindow", "Trina2"))
         self.actionRobopuppet.setText(_translate("MainWindow", "Robopuppet"))
+        self.actionFeedback.setText(_translate("MainWindow", "Feedback"))
 
