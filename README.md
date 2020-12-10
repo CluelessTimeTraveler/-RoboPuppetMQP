@@ -24,4 +24,5 @@ https://github.com/hiro-wpi/TRINA-WPI-2.0
 3. Login use 'admin admin' or 'user user' or sign up one  
 
 # Potential Problems during setup
-1. Missing Module. If you meet this problem, try apt-get that module,and double check the instruction in Trina2 repository 
+1. Missing Module. If you meet this problem, try apt-get that module,and double check the instruction in Trina2 repository   
+2. Serial port disabled, use command 'sudo chmod 666 /dev/ttyACM0'
