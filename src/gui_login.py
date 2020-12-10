@@ -13,6 +13,7 @@ from PyQt5.QtWidgets import QFormLayout
 from PyQt5.QtWidgets import QLineEdit
 from PyQt5.QtWidgets import QVBoxLayout
 from PyQt5 import QtGui
+from ui.robopuppet_intro import Ui_Robo
 
 
 class Login(QMainWindow):
@@ -63,8 +64,19 @@ class trina2_intro_window(QWidget):
         self.main_ui = Ui_Form()
         self.main_ui.setupUi(self)
 
+class robopupper_intro_window(QWidget):
+    def __init__(self):
+        QWidget.__init__(self)
+        self.main_ui = Ui_Robo()
+        self.main_ui.setupUi(self)
 
 
+
+def robo():
+    print('t2_intro')
+    rb.main_ui.label_2.setPixmap(QtGui.QPixmap(path+"/ui/pics/robopuppet.jpg"))
+    rb.setWindowTitle('Robopuppet')
+    rb.show()
 
 def trina2_intro():
     print('t2_intro')
@@ -88,8 +100,10 @@ if __name__ == '__main__':
     window.setFixedSize(window.width(), window.height())
     window.show()
     ti = trina2_intro_window()
+    rb = robopupper_intro_window()
     window.main_ui.li_btn.clicked.connect(login)
     window.main_ui.su_btn.clicked.connect(signup)
     window.main_ui.actionTrina2.triggered.connect(trina2_intro)
+    window.main_ui.actionRobopuppet.triggered.connect(robo)
     window.main_ui.actionFeedback.triggered.connect(feedback)
     sys.exit(app.exec_())
