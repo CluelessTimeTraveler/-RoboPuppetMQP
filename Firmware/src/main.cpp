@@ -3,19 +3,27 @@
 #include <Buttons.h>
 #include <Arduino.h>
 #include <Servos.h>
+#include <hallEncoders.h>
+#include <calibration.h>
+#include <InfoLCD.h>
 
 void setup() {
+  //delay(5000);
   SerialInterface::init();
+  InfoLCD::init();
   Encoders::init();
-  //Buttons::init();
-  //Servos::init();
+  hallEncoders::init();
+  Servos::init();
+  calibration::calibrate();
+  Buttons::init();
 }
 
 void loop() {
-  //Serial.println("Begin loop:");
-  Encoders::update();//To-do for bella
-  //Buttons::update();
-  //Servos::update();
+  delay(2000);
+  Encoders::update();
+  hallEncoders::update();
+  Buttons::update();
+  Servos::update();
   SerialInterface::update();
   
 

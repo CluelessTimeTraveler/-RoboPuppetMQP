@@ -3,13 +3,14 @@
  */
 #include "Buttons.h"
 #include <Arduino.h>
+#include "pinConfig.h"
 /**
  * Private subsystem info
  */
 namespace Buttons
 {
-  const int gripperToggle = 14;
-  const int holdToggle = 13;
+  const int gripperToggle = pinConfig::gripperToggle;
+  const int holdToggle = pinConfig::holdToggle;
   bool gripperState;
   bool holdState;
 }
@@ -22,12 +23,12 @@ void Buttons::init(){
 }
 
 void Buttons::update(){
- 
- if(digitalRead(holdToggle))
-    gripperState =! gripperState;
+  holdState = digitalRead(holdToggle);
+  //Serial.print("Button says: ");
+  Serial.println(holdState);
 
-  if(digitalRead(gripperToggle))
-    gripperState =! gripperState;
+  //if(digitalRead(gripperToggle))
+  //  gripperState =! gripperState;
 }
 
 bool Buttons::getHoldStatus()

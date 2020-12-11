@@ -6,7 +6,9 @@
 #include "Servos.h" //The specific header for this file
 #include <Buttons.h>
 #include <Encoders.h>
+#include <hallEncoders.h>
 #include <Arduino.h>
+#include <InfoLCD.h>
 
 /**
  * Private subsystem info
@@ -15,46 +17,81 @@
 namespace Servos
 {
     // define all servo pins
-    const uint8_t numServos = 7;
-    uint8_t servoPins[numServos] = {2, 3, 4, 5, 6, 7, 8};
-    uint8_t setPos[7];
+    const uint8_t numServos = 6;
+    uint8_t servoPins[numServos] = {8, 9, 10, 11, 12, 46};;
+    uint8_t setPos[numServos];
     bool holdState;
-    Servo myServo[numServos];
-    int* servoAngle;
-    int* getAngles();
+    Servo myServo[6];
+    int servoAngles[6];
+
+    //Servo methods
+    void getAngles();
+    void attachServos();
+    void goToHomePosition();
 }
 
 void Servos::init(){
     holdState = Buttons::getHoldStatus();
-    //create servo object 
+    //Attach each servo with correct PWM range
+    attachServos();
+    goToHomePosition();
 }
 
 void Servos::update(){
     holdState = Buttons::getHoldStatus();
     if(holdState){
         //read all encoder  values
-        servoAngle = getAngles(); 
+        getAngles(); 
+        Serial.println("Hold position:");
         for(uint8_t i = 0; i<numServos; i++){
-            myServo[i].write(*(servoAngle+i)); //set servos to each position read in from the encoders
-            myServo[i].attach(servoPins[i]); //attach servo objects 
+            myServo[i].write(servoAngles[i]); //set servos to each position read in from the encoders
+            Serial.println((servoAngles[i]));
         }
+        attachServos();
     }
     else{
+        Serial.println("Stop hold--");
         for(uint8_t i = 0; i<numServos; i++)
             myServo[i].detach(); //detach all servo objects 
     }
     
 }
 
-int* Servos::getAngles(){
-    int readAngle[numServos];
-    readAngle[0] = Encoders::getStatus(0);
-    readAngle[1] = 20;
-    readAngle[2] = Encoders::getStatus(1);
-    readAngle[3] = 40;
-    readAngle[4] = Encoders::getStatus(2);
-    readAngle[5] = 60;
-    readAngle[6] = Encoders::getStatus(3);
+void Servos::getAngles(){
+    //Map encoder ranges to servo ranges 
+    servoAngles[0] = 1500; 
+    servoAngles[1] = map(hallEncoders::getStatus(0), -28, -243, 180, 10); 
+    servoAngles[2] = 1500; 
+    servoAngles[3] = map(hallEncoders::getStatus(1), -36, 127, 40, 180); 
+    servoAngles[4] = 1500; 
+    servoAngles[5] = map(hallEncoders::getStatus(2), -45, -253, 15, 170);
+}
 
-    return readAngle;
+void Servos::attachServos(){
+    //Attaches each servo with the correct PWM 
+    myServo[0].attach(servoPins[0]);
+    myServo[1].attach(servoPins[1], 800, 2200);
+    myServo[2].attach(servoPins[2]);
+    myServo[3].attach(servoPins[3], 553, 2520);
+    myServo[4].attach(servoPins[4]);
+    myServo[5].attach(servoPins[5], 553, 2270);
+}
+
+void Servos::goToHomePosition(){
+    //Moves arm into completely upright position
+    InfoLCD::printToLCD("Going to home position");
+    myServo[0].write(1500);
+    Serial.println("Lifting...");
+    for(int i = 20; i < 170; i++){
+        myServo[1].write(i);
+        delay(100);
+    }   
+    delay(1000);
+    InfoLCD::printToLCD("Lift Complete");
+    myServo[2].write(1500);
+    myServo[3].write(65);
+    delay(1000);
+    myServo[4].write(1500);
+    myServo[5].write(49);
+    delay(1000);
 }

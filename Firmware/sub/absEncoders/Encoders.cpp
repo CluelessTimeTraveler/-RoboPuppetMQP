@@ -1,6 +1,8 @@
 #include <SPI.h>
 #include "Encoders.h"
 #include <Arduino.h>
+#include "pinConfig.h"
+#include <InfoLCD.h>
 
 /**
  * Private subsystem info
@@ -11,15 +13,15 @@ namespace Encoders
   const uint8_t RES14 = 14;
 
   // SPI Pins - should be automatically selected
-  const uint8_t SPI_MOSI = 51;     // MOSI pin
-  const uint8_t SPI_MISO = 50;     // MISO pin
-  const uint8_t SPI_SCLK = 52;     // SLCK pin
+  const uint8_t SPI_COPI = pinConfig::SPI_COPI;     // MOSI pin
+  const uint8_t SPI_CIPO = pinConfig::SPI_CIPO;     // MISO pin
+  const uint8_t SPI_SCLK = pinConfig::SPI_SCLK;     // SLCK pin
 
   //Chip or Slave select
-  const uint8_t encoder1 = 2;
-  const uint8_t encoder2 = 3;
-  const uint8_t encoder3 = 4;
-  const uint8_t encoder4 = 21;
+  const uint8_t encoder1 = pinConfig::encoder1;
+  const uint8_t encoder2 = pinConfig::encoder2;
+  const uint8_t encoder3 = pinConfig::encoder3;
+  const uint8_t encoder4 = pinConfig::encoder4;
 
   //SPI commands
   const uint8_t AMT22_NOP = 0x00;
@@ -52,8 +54,8 @@ void Encoders::init()
     pinMode(encoder4, OUTPUT);
 
     pinMode(SPI_SCLK, OUTPUT);
-    pinMode(SPI_MOSI, OUTPUT);
-    pinMode(SPI_MISO, INPUT);
+    pinMode(SPI_COPI, OUTPUT);
+    pinMode(SPI_CIPO, INPUT);
 
     //Serial.begin(115200);
     
@@ -63,7 +65,8 @@ void Encoders::init()
     digitalWrite(encoder3, HIGH);
     digitalWrite(encoder4, HIGH);
 
-    SPI.setClockDivider(SPI_CLOCK_DIV32);    // 500 kHz
+    //SPI.setClockDivider(SPI_CLOCK_DIV64);    // use this for teensy
+    SPI.setClockDivider(SPI_CLOCK_DIV32);    // use this for arduino
 
     SPI.begin();
     //SPI.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0));
@@ -76,6 +79,8 @@ void Encoders::init()
 		{
 			angles[j] = 0.0f;
 		}
+
+    InfoLCD::printToLCD("Encoders Initalized");
 
     // Set init flag
     init_complete = true;
@@ -109,8 +114,10 @@ void Encoders::update()
 int Encoders::getStatus(uint8_t encoder)
 {
   float tempMap;
-  tempMap = map(Encoders::angles[encoder], 0, 4096, 1, 360);
-  return (int)tempMap;
+  tempMap = map((int)Encoders::angles[encoder], 0, 4096, 0, 360);
+  if(tempMap >= 180)
+    tempMap = map(tempMap, 180, 360, -180, 0);
+  return tempMap;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -215,4 +222,17 @@ uint16_t Encoders::updateSingle(uint8_t encoder)
     return encoderPosition;
     //For the purpose of this demo we don't need the position returned that quickly so let's wait a half second between reads
     //delay() is in milliseconds
+}
+
+void Encoders::setZeroSPI(uint8_t encoder)
+{
+  spiWriteRead(AMT22_NOP, encoder, false);
+
+  //this is the time required between bytes as specified in the datasheet.
+  //We will implement that time delay here, however the arduino is not the fastest device so the delay
+  //is likely inherantly there already
+  delayMicroseconds(3); 
+  
+  spiWriteRead(AMT22_ZERO, encoder, true);
+  delay(250); //250 second delay to allow the encoder to reset
 }
