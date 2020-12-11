@@ -26,13 +26,14 @@ void SerialInterface::update() {
   toSend[4] = Encoders::getStatus(2); //Encoder Two
   toSend[5] = hallEncoders::getStatus(2);; //Encoder Three
   toSend[6] = Encoders::getStatus(3); //Encoder Four
-  toSend[7] = 1; //Gripper Engaged
-  toSend[8] = 2; //Arm Locked
+  toSend[7] = Buttons::getGripperStatus(); //Gripper Engaged
+  toSend[8] = Buttons::getHoldStatus(); //Arm Locked
 
     String servoCompressed = String(toSend[0]) + ',' + String(toSend[1]) + ',' + String(toSend[2]); //String of Servo Data
     String encoderCompressed = String(toSend[3]) + ',' + String(toSend[4]) + ',' + String(toSend[5]) + ',' + String(toSend[6]); //String of Encoder Data
     String otherData = String(toSend[7]) + ',' + String(toSend[8]); // String of other data
     
+    /*
     Serial.println("Encoder 1: Absolute: " + String(toSend[0]));
     Serial.println("Encoder 2: Hall: " + String(toSend[1]));
     Serial.println("Encoder 3: Absolute: " + String(toSend[2]));
@@ -40,8 +41,9 @@ void SerialInterface::update() {
     Serial.println("Encoder 5: Absolute: " + String(toSend[4]));
     Serial.println("Encoder 6: Hall: " + String(toSend[5]));
     Serial.println("Encoder 7: Absolute: " + String(toSend[6]));
+    */
 
-    //Serial.println(servoCompressed + ',' + encoderCompressed + ',' + otherData); //Concats all strings together and sends over serial. 
+    Serial.println(servoCompressed + ',' + encoderCompressed + ',' + otherData); //Concats all strings together and sends over serial. 
     //Make sure companion Python Script is running to parse and send to ROS
 
     delay(SEND_EVERY_MS);

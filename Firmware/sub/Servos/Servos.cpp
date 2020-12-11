@@ -25,7 +25,7 @@ namespace Servos
     int servoAngles[6];
 
     //Servo methods
-    void getAngles();
+    void getServoAngles();
     void attachServos();
     void goToHomePosition();
 }
@@ -33,6 +33,7 @@ namespace Servos
 void Servos::init(){
     holdState = Buttons::getHoldStatus();
     //Attach each servo with correct PWM range
+    InfoLCD::printToLCD("Lifting...");
     attachServos();
     goToHomePosition();
 }
@@ -41,30 +42,30 @@ void Servos::update(){
     holdState = Buttons::getHoldStatus();
     if(holdState){
         //read all encoder  values
-        getAngles(); 
-        Serial.println("Hold position:");
+        getServoAngles(); 
+        //Serial.println("Hold position:");
         for(uint8_t i = 0; i<numServos; i++){
             myServo[i].write(servoAngles[i]); //set servos to each position read in from the encoders
-            Serial.println((servoAngles[i]));
+            //Serial.println((servoAngles[i]));
         }
         attachServos();
     }
     else{
-        Serial.println("Stop hold--");
+        //Serial.println("Stop hold--");
         for(uint8_t i = 0; i<numServos; i++)
             myServo[i].detach(); //detach all servo objects 
     }
     
 }
 
-void Servos::getAngles(){
+void Servos::getServoAngles(){
     //Map encoder ranges to servo ranges 
     servoAngles[0] = 1500; 
-    servoAngles[1] = map(hallEncoders::getStatus(0), -28, -243, 180, 10); 
+    servoAngles[1] = map(hallEncoders::getStatus(0), -22, 131, 180, 10) + 5; 
     servoAngles[2] = 1500; 
-    servoAngles[3] = map(hallEncoders::getStatus(1), -36, 127, 40, 180); 
+    servoAngles[3] = map(hallEncoders::getStatus(1), -36, 127, 15, 175) - 5; 
     servoAngles[4] = 1500; 
-    servoAngles[5] = map(hallEncoders::getStatus(2), -45, -253, 15, 170);
+    servoAngles[5] = map(hallEncoders::getStatus(2), -55, 105, 10, 160) - 10;
 }
 
 void Servos::attachServos(){
@@ -72,26 +73,26 @@ void Servos::attachServos(){
     myServo[0].attach(servoPins[0]);
     myServo[1].attach(servoPins[1], 800, 2200);
     myServo[2].attach(servoPins[2]);
-    myServo[3].attach(servoPins[3], 553, 2520);
+    myServo[3].attach(servoPins[3], 553, 2270);
     myServo[4].attach(servoPins[4]);
     myServo[5].attach(servoPins[5], 553, 2270);
 }
 
 void Servos::goToHomePosition(){
     //Moves arm into completely upright position
-    InfoLCD::printToLCD("Going to home position");
+    //InfoLCD::printToLCD("Going to home position");
     myServo[0].write(1500);
-    Serial.println("Lifting...");
+    //Serial.println("Lifting...");
     for(int i = 20; i < 170; i++){
         myServo[1].write(i);
         delay(100);
     }   
     delay(1000);
-    InfoLCD::printToLCD("Lift Complete");
+    //InfoLCD::printToLCD("Lift Complete");
     myServo[2].write(1500);
-    myServo[3].write(65);
+    myServo[3].write(45);
     delay(1000);
     myServo[4].write(1500);
-    myServo[5].write(49);
-    delay(1000);
+    myServo[5].write(40);
+    delay(2000); //time to settle
 }

@@ -4,6 +4,7 @@
 #include "Buttons.h"
 #include <Arduino.h>
 #include "pinConfig.h"
+#include "InfoLCD.h"
 /**
  * Private subsystem info
  */
@@ -13,6 +14,7 @@ namespace Buttons
   const int holdToggle = pinConfig::holdToggle;
   bool gripperState;
   bool holdState;
+  unsigned long timeOfGripperToggle = 0;
 }
 
 void Buttons::init(){
@@ -20,15 +22,26 @@ void Buttons::init(){
   pinMode(holdToggle, INPUT);
   holdState = true;
   gripperState = false;
+  
 }
 
 void Buttons::update(){
   holdState = digitalRead(holdToggle);
   //Serial.print("Button says: ");
-  Serial.println(holdState);
+  //Serial.println(holdState);
 
-  //if(digitalRead(gripperToggle))
-  //  gripperState =! gripperState;
+
+  int toggleReading = digitalRead(gripperToggle);
+  unsigned long currentTime = millis();
+  if(toggleReading && (currentTime - timeOfGripperToggle) > 2000){
+    gripperState = !gripperState;
+    if(gripperState){
+      InfoLCD::printToLCD("Gripper Engaged");
+    }else{
+      InfoLCD::printToLCD("Gripper Disengaged");
+    }
+    timeOfGripperToggle = currentTime;
+  }
 }
 
 bool Buttons::getHoldStatus()
