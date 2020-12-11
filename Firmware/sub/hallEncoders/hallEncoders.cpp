@@ -3,6 +3,7 @@
 #include <Arduino.h>
 #include "AS5048A.h"
 #include "pinConfig.h"
+#include "Buttons.h"
 
 namespace hallEncoders
 {
@@ -51,7 +52,7 @@ void hallEncoders::init()
     //digitalWrite(encoder4, HIGH);
 
     //Nice screen things
-    Serial.println("Hall Encoders Initialized");
+
 
     //initalize joint angles
     for (uint8_t j = 0; j < num_enc; j++)
@@ -77,16 +78,14 @@ void hallEncoders::init()
  */
 void hallEncoders::update()
 {
-    //Serial.println("Hall encoders update!");
-		for (uint8_t j = 0; j < hallEncoders::num_enc; j++){
-		  angles[j] = angleSensor[j].getRotation();
-      int thisAngle = (int) angles[j];
-      Serial.println("Hall Angle: " + String(thisAngle));
-      int thisRawAngle = (int)angleSensor[j].getRawRotation();
-      Serial.println("Hall Raw angle: " + String(thisRawAngle));
-      delay(50);
-	}
-
+  bool holdState = Buttons::getHoldStatus();
+    if(!holdState){
+      //Serial.println("Hall encoders update!");
+      for (uint8_t j = 0; j < hallEncoders::num_enc; j++){
+        angles[j] = angleSensor[j].getRotation();
+        delay(50);
+    }
+  }
 }
 
 /**
@@ -98,10 +97,10 @@ int hallEncoders::getStatus(uint8_t encoderNumber)
   //tempMap = map(hallEncoders::angles[encoderNumber], 0, 16384, 0, 359);
   int angleVal = (int)hallEncoders::angles[encoderNumber];
   if(encoderNumber == 1){
-    tempMap = map(angleVal, 0, 16384, 0, 359);
+    tempMap = map(angleVal, -8192, 8192, -180, 180);
     //tempMap = map(tempMap, 0, 359, -180, 180);
   }else{
-    tempMap = map(angleVal, -16384, 0, 0, 359);
+    tempMap = map(angleVal, -8192, 8192, -180, 180);
     //tempMap = map(tempMap, 0, 359, -180, 180);
   }
   return tempMap;
@@ -111,8 +110,7 @@ int hallEncoders::getStatus(uint8_t encoderNumber)
 }
 
 void hallEncoders::setZeroFor(int encoder){
-  Serial.print("Zeroing hall encoder:");
-  Serial.println(encoder);
+
   angleSensor[encoder].setZeroPosition(angleSensor[encoder].getRotation());
   delay(500);
 }

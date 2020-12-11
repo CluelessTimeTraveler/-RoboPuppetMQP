@@ -3,6 +3,7 @@
 #include <Arduino.h>
 #include "pinConfig.h"
 #include <InfoLCD.h>
+#include "Buttons.h"
 
 /**
  * Private subsystem info
@@ -80,7 +81,7 @@ void Encoders::init()
 			angles[j] = 0.0f;
 		}
 
-    InfoLCD::printToLCD("Encoders Initalized");
+    //InfoLCD::printToLCD("Encoders Initalized");
 
     // Set init flag
     init_complete = true;
@@ -91,21 +92,23 @@ void Encoders::init()
  * @brief Reads and stores each encoder angle
  * Default to 12 bit resolution
  */
-
 void Encoders::update()
 {
-	for (uint8_t j = 0; j < Encoders::num_enc; j++)
-	{
-    //Serial.print("Update encoder:");
-    //Serial.println(j);
-		angles[j] = Encoders::updateSingle(encoderPins[j]);
-    //Serial.println(angles[j]); //print the position in decimal format
-    delay(50);
-	}
+  bool holdState = Buttons::getHoldStatus();
+  if(!holdState){
+    for (uint8_t j = 0; j < Encoders::num_enc; j++)
+    {
+      //Serial.println("getting update of abs encoders");
+      //Serial.print("Update encoder:");
+      //Serial.println(j);
+      angles[j] = Encoders::updateSingle(encoderPins[j]);
+      //Serial.println(angles[j]); //print the position in decimal format
+      delay(50);
+    }
+  }
   //Serial.println();
   //Serial.println();
 }
-
 
 /**
  * @brief Transmits encoder value to RosComms
@@ -115,6 +118,7 @@ int Encoders::getStatus(uint8_t encoder)
 {
   float tempMap;
   tempMap = map((int)Encoders::angles[encoder], 0, 4096, 0, 360);
+  //Serial.println("getting status of encoder" + String(encoder));
   if(tempMap >= 180)
     tempMap = map(tempMap, 180, 360, -180, 0);
   return tempMap;
