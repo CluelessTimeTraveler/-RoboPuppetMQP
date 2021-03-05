@@ -14,6 +14,8 @@ from PyQt5.QtWidgets import QLineEdit
 from PyQt5.QtWidgets import QVBoxLayout
 from PyQt5 import QtGui
 from ui.robopuppet_intro import Ui_Robo
+import qtmodern.styles
+import qtmodern.windows
 
 
 class Login(QMainWindow):
@@ -93,12 +95,19 @@ if __name__ == '__main__':
     path = os.path.dirname(__file__)
     app = QApplication(sys.argv)
     window = Login()
+
+
     icon = QtGui.QIcon()
     icon.addPixmap(QtGui.QPixmap(path+"/ui/pics/Hiro_Logo_WPITheme-300x108.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
     window.main_ui.actionTrina2.setIcon(icon)
     window.setWindowTitle('Robopuppet User Login')
     window.setFixedSize(window.width(), window.height())
     window.show()
+
+    # qtmodern.styles.dark(app)
+    # mw = qtmodern.windows.ModernWindow(window)
+    # mw.show()
+
     ti = trina2_intro_window()
     rb = robopupper_intro_window()
     window.main_ui.li_btn.clicked.connect(login)
@@ -107,3 +116,4 @@ if __name__ == '__main__':
     window.main_ui.actionRobopuppet.triggered.connect(robo)
     window.main_ui.actionFeedback.triggered.connect(feedback)
     sys.exit(app.exec_())
+
