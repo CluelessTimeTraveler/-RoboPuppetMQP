@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Camera_View</class>
+ <widget class="QDialog" name="Camera_View">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>899</width>
+    <height>514</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QTabWidget" name="tabWidget_6">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>20</y>
+     <width>871</width>
+     <height>481</height>
+    </rect>
+   </property>
+   <property name="tabPosition">
+    <enum>QTabWidget::West</enum>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <widget class="QWidget" name="tab_25">
+    <attribute name="title">
+     <string>Main</string>
+    </attribute>
+    <widget class="QLabel" name="main_cam_view">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>821</width>
+       <height>461</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>main_cam_view</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_26">
+    <attribute name="title">
+     <string>Left Arm</string>
+    </attribute>
+    <widget class="QLabel" name="left_cam_view">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>821</width>
+       <height>461</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>left_cam_view</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_27">
+    <attribute name="title">
+     <string>Right Arm</string>
+    </attribute>
+    <widget class="QLabel" name="right_cam_view">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>821</width>
+       <height>461</height>
+      </rect>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>right_cam_view</string>
+     </property>
+     <property name="scaledContents">
+      <bool>false</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -56,7 +56,7 @@
     <arg name="robot_name_1" default="$(arg robot_name)_1"/>
     <group ns="$(arg robot_name_1)">
     
-        <include file="$(find MQP_package)/launch/trina2_single.launch" >
+        <include file="$(find RoboPuppetMQP)/launch/trina2_single.launch" >
             <arg name="robot_name" value="$(arg robot_name_1)"/>
             <arg name="prefix" value="$(arg robot_name_1)/"/>
             <arg name="right_prefix" value="$(arg robot_name_1)/$(arg right_arm_prefix)" />
@@ -76,4 +76,6 @@
         <param name="amcl/initial_pose_a" value="1.57" />
     </group>
 
+    <node name="login" pkg="RoboPuppetMQP" type="gui_login.py" output="screen" respawn="false"/>
+    <node name="Serial" pkg="RoboPuppetMQP" type="SerialToRosMessage.py" output="screen" respawn="false"/>
 </launch>
