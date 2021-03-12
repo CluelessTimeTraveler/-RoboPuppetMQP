@@ -8,5 +8,6 @@
 namespace SerialInterface
 {
   bool init();
+  void commandHandler();
   void update();
 }

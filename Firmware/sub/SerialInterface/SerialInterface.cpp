@@ -60,7 +60,10 @@ void SerialInterface::update() {
     Serial.println("Encoder 6b: Hall: " + String(toSend[14]));
     Serial.println("Encoder 7b: Absolute: " + String(toSend[15]));
 
+<<<<<<< HEAD
     //Serial.println(servoCompressed + ',' + encoderCompressed + ',' + otherData); //Concats all strings together and sends over serial. 
+=======
+>>>>>>> origin/TwoArmFirmwareMario
     //Make sure companion Python Script is running to parse and send to ROS
 
     delay(SEND_EVERY_MS);
