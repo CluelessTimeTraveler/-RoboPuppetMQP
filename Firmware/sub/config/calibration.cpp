@@ -25,7 +25,7 @@ void calibration::calibrate() {
     Encoders::setZeroSPI(pinConfig::encoder3b);
     Encoders::setZeroSPI(pinConfig::encoder4b);
 
-    Serial.println("Abs zeroed");
+    //Serial.println("Abs zeroed");
 
     hallEncoders::setZeroFor(0);
     hallEncoders::setZeroFor(1);
@@ -35,6 +35,6 @@ void calibration::calibrate() {
     hallEncoders::setZeroFor(4);
     hallEncoders::setZeroFor(5);
     
-    Serial.println("Hall zeroed");
+    //Serial.println("Hall zeroed");
 
 }

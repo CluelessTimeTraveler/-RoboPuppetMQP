@@ -35,7 +35,7 @@ void Servos::init(){
     //Attach each servo with correct PWM range
     InfoLCD::printToLCD("Lifting...");
     attachServos();
-    goToHomePosition();
+    //goToHomePosition();
 }
 
 void Servos::update(){
@@ -97,14 +97,14 @@ void Servos::goToHomePosition(){
     //Moves arm into completely upright position
     //InfoLCD::printToLCD("Going to home position");
     myServo[0].write(1500);
-    Serial.println("Lifting...");
+    //Serial.println("Lifting...");
     // for(int i = 20; i < 170; i++){
     //     myServo[1].write(i);
     //     delay(100);
     // }   
     myServo[1].write(170);
     delay(1000);
-    Serial.println("Servo 1 done");
+    //Serial.println("Servo 1 done");
     //InfoLCD::printToLCD("Lift Complete");
     myServo[2].write(1500);
     myServo[3].write(45);

@@ -37,8 +37,8 @@ namespace pinConfig
     const uint8_t Servosb[6] = {29, 30, 31, 32, 33, 34};
 
     //Buttons
-    const int gripperToggle = 35;
-    const int gripperToggleb = 36;
+    const int gripperToggle = 36;
+    const int gripperToggleb = 35;
     const int holdToggle = 37;
 
     //Vibration Motors
