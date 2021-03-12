@@ -1,6 +1,7 @@
 
 #include "SerialInterface.h"
 #include <Encoders.h>
+#include <Servos.h>
 #include <Buttons.h>
 #include <Arduino.h>
 #include <hallEncoders.h>
@@ -8,15 +9,27 @@
 #define SEND_EVERY_MS 1000
 
 
+//-----Command Dictionary
+/*
+0 -> Arm Startup message
+1 -> Arm should send response with joint positions and response command code 10
+2 -> Arm should calibrate and send response command code 20 to indicate completion
+*/
+
 namespace SerialInterface
 {
   int toSend[9];
 }
 bool SerialInterface::init() {
   Serial.begin(9600);
+  Serial.println("0");
   return true;
 }
 void SerialInterface::update() {
+  // String msg = Serial.readString();
+  // if(msg != "101"){
+  //   return;
+  // }
 
   //Set each of these equal to the correct values coming from the arm
   toSend[0] = Encoders::getStatus(0); // Servo One
@@ -43,9 +56,32 @@ void SerialInterface::update() {
     Serial.println("Encoder 7: Absolute: " + String(toSend[6]));
     */
 
-    Serial.println(servoCompressed + ',' + encoderCompressed + ',' + otherData); //Concats all strings together and sends over serial. 
+    Serial.println("10:" + servoCompressed + ',' + encoderCompressed + ',' + otherData); //Concats all strings together and sends over serial. 
     //Make sure companion Python Script is running to parse and send to ROS
 
     delay(SEND_EVERY_MS);
   
+}
+
+void SerialInterface::commandHandler() {
+  if(Serial.available()){
+    String msg = Serial.readString();
+    int commandCode = atoi(strtok((char *)msg.c_str(),":"));
+
+    switch (commandCode)
+    {
+    case 1: //GUI wants joint positions
+      SerialInterface::update();
+      break;
+
+    case 2: //GUI wants recalibration
+      Servos::init();
+      break;
+
+    default:
+      //invalid command
+      break;
+    }
+  }
+
 }
