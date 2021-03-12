@@ -27,8 +27,8 @@ void Buttons::init(){
 
 void Buttons::update(){
   holdState = digitalRead(holdToggle);
-  //Serial.print("Button says: ");
-  //Serial.println(holdState);
+  Serial.print("Button says: ");
+  Serial.println(holdState);
 
 
   int toggleReading = digitalRead(gripperToggle);

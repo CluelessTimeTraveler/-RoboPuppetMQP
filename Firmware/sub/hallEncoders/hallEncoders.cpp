@@ -16,11 +16,14 @@ namespace hallEncoders
   const uint8_t encoder1 = pinConfig::hallEncode1;
   const uint8_t encoder2 = pinConfig::hallEncode2;
   const uint8_t encoder3 = pinConfig::hallEncode3;
+  const uint8_t encoder4 = pinConfig::hallEncode1b;
+  const uint8_t encoder5 = pinConfig::hallEncode2b;
+  const uint8_t encoder6 = pinConfig::hallEncode3b;
 
   //Encoders 
-  const uint8_t num_enc = 3;
+  const uint8_t num_enc = 6;
   float angles[num_enc];
-  const uint8_t encoderPins [num_enc] = {encoder1, encoder2, encoder3};
+  const uint8_t encoderPins [num_enc] = {encoder1, encoder2, encoder3, encoder4, encoder5, encoder6};
   //int angle;
 
   // Init flag
@@ -28,6 +31,7 @@ namespace hallEncoders
 
   //Make encoder objects?
   AS5048A* angleSensor = (AS5048A*) malloc(sizeof(AS5048A)*num_enc);
+  //AS5048A angleSensor[num_enc];
   //AS5048A encoderSingle = AS5048A(encoder1);
 
   // Methods
@@ -44,12 +48,17 @@ void hallEncoders::init()
     pinMode(encoder1, OUTPUT);
     pinMode(encoder2, OUTPUT);
     pinMode(encoder3, OUTPUT);
+    pinMode(encoder4, OUTPUT);
+    pinMode(encoder5, OUTPUT);
+    pinMode(encoder6, OUTPUT);
     
     //Set the CS line high which is the default inactive state
     digitalWrite(encoder1, HIGH);
     digitalWrite(encoder2, HIGH);
     digitalWrite(encoder3, HIGH);
-    //digitalWrite(encoder4, HIGH);
+    digitalWrite(encoder4, HIGH);
+    digitalWrite(encoder5, HIGH);
+    digitalWrite(encoder6, HIGH);
 
     //Nice screen things
 
@@ -110,6 +119,8 @@ int hallEncoders::getStatus(uint8_t encoderNumber)
 }
 
 void hallEncoders::setZeroFor(int encoder){
+
+  //Serial.println()
 
   angleSensor[encoder].setZeroPosition(angleSensor[encoder].getRotation());
   delay(500);
