@@ -36,8 +36,8 @@ namespace pinConfig
     const uint8_t Servos[6] = {8, 9, 10, 11, 12, 46};
 
     //Buttons
-    const int gripperToggle = 34;
-    const int holdToggle = 35;
+    const int gripperToggle = 35;
+    const int holdToggle = 34;
 
 
 }
