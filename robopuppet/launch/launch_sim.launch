@@ -1,6 +1,6 @@
 <launch>
   <arg name="port"/>
   <include file="$(find kortex_gazebo)/launch/spawn_kortex_robot.launch"/>
-  <node name="SerialToRosMessage" pkg="robopuppet" type="SerialToRosMessage.py" output="screen" args="$(arg port)"/>
-  <node name="mqptestmultijoint" pkg="robopuppet" type="mqptestmultijoint.py" />
+  <node name="SerialToRosMessage" pkg="RoboPuppetMQP" type="SerialToRosMessage.py" output="screen" args="$(arg port)"/>
+  <node name="mqptestmultijoint" pkg="RoboPuppetMQP" type="mqptestmultijoint.py" />
 </launch>

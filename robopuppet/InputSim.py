@@ -12,7 +12,7 @@ def PuppetSerialCommSim():
     rightPub = rospy.Publisher('LeftArm', RightArmPositions, queue_size=1)
 
     rospy.init_node('PuppetSerialCommSim', anonymous=True)
-    rate = rospy.Rate(5) # 10hz
+    rate = rospy.Rate(1) # 10hz
     while not rospy.is_shutdown():
 
         servoData1 = 0
@@ -41,7 +41,7 @@ def PuppetSerialCommSim():
 
         msg = RightArmPositions(servoData1, servoData2, servoData3, encoderData1, encoderData2, encoderData3, encoderData4, gripperEngaged, armLocked)
         rightPub.publish(msg)
-        rospy.loginfo(msg)
+        #rospy.loginfo(msg)
         
         rate.sleep()
 

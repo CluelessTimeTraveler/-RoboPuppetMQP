@@ -1,0 +1,6 @@
+<launch>
+  <arg name="port"/>
+  <include file="$(find kortex_driver)/launch/kortex_driver.launch"/>
+  <node name="PuppetSerialCommSim" pkg="RoboPuppetMQP" type="InputSim.py" output="screen"/>
+  <node name="RealArmControl" pkg="RoboPuppetMQP" type="RealArmControl.py" />
+</launch>

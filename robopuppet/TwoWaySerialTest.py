@@ -3,10 +3,10 @@ import time
 from struct import *
 
 def trySerial():
-    port = 'COM4'
+    port = '/dev/ttyACM0'
     try:
         print("Attemping connection with " + str(port))
-        serialInterface = serial.Serial('COM4', baudrate=9600)
+        serialInterface = serial.Serial('/dev/ttyACM0', baudrate=9600)
     except serial.SerialException:
         print("----------ERROR------------Unable to open Serial Port -----------ERROR---------")
         return
@@ -65,6 +65,10 @@ def trySerial():
         except ValueError:
             print("Unable to convert one of the data values to integer, trying again")
             continue
+	msg = LeftArmPositions(servoData1, servoData2, servoData3, encoderData1, encoderData2, encoderData3, encoderData4, gripperEngaged, armLocked)
+        #rospy.loginfo(msg)
+        pub.publish(msg)
+        rate.sleep()
 
 
 trySerial()
