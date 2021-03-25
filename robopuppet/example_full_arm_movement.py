@@ -4,7 +4,7 @@
 #
 # Copyright (c) 2019 Kinova inc. All rights reserved.
 #
-# This software may be modified and distributed
+# This software may be modified and distributed 
 # under the terms of the BSD 3-Clause license.
 #
 # Refer to the LICENSE file for details.
@@ -16,10 +16,8 @@ import rospy
 import time
 from kortex_driver.srv import *
 from kortex_driver.msg import *
-from std_msgs.msg import Float32
-from std_msgs.msg import Int16
 from msg_arduino.msg import LeftArmPositions
-from sensor_msgs.msg import Joy
+
 
 
 class ExampleFullArmMovement:
@@ -29,8 +27,8 @@ class ExampleFullArmMovement:
 
             self.HOME_ACTION_IDENTIFIER = 2
 
-	    # Subscriber
-	    rospy.Subscriber('/LeftArm',JointPositions,self.example_send_joint_angles,queue_size=1)
+            # Subscriber
+            rospy.Subscriber('/LeftArm', LeftArmPositions, self.example_send_joint_angles, queue_size=1)
 
             # Get node params
             self.robot_name = rospy.get_param('~robot_name', "my_gen3")
@@ -86,13 +84,13 @@ class ExampleFullArmMovement:
     def wait_for_action_end_or_abort(self):
         while not rospy.is_shutdown():
             if (self.last_action_notif_type == ActionEvent.ACTION_END):
-                #rospy.loginfo("Received ACTION_END notification")
+                rospy.loginfo("Received ACTION_END notification")
                 return True
             elif (self.last_action_notif_type == ActionEvent.ACTION_ABORT):
-                #rospy.loginfo("Received ACTION_ABORT notification")
+                rospy.loginfo("Received ACTION_ABORT notification")
                 return False
-            #else:
-                #time.sleep(0.01)
+            else:
+                time.sleep(0.01)
 
     def example_subscribe_to_a_robot_notification(self):
         # Activate the publishing of the ActionNotification
@@ -163,9 +161,7 @@ class ExampleFullArmMovement:
         rospy.sleep(0.25)
         return True
 
-	#Currently, this function send robot to a position base on the last position
-        #Not the absoute position
-    def example_send_cartesian_pose(self,dx,dy,dz):
+    def example_send_cartesian_pose(self):
         self.last_action_notif_type = None
         # Get the actual cartesian pose to increment it
         # You can create a subscriber to listen to the base_feedback
@@ -173,10 +169,9 @@ class ExampleFullArmMovement:
         feedback = rospy.wait_for_message("/" + self.robot_name + "/base_feedback", BaseCyclic_Feedback)
 
         req = PlayCartesianTrajectoryRequest()
-	#dx,dy,dz should all be something like 0.1-0.5 the unit is probably meter
-        req.input.target_pose.x = feedback.base.commanded_tool_pose_x + dx
-        req.input.target_pose.y = feedback.base.commanded_tool_pose_y + dy
-        req.input.target_pose.z = feedback.base.commanded_tool_pose_z + dz
+        req.input.target_pose.x = feedback.base.commanded_tool_pose_x
+        req.input.target_pose.y = feedback.base.commanded_tool_pose_y
+        req.input.target_pose.z = feedback.base.commanded_tool_pose_z + 0.10
         req.input.target_pose.theta_x = feedback.base.commanded_tool_pose_theta_x
         req.input.target_pose.theta_y = feedback.base.commanded_tool_pose_theta_y
         req.input.target_pose.theta_z = feedback.base.commanded_tool_pose_theta_z
@@ -186,7 +181,7 @@ class ExampleFullArmMovement:
         pose_speed.orientation = 15
 
         # The constraint is a one_of in Protobuf. The one_of concept does not exist in ROS
-        # To specify a one_of, create it and put it in the appropriate list of the oneof_type member of the ROS object :
+        # To specify a one_of, create it and put it in the appropriate list of the oneof_type member of the ROS object : 
         req.input.constraint.oneof_type.speed.append(pose_speed)
 
         # Call the service
@@ -199,8 +194,8 @@ class ExampleFullArmMovement:
         else:
             return self.wait_for_action_end_or_abort()
 
-    def example_send_joint_angles(self, angle_received):
-        #rospy.loginfo("Receive Angle:" + str(angle_received.axes[0]))
+    def example_send_joint_angles(self,angle_received):
+        # rospy.loginfo("Receive Angle:" + str(angle_received.axes[0]))
         self.last_action_notif_type = None
         # Create the list of angles
         req = PlayJointTrajectoryRequest()
@@ -218,12 +213,12 @@ class ExampleFullArmMovement:
         for i in range(self.degrees_of_freedom):
             temp_angle = JointAngle()
             temp_angle.joint_identifier = i
-            print(i)
+            #print(i)
             temp_angle.value = anglesArray[i]
             req.input.joint_angles.joint_angles.append(temp_angle)
 
         # Send the angles
-        #rospy.loginfo("Sending the robot vertical...")
+        # rospy.loginfo("Sending the robot vertical...")
         try:
             self.play_joint_trajectory(req)
         except rospy.ServiceException:
@@ -233,13 +228,11 @@ class ExampleFullArmMovement:
             return self.wait_for_action_end_or_abort()
 
     def example_send_gripper_command(self, value):
-        # Initialize the request
-        # Close the gripper
-	#rospy.loginfo("Receive Angle:" + str(value.buttons[5]))
         req = SendGripperCommandRequest()
         finger = Finger()
         finger.finger_identifier = 1
-        finger.value = value.buttons[5]
+        #finger.value = value.buttons[5]
+        finger.value = 0
         req.input.gripper.finger.append(finger)
         req.input.mode = GripperMode.GRIPPER_POSITION
 
@@ -268,7 +261,7 @@ class ExampleFullArmMovement:
             # Make sure to clear the robot's faults else it won't move if it's already in fault
             success &= self.example_clear_faults()
             #*******************************************************************************
-
+            
             #*******************************************************************************
             # Activate the action notifications
             success &= self.example_subscribe_to_a_robot_notification()
@@ -283,9 +276,10 @@ class ExampleFullArmMovement:
             # Example of gripper command
             # Let's fully open the gripper
             if self.is_gripper_present:
-                success &= self.example_send_gripper_command(0.0)
+                #success &= self.example_send_gripper_command(0.0)
+                success = True
             else:
-                rospy.logwarn("No gripper is present on the arm.")
+                rospy.logwarn("No gripper is present on the arm.")  
             #*******************************************************************************
 
             #*******************************************************************************
@@ -294,36 +288,35 @@ class ExampleFullArmMovement:
 
             # Example of cartesian pose
             # Let's make it move in Z
-
+            #success &= self.example_send_cartesian_pose()
             #*******************************************************************************
 
             #*******************************************************************************
             # Example of angular position
             # Let's send the arm to vertical position
-            #success &= self.example_send_joint_angles(30)
+            #success &= self.example_send_joint_angles()
             #*******************************************************************************
 
             #*******************************************************************************
             # Example of gripper command
             # Let's close the gripper at 50%
             if self.is_gripper_present:
-                success &= self.example_send_gripper_command(0.5)
+                #success &= self.example_send_gripper_command(0.5)
+                success = True
             else:
-                rospy.logwarn("No gripper is present on the arm.")
-
-
+                rospy.logwarn("No gripper is present on the arm.")    
+            #*******************************************************************************
+        
         # For testing purposes
         rospy.set_param("/kortex_examples_test_results/full_arm_movement_python", success)
 
         if not success:
             rospy.logerr("The example encountered an error.")
-
     def run(self):
-        #print "running"
-
         rospy.spin()
+
 
 if __name__ == "__main__":
     ex = ExampleFullArmMovement()
-    ex.example_home_the_robot()
+    ex.main()
     ex.run()

@@ -29,7 +29,7 @@ def PuppetSerialCommSim():
         rospy.loginfo(msg)
         leftPub.publish(msg)
 
-        servoData1 = 1
+        servoData1 = 180
         servoData2 = 1
         servoData3 = 1
         encoderData1 = 1
