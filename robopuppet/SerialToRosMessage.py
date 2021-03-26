@@ -21,8 +21,8 @@ from msg_arduino.msg import RightArmPositions
 def PuppetSerialComms():
     #pub = rospy.Publisher('potAngles', JointPositions, queue_size=1)
 
-    leftPub = rospy.Publisher('RightArm', LeftArmPositions, queue_size=1)
-    rightPub = rospy.Publisher('LeftArm', RightArmPositions, queue_size=1)
+    leftPub = rospy.Publisher('LeftArm', LeftArmPositions, queue_size=1)
+    rightPub = rospy.Publisher('RightArm', RightArmPositions, queue_size=1)
 #    if(len(sys.argv) != 4):
 #        print("Argv = " + str(len(sys.argv)) + str(sys.argv))
 #        print("NO SERIAL PORT GIVEN OR INVALID PORT")

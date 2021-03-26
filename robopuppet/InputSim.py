@@ -27,12 +27,12 @@ def PuppetSerialCommSim():
     
         msg = LeftArmPositions(servoData1, servoData2, servoData3, encoderData1, encoderData2, encoderData3, encoderData4, gripperEngaged, armLocked)
         rospy.loginfo(msg)
-        leftPub.publish(msg)
+        #leftPub.publish(msg)
 
-        servoData1 = 180
+        servoData1 = 1
         servoData2 = 1
         servoData3 = 1
-        encoderData1 = 1
+        encoderData1 = 310
         encoderData2 = 1
         encoderData3 = 1
         encoderData4 = 1
@@ -41,7 +41,7 @@ def PuppetSerialCommSim():
 
         msg = RightArmPositions(servoData1, servoData2, servoData3, encoderData1, encoderData2, encoderData3, encoderData4, gripperEngaged, armLocked)
         rightPub.publish(msg)
-        #rospy.loginfo(msg)
+        rospy.loginfo(msg)
         
         rate.sleep()
 

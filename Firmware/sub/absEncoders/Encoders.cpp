@@ -132,8 +132,10 @@ int Encoders::getStatus(uint8_t encoder)
   float tempMap;
   tempMap = map((int)Encoders::angles[encoder], 0, 4096, 0, 360);
   //Serial.println("getting status of encoder" + String(encoder));
-  if(tempMap >= 180)
-    tempMap = map(tempMap, 180, 360, -180, 0);
+
+  //COmmented out for real arm
+  // if(tempMap >= 180)
+  //   tempMap = map(tempMap, 180, 360, -180, 0);
   return tempMap;
 }
 

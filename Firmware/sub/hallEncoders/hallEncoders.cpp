@@ -105,13 +105,15 @@ int hallEncoders::getStatus(uint8_t encoderNumber)
   int tempMap;
   //tempMap = map(hallEncoders::angles[encoderNumber], 0, 16384, 0, 359);
   int angleVal = (int)hallEncoders::angles[encoderNumber];
-  if(encoderNumber == 1){
-    tempMap = map(angleVal, -8192, 8192, -180, 180);
-    //tempMap = map(tempMap, 0, 359, -180, 180);
+
+  if(angleVal <= 0){
+    tempMap = map(angleVal, -8192, 0, 180, 0);
   }else{
-    tempMap = map(angleVal, -8192, 8192, -180, 180);
-    //tempMap = map(tempMap, 0, 359, -180, 180);
+    tempMap = map(angleVal, 0, 8192, 360, 180);
   }
+  //tempMap = map(angleVal, -8192, 8192, 0, 360); //Mapping is changed to 0 360 for real arm, was -180 to 180
+    //tempMap = map(tempMap, 0, 359, -180, 180);
+  
   return tempMap;
   // float tempMap;
   // tempMap = map(hallEncoders::angle, 0, 16384, 1, 360);

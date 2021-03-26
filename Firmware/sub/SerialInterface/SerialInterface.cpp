@@ -22,7 +22,7 @@ namespace SerialInterface
 }
 bool SerialInterface::init() {
   Serial.begin(9600);
-  Serial.println("0");
+  //Serial.println("0");
   return true;
 }
 void SerialInterface::update() {
@@ -60,6 +60,7 @@ void SerialInterface::update() {
     String encoderCompressed_b = String(toSend[12]) + ',' + String(toSend[13]) + ',' + String(toSend[14]) + ',' + String(toSend[15]); //String of Encoder Data
     String otherData_b = String(toSend[16]) + ',' + String(toSend[17]); // String of other data
     
+    // Serial.println("---------------------------------------------");
     // Serial.println("Encoder 1: Absolute: " + String(toSend[0]));
     // Serial.println("Encoder 2: Hall: " + String(toSend[1]));
     // Serial.println("Encoder 3: Absolute: " + String(toSend[2]));
@@ -76,7 +77,7 @@ void SerialInterface::update() {
     // Serial.println("Encoder 6b: Hall: " + String(toSend[14]));
     // Serial.println("Encoder 7b: Absolute: " + String(toSend[15]));
 
-    Serial.println("10:" + servoCompressed + ',' + encoderCompressed + ',' + otherData + ',' + servoCompressed_b + ',' + encoderCompressed_b + ',' + otherData_b); //Concats all strings together and sends over serial. 
+    Serial.println(servoCompressed + ',' + encoderCompressed + ',' + otherData + ',' + servoCompressed_b + ',' + encoderCompressed_b + ',' + otherData_b); //Concats all strings together and sends over serial. 
     //Make sure companion Python Script is running to parse and send to ROS
 
     delay(SEND_EVERY_MS);

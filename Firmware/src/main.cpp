@@ -24,6 +24,6 @@ void loop() {
   hallEncoders::update();
   Buttons::update();
   Servos::update();
-  SerialInterface::commandHandler();
+  SerialInterface::update();
 
 }
