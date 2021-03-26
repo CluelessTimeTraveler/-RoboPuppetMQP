@@ -25,7 +25,5 @@ void loop() {
   Buttons::update();
   Servos::update();
   SerialInterface::commandHandler();
-  
-
 
 }
