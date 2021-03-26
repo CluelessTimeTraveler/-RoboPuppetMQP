@@ -25,8 +25,8 @@ from cv_bridge import CvBridge, CvBridgeError
 from msg_arduino.msg import JointPositions
 from msg_arduino.msg import LeftArmPositions
 from msg_arduino.msg import RightArmPositions
-import qtmodern.styles
-import qtmodern.windows
+#import qtmodern.styles
+#import qtmodern.windows
 
 
 global leftAngleList

@@ -14,8 +14,8 @@ from PyQt5.QtWidgets import QLineEdit
 from PyQt5.QtWidgets import QVBoxLayout
 from PyQt5 import QtGui
 from ui.robopuppet_intro import Ui_Robo
-import qtmodern.styles
-import qtmodern.windows
+#import qtmodern.styles
+#import qtmodern.windows
 
 
 class Login(QMainWindow):

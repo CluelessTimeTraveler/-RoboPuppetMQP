@@ -28,7 +28,7 @@ class ExampleFullArmMovement:
             self.HOME_ACTION_IDENTIFIER = 2
 
             # Subscriber
-            rospy.Subscriber('/LeftArm', LeftArmPositions, self.example_send_joint_angles, queue_size=1)
+            #rospy.Subscriber('/LeftArm', LeftArmPositions, self.example_send_joint_angles, queue_size=1)
 
             # Get node params
             self.robot_name = rospy.get_param('~robot_name', "my_gen3")
@@ -312,6 +312,8 @@ class ExampleFullArmMovement:
 
         if not success:
             rospy.logerr("The example encountered an error.")
+        rospy.Subscriber('/LeftArm', LeftArmPositions, self.example_send_joint_angles, queue_size=1)
+
     def run(self):
         rospy.spin()
 
