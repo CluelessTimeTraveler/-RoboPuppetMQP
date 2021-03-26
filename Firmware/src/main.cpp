@@ -12,8 +12,9 @@ void setup() {
   SerialInterface::init();
   InfoLCD::init();
   Encoders::init();
+  delay(200);
   hallEncoders::init();
-  //Servos::init();
+  Servos::init();
   calibration::calibrate();
   Buttons::init();
 }
@@ -24,6 +25,6 @@ void loop() {
   hallEncoders::update();
   Buttons::update();
   Servos::update();
-  SerialInterface::commandHandler();
+  SerialInterface::update();
 
 }

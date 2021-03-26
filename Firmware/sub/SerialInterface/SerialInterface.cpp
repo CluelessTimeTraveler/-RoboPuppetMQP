@@ -18,11 +18,11 @@
 
 namespace SerialInterface
 {
-  int toSend[9];
+  int toSend[18];
 }
 bool SerialInterface::init() {
   Serial.begin(9600);
-  Serial.println("0");
+  //Serial.println("0");
   return true;
 }
 void SerialInterface::update() {
@@ -67,41 +67,43 @@ void SerialInterface::update() {
     // Serial.println("Encoder 5: Absolute: " + String(toSend[4]));
     // Serial.println("Encoder 6: Hall: " + String(toSend[5]));
     // Serial.println("Encoder 7: Absolute: " + String(toSend[6]));
-    
-    // Serial.println("Encoder 1b: Absolute: " + String(toSend[9]));
-    // Serial.println("Encoder 2b: Hall: " + String(toSend[10]));
-    // Serial.println("Encoder 3b: Absolute: " + String(toSend[11]));
-    // Serial.println("Encoder 4b: Hall: " + String(toSend[12]));
-    // Serial.println("Encoder 5b: Absolute: " + String(toSend[13]));
-    // Serial.println("Encoder 6b: Hall: " + String(toSend[14]));
-    // Serial.println("Encoder 7b: Absolute: " + String(toSend[15]));
+    //Serial.println("Button: " + String(toSend[7]));
+    Serial.println("Encoder 1b: Absolute: " + String(toSend[9]));
+    Serial.println("Encoder 2b: Hall: " + String(toSend[10]));
+    Serial.println("Encoder 3b: Absolute: " + String(toSend[11]));
+    Serial.println("Encoder 4b: Hall: " + String(toSend[12]));
+    Serial.println("Encoder 5b: Absolute: " + String(toSend[13]));
+    Serial.println("Encoder 6b: Hall: " + String(toSend[14]));
+    Serial.println("Encoder 7b: Absolute: " + String(toSend[15]));
 
-    Serial.println("10:" + servoCompressed + ',' + encoderCompressed + ',' + otherData + ',' + servoCompressed_b + ',' + encoderCompressed_b + ',' + otherData_b); //Concats all strings together and sends over serial. 
+    //Serial.println(servoCompressed + ',' + encoderCompressed + ',' + otherData + ',' + servoCompressed_b + ',' + encoderCompressed_b + ',' + otherData_b); //Concats all strings together and sends over serial. 
+    //Serial.println(servoCompressed_b + ',' + encoderCompressed_b + ',' + otherData_b); //Concats all strings together and sends over serial. 
+
     //Make sure companion Python Script is running to parse and send to ROS
 
     delay(SEND_EVERY_MS);
   
 }
 
-void SerialInterface::commandHandler() {
-  if(Serial.available()){
-    String msg = Serial.readString();
-    int commandCode = atoi(strtok((char *)msg.c_str(),":"));
+// void SerialInterface::commandHandler() {
+//   if(Serial.available()){
+//     String msg = Serial.readString();
+//     int commandCode = atoi(strtok((char *)msg.c_str(),":"));
 
-    switch (commandCode)
-    {
-    case 1: //GUI wants joint positions
-      SerialInterface::update();
-      break;
+//     switch (commandCode)
+//     {
+//     case 1: //GUI wants joint positions
+//       SerialInterface::update();
+//       break;
 
-    case 2: //GUI wants recalibration
-      Servos::init();
-      break;
+//     case 2: //GUI wants recalibration
+//       Servos::init();
+//       break;
 
-    default:
-      //invalid command
-      break;
-    }
-  }
+//     default:
+//       //invalid command
+//       break;
+//     }
+//   }
 
-}
+// }

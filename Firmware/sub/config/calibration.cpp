@@ -16,14 +16,21 @@ namespace calibration
 
 void calibration::calibrate() {
     Encoders::setZeroSPI(pinConfig::encoder1);
+    delay(500);
     Encoders::setZeroSPI(pinConfig::encoder2);
+    delay(500);
     Encoders::setZeroSPI(pinConfig::encoder3);
+    delay(500);
     Encoders::setZeroSPI(pinConfig::encoder4);
-    
+    delay(500);
     Encoders::setZeroSPI(pinConfig::encoder1b);
+    delay(500);
     Encoders::setZeroSPI(pinConfig::encoder2b);
+    delay(500);
     Encoders::setZeroSPI(pinConfig::encoder3b);
+    delay(500);
     Encoders::setZeroSPI(pinConfig::encoder4b);
+    delay(500);
 
     //Serial.println("Abs zeroed");
 
