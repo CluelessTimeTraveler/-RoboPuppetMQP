@@ -1,4 +1,5 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
+
 import rospy
 import sys
 import socket
@@ -10,17 +11,19 @@ UDP_IP = "127.0.0.1"
 UDP_PORT = 5005
 
 def PuppetSerialComms():
- 
+
     leftPub = rospy.Publisher('LeftArm', LeftArmPositions, queue_size=1)
     rightPub = rospy.Publisher('RightArm', RightArmPositions, queue_size=1)
 
     sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+    sock.bind((UDP_IP, UDP_PORT))
 
     rospy.init_node('PuppetSerialComms', anonymous=True)
     rate = rospy.Rate(20) # 10hz
     while not rospy.is_shutdown():
         #hello_str = "hello world %s" % rospy.get_time()
         while True:
+            print("checking socket")
             data, addr = sock.recvfrom(1024)
             print("Data recieved: " + data)
             try:
