@@ -57,10 +57,10 @@ def PuppetSerialComms():
                 continue
 
             msg = LeftArmPositions(servoData1, servoData2, servoData3, encoderData1, encoderData2, encoderData3, encoderData4, gripperEngaged, armLocked)
-	        msg_b = RightArmPositions(servoData1_b, servoData2_b, servoData3_b, encoderData1_b, encoderData2_b, encoderData3_b, encoderData4_b, gripperEngaged_b, armLocked_b)
+            msg_b = RightArmPositions(servoData1_b, servoData2_b, servoData3_b, encoderData1_b, encoderData2_b, encoderData3_b, encoderData4_b, gripperEngaged_b, armLocked_b)
             #rospy.loginfo(msg)
             leftPub.publish(msg)
-	        rightPub.publish(msg_b)
+            rightPub.publish(msg_b)
 
             rate.sleep()
 
