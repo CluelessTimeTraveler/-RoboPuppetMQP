@@ -23,7 +23,10 @@ from PyQt5 import QtCore, QtWidgets
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge, CvBridgeError
 from msg_arduino.msg import JointPositions
-
+from msg_arduino.msg import LeftArmPositions
+from msg_arduino.msg import RightArmPositions
+#import qtmodern.styles
+#import qtmodern.windows
 
 
 global leftAngleList
@@ -43,16 +46,29 @@ global playcount, playi, play_totalcount
 global angleList_lb, angleList_l1, angleList_l2, angleList_l3, angleList_l4, angleList_l5, angleList_l6
 global angleList_rb, angleList_r1, angleList_r2, angleList_r3, angleList_r4, angleList_r5, angleList_r6
 updateControlPanel = True
-leftRecordList = []
-rightRecordList = []
 
+#Used to update GUI
+leftRecordList = []
+leftGripperPosition = 0
+
+rightRecordList = []
+rightGripperPosition = 0
+
+##Used to save recieved values from the physical arm
+savedLeftAngles = []
+savedRightAngles = []
 
 class ROS(QThread):
     def __init__(self):
         rospy.init_node('gui', anonymous=True)
         #rospy.Subscriber('/joy',Joy,self.robopuppet,queue_size=1,buff_size=52428800)
         # Subscribe to Robopuppet
-        rospy.Subscriber('/potAngles', JointPositions, self.robopuppet, queue_size=1)
+
+        #rospy.Subscriber('/potAngles', JointPositions, self.robopuppet, queue_size=1)
+        
+        rospy.Subscriber('/LeftArm', LeftArmPositions, self.leftArmSaveData, queue_size=1)
+        rospy.Subscriber('/RightArm', RightArmPositions, self.rightArmSaveData, queue_size=1)
+
         # Subscribe to cameras on the robot
         rospy.Subscriber(robot_prefix + '/right_arm_cam/color/image_raw', Image, self.right_image, queue_size=1)
         rospy.Subscriber(robot_prefix + '/left_arm_cam/color/image_raw', Image, self.left_image, queue_size=1)
@@ -92,7 +108,6 @@ class ROS(QThread):
         self.leftJoint7 = rospy.Publisher('/' + robot_prefix + '/left_arm_joint_7_position_controller/command', Float64,
                                           queue_size=1)
         self.leftGripper = rospy.Publisher('/' + robot_prefix + '/left_arm_robotiq_2f_85_gripper_controller/gripper_cmd/goal',GripperCommandActionGoal,queue_size=1)
-
     # convert raw camera data using CV
     def left_image(self,data):
         global left_cv_image
@@ -129,29 +144,64 @@ class ROS(QThread):
         self.publish_to_left(leftDesireAngle)
         self.publish_to_right(rightDesireAngle)
 
-    def robopuppet(self, data):
+    def updateRobopuppet(self):
+        global savedLeftAngles
+        global savedRightAngles
+        global leftGripperPosition
+        global rightGripperPosition
+        print("Size of savedRightAngles " + str(len(savedRightAngles)))
+        
         c = math.pi/180
         if states == 'Enabled':
-            gripper = data.gripperToggle
-            angles = [data.servoOne*c, data.servoTwo*c, data.servoThree*c, data.encoderOne*c, data.encoderTwo*c,
-                      data.encoderThree*c, data.encoderFour*c]  # angles from robopuppet
             if mirror:
                 angles_right = []
-                for i in angles:
+                for i in savedLeftAngles:
                     angles_right.append(-i)
-            else:
-                angles_right = angles
+            ##else:
+                ##angles_right = angles
 
-            if leftMode & rightMode:
-                self.send_gripper_cmd(gripper, gripper)
-                self.publish_to_left(angles)
-                self.publish_to_right(angles_right)
-            elif leftMode:
-                self.send_gripper_cmd(gripper, 0)
-                self.publish_to_left(angles)
-            else:
-                self.send_gripper_cmd(0, gripper)
-                self.publish_to_right(angles)
+            # if leftMode & rightMode:
+            #     self.send_gripper_cmd(leftGripperPosition, rightGripperPosition)
+            #     self.publish_to_left(savedLeftAngles)
+            #     self.publish_to_right(savedRightAngles)
+            # elif leftMode:
+            #     self.send_gripper_cmd(leftGripperPosition, 0)
+            #     self.publish_to_left(savedLeftAngles)
+            # else:
+            #     self.send_gripper_cmd(0, rightGripperPosition)
+            #     self.publish_to_right(savedRightAngles)
+
+
+    def leftArmSaveData(self, data):
+        c = math.pi/180
+        global savedLeftAngles
+        global leftGripperPosition
+
+        savedLeftAngles = [data.servoOne*c, data.servoTwo*c, data.servoThree*c, data.encoderOne*c, data.encoderTwo*c,
+                      data.encoderThree*c, data.encoderFour*c]  # angles from robopuppet's left arm
+        leftGripperPosition = data.gripperToggle
+
+        if leftMode:
+            self.send_gripper_cmd(leftGripperPosition, rightGripperPosition)
+            self.publish_to_left(savedLeftAngles)
+
+        # self.updateRobopuppet()
+
+    def rightArmSaveData(self, data):
+        c = math.pi/180
+        global savedRightAngles
+        global rightGripperPosition
+        savedRightAngles = [data.servoOne*c, data.servoTwo*c, data.servoThree*c, data.encoderOne*c, data.encoderTwo*c,
+                      data.encoderThree*c, data.encoderFour*c]  # angles from robopuppet's right arm
+        rightGripperPosition = data.gripperToggle
+        
+        if rightMode:    
+            self.send_gripper_cmd(leftGripperPosition, rightGripperPosition)
+            self.publish_to_right(savedRightAngles)
+        
+        
+        # self.updateRobopuppet()
+
 
     # This updates the information for GUI
     def leftUpdate(self):
@@ -235,7 +285,7 @@ class ROS(QThread):
 
 
     def send_gripper_cmd(self, left, right):
-        rospy.loginfo("Send Gripper Command")
+        #rospy.loginfo("Send Gripper Command")
         lgmsg = GripperCommandActionGoal()
         lgmsg.header.seq = 0
         lgmsg.goal.command.position = left
@@ -471,6 +521,8 @@ def set_RP_mode():
         rightMode = True
         if window.checkBox.isChecked():
             mirror = True
+        else:
+            mirror = False
 
 
 def connect_RP():
@@ -650,7 +702,13 @@ if __name__ == "__main__":
     window_init(window)
     widget.setWindowTitle('Robopuppet GUI Pro')
     updateControlInfo()
+
+    # qtmodern.styles.dark(app)
+    # mw = qtmodern.windows.ModernWindow(widget)
+    # mw.show()
     widget.show()
+    
+    
     timer = QTimer()
     record_timer = QTimer()
     plot_timer = QTimer()  # Jason

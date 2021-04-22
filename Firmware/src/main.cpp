@@ -13,7 +13,7 @@ void setup() {
   InfoLCD::init();
   Encoders::init();
   hallEncoders::init();
-  Servos::init();
+  //Servos::init();
   calibration::calibrate();
   Buttons::init();
 }
@@ -25,7 +25,5 @@ void loop() {
   Buttons::update();
   Servos::update();
   SerialInterface::update();
-  
-
 
 }

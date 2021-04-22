@@ -23,6 +23,11 @@ namespace Encoders
   const uint8_t encoder2 = pinConfig::encoder2;
   const uint8_t encoder3 = pinConfig::encoder3;
   const uint8_t encoder4 = pinConfig::encoder4;
+  //second arm:
+  const uint8_t encoder5 = pinConfig::encoder1b;
+  const uint8_t encoder6 = pinConfig::encoder2b;
+  const uint8_t encoder7 = pinConfig::encoder3b;
+  const uint8_t encoder8 = pinConfig::encoder4b;
 
   //SPI commands
   const uint8_t AMT22_NOP = 0x00;
@@ -30,9 +35,9 @@ namespace Encoders
   const uint8_t AMT22_ZERO = 0x70;
 
   //Encoders 
-  const uint8_t num_enc = 4;
+  const uint8_t num_enc = 8;
   float angles[num_enc];
-  const uint8_t encoderPins [num_enc] = {encoder1, encoder2, encoder3, encoder4};
+  const uint8_t encoderPins [num_enc] = {encoder1, encoder2, encoder3, encoder4, encoder5, encoder6, encoder7, encoder8};
 
   // Init flag
   bool init_complete = false;
@@ -53,6 +58,10 @@ void Encoders::init()
     pinMode(encoder2, OUTPUT);
     pinMode(encoder3, OUTPUT);
     pinMode(encoder4, OUTPUT);
+    pinMode(encoder5, OUTPUT);
+    pinMode(encoder6, OUTPUT);
+    pinMode(encoder7, OUTPUT);
+    pinMode(encoder8, OUTPUT);
 
     pinMode(SPI_SCLK, OUTPUT);
     pinMode(SPI_COPI, OUTPUT);
@@ -65,6 +74,10 @@ void Encoders::init()
     digitalWrite(encoder2, HIGH);
     digitalWrite(encoder3, HIGH);
     digitalWrite(encoder4, HIGH);
+    digitalWrite(encoder5, OUTPUT);
+    digitalWrite(encoder6, OUTPUT);
+    digitalWrite(encoder7, OUTPUT);
+    digitalWrite(encoder8, OUTPUT);
 
     //SPI.setClockDivider(SPI_CLOCK_DIV64);    // use this for teensy
     SPI.setClockDivider(SPI_CLOCK_DIV32);    // use this for arduino
@@ -119,8 +132,10 @@ int Encoders::getStatus(uint8_t encoder)
   float tempMap;
   tempMap = map((int)Encoders::angles[encoder], 0, 4096, 0, 360);
   //Serial.println("getting status of encoder" + String(encoder));
-  if(tempMap >= 180)
-    tempMap = map(tempMap, 180, 360, -180, 0);
+
+  //COmmented out for real arm
+  // if(tempMap >= 180)
+  //   tempMap = map(tempMap, 180, 360, -180, 0);
   return tempMap;
 }
 
