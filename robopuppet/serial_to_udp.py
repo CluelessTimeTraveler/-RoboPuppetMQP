@@ -4,7 +4,7 @@ import sys
 import socket
 import time
 
-UDP_IP = "127.0.0.1"
+UDP_IP = "192.168.72.139"
 UDP_PORT = 5005
 MESSAGE = b""
 
@@ -14,7 +14,7 @@ def PuppetSerialComms():
     port = '/dev/ttyACM0'
     try:
         print("Attemping connection with " + str(port))
-        serialInterface = serial.Serial('/dev/ttyACM0', baudrate=9600)
+        serialInterface = serial.Serial('/dev/cu.usbmodem14401', baudrate=9600)
     except serial.SerialException:
         print("----------ERROR------------Unable to open Serial Port -----------ERROR---------")
         return
@@ -57,8 +57,9 @@ def PuppetSerialComms():
             except ValueError:
                 print("Unable to convert one of the data values to integer, trying again")
                 continue
+
             MESSAGE = bytes(data, 'utf-8')
-            sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             sock.sendto(MESSAGE, (UDP_IP, UDP_PORT))
 
 

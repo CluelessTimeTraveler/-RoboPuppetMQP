@@ -35,7 +35,7 @@ def PuppetSerialComms():
         serialInterface = serial.Serial('/dev/ttyACM0', baudrate=9600)
     except serial.SerialException:
         print("----------ERROR------------Unable to open Serial Port -----------ERROR---------")
-        return;
+        return
 
     rospy.init_node('PuppetSerialComms', anonymous=True)
     rate = rospy.Rate(20) # 10hz
@@ -43,7 +43,7 @@ def PuppetSerialComms():
         #hello_str = "hello world %s" % rospy.get_time()
         while serialInterface.in_waiting:
             data = serialInterface.readline().decode("utf-8",errors='ignore')
-            print("Data recieved: " + data);
+            print("Data recieved: " + data)
             try:
                 dataStringValues = data.split(",")
             except ValueError:
@@ -64,24 +64,24 @@ def PuppetSerialComms():
                 gripperEngaged = int(dataStringValues[7])
                 armLocked = int(dataStringValues[8])
 
-		servoData1_b = int(dataStringValues[9])
-		servoData2_b = int(dataStringValues[10])
-		servoData3_b = int(dataStringValues[11])
-		encoderData1_b = int(dataStringValues[12])
-		encoderData2_b = int(dataStringValues[13])
-		encoderData3_b = int(dataStringValues[14])
-		encoderData4_b = int(dataStringValues[15])
-		gripperEngaged_b = int(dataStringValues[16])
-		armLocked_b = int(dataStringValues[17])
+                servoData1_b = int(dataStringValues[9])
+                servoData2_b = int(dataStringValues[10])
+                servoData3_b = int(dataStringValues[11])
+                encoderData1_b = int(dataStringValues[12])
+                encoderData2_b = int(dataStringValues[13])
+                encoderData3_b = int(dataStringValues[14])
+                encoderData4_b = int(dataStringValues[15])
+                gripperEngaged_b = int(dataStringValues[16])
+                armLocked_b = int(dataStringValues[17])
             except ValueError:
                 print("Unable to convert one of the data values to integer, trying again")
                 continue
 
             msg = LeftArmPositions(servoData1, servoData2, servoData3, encoderData1, encoderData2, encoderData3, encoderData4, gripperEngaged, armLocked)
-	    msg_b = RightArmPositions(servoData1_b, servoData2_b, servoData3_b, encoderData1_b, encoderData2_b, encoderData3_b, encoderData4_b, gripperEngaged_b, armLocked_b)
+            msg_b = RightArmPositions(servoData1_b, servoData2_b, servoData3_b, encoderData1_b, encoderData2_b, encoderData3_b, encoderData4_b, gripperEngaged_b, armLocked_b)
             #rospy.loginfo(msg)
             leftPub.publish(msg)
-	    rightPub.publish(msg_b)
+            rightPub.publish(msg_b)
 
             rate.sleep()
 
