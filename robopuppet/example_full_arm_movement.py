@@ -195,7 +195,7 @@ class ExampleFullArmMovement:
             return self.wait_for_action_end_or_abort()
 
     def example_send_joint_angles(self,angle_received):
-        # rospy.loginfo("Receive Angle:" + str(angle_received.axes[0]))
+        #rospy.loginfo("Receive Angle")
         self.last_action_notif_type = None
         # Create the list of angles
         req = PlayJointTrajectoryRequest()
@@ -208,6 +208,39 @@ class ExampleFullArmMovement:
         anglesArray.append(angle_received.encoderTwo)
         anglesArray.append(angle_received.encoderThree)
         anglesArray.append(angle_received.encoderFour)
+        buttonPosition = angle_received.gripperToggle
+        #self.example_send_gripper_command(buttonPosition)
+    #     but_req = SendGripperCommandRequest()
+    #     if buttonPosition == 1:
+    #         #but_req = SendGripperCommandRequest()
+    #         finger = Finger()
+    #         finger.finger_identifier = 1
+    #         #finger.value = value.buttons[5]
+    #         finger.value = 1
+    #         but_req.input.gripper.finger.append(finger)
+    #         but_req.input.mode = GripperMode.GRIPPER_POSITION
+    #     else:
+    #         #but_req = SendGripperCommandRequest()
+    #         finger = Finger()
+    #         finger.finger_identifier = 1
+    #         #finger.value = value.buttons[5]
+    #         finger.value = 0
+    #         but_req.input.gripper.finger.append(finger)
+    #         but_req.input.mode = GripperMode.GRIPPER_POSITION
+		
+
+	# # Call the service for gripper
+    #     try:
+    #         self.send_gripper_command(but_req)
+    #     except rospy.ServiceException:
+    #         rospy.logerr("Failed to call SendGripperCommand")
+    #         return False
+    #     # else:
+    #     #     #time.sleep(0.5)
+    #     #     return True
+
+
+
         print(anglesArray)
 
         for i in range(self.degrees_of_freedom):
@@ -232,11 +265,12 @@ class ExampleFullArmMovement:
         finger = Finger()
         finger.finger_identifier = 1
         #finger.value = value.buttons[5]
-        finger.value = 0
+        finger.value = value.gripperToggle
+        #finger.value = value
         req.input.gripper.finger.append(finger)
         req.input.mode = GripperMode.GRIPPER_POSITION
 
-        #rospy.loginfo("Sending the gripper command...")
+        rospy.loginfo("Sending the gripper command...")
 
         # Call the service
         try:
@@ -313,6 +347,7 @@ class ExampleFullArmMovement:
         if not success:
             rospy.logerr("The example encountered an error.")
         rospy.Subscriber('/LeftArm', LeftArmPositions, self.example_send_joint_angles, queue_size=1)
+        rospy.Subscriber('/LeftArm', LeftArmPositions, self.example_send_gripper_command, queue_size=1)
 
     def run(self):
         rospy.spin()

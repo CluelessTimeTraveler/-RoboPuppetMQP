@@ -32,11 +32,11 @@ def PuppetSerialCommSim():
         servoData1 = 1
         servoData2 = 1
         servoData3 = 1
-        encoderData1 = 310
+        encoderData1 = 45
         encoderData2 = 1
         encoderData3 = 1
         encoderData4 = 1
-        gripperEngaged = 1
+        gripperEngaged = 0
         armLocked = 1
 
         msg = RightArmPositions(servoData1, servoData2, servoData3, encoderData1, encoderData2, encoderData3, encoderData4, gripperEngaged, armLocked)
