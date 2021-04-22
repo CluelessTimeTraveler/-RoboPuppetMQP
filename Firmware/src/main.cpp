@@ -8,12 +8,11 @@
 #include <InfoLCD.h>
 
 void setup() {
-  //delay(5000);
   SerialInterface::init();
   InfoLCD::init();
   Encoders::init();
   hallEncoders::init();
-  //Servos::init();
+  Servos::init();
   calibration::calibrate();
   Buttons::init();
 }

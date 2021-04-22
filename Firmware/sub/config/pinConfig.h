@@ -33,8 +33,8 @@ namespace pinConfig
     const uint8_t SPI_SCLK = 52; //green 
 
     //Servos
-    const uint8_t Servos[6] = {8, 9, 10, 11, 12, 46};
-    const uint8_t Servosb[6] = {29, 30, 31, 32, 33, 34};
+    const uint8_t Servos[6] = {8, 9, 10, 11, 12, 46}; //Right arm
+    const uint8_t Servosb[6] = {29, 30, 31, 32, 33, 34}; //Left arm
 
     //Buttons
     const int gripperToggle = 35;

@@ -22,16 +22,12 @@ void Buttons::init(){
   pinMode(holdToggle, INPUT);
   holdState = true;
   gripperState = false;
-  
 }
 
 void Buttons::update(){
   holdState = digitalRead(holdToggle);
-  //Serial.print("Button says: ");
-  //Serial.println(holdState);
-
-
   int toggleReading = digitalRead(gripperToggle);
+  // Gripper button debounce
   unsigned long currentTime = millis();
   if(toggleReading && (currentTime - timeOfGripperToggle) > 2000){
     gripperState = !gripperState;

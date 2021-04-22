@@ -66,8 +66,6 @@ void Encoders::init()
     pinMode(SPI_SCLK, OUTPUT);
     pinMode(SPI_COPI, OUTPUT);
     pinMode(SPI_CIPO, INPUT);
-
-    //Serial.begin(115200);
     
     //Set the CS line high which is the default inactive state
     digitalWrite(encoder1, HIGH);
@@ -83,8 +81,7 @@ void Encoders::init()
     SPI.setClockDivider(SPI_CLOCK_DIV32);    // use this for arduino
 
     SPI.begin();
-    //SPI.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0));
-  
+
     //Nice screen things
     //Serial.println("Encoders Initialized");
 
@@ -119,8 +116,6 @@ void Encoders::update()
       delay(50);
     }
   }
-  //Serial.println();
-  //Serial.println();
 }
 
 /**
@@ -133,9 +128,10 @@ int Encoders::getStatus(uint8_t encoder)
   tempMap = map((int)Encoders::angles[encoder], 0, 4096, 0, 360);
   //Serial.println("getting status of encoder" + String(encoder));
 
-  //COmmented out for real arm
+  //Use this mapping for Trina2 Simulation
   // if(tempMap >= 180)
   //   tempMap = map(tempMap, 180, 360, -180, 0);
+  
   return tempMap;
 }
 

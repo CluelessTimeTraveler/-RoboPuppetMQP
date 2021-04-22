@@ -29,12 +29,9 @@ namespace hallEncoders
   // Init flag
   bool init_complete = false;
 
-  //Make encoder objects?
+  //Make encoder objects
   AS5048A* angleSensor = (AS5048A*) malloc(sizeof(AS5048A)*num_enc);
-  //AS5048A angleSensor[num_enc];
-  //AS5048A encoderSingle = AS5048A(encoder1);
 
-  // Methods
 }
 
 /**
@@ -60,9 +57,6 @@ void hallEncoders::init()
     digitalWrite(encoder5, HIGH);
     digitalWrite(encoder6, HIGH);
 
-    //Nice screen things
-
-
     //initalize joint angles
     for (uint8_t j = 0; j < num_enc; j++)
 		{
@@ -70,16 +64,10 @@ void hallEncoders::init()
       angleSensor[j] = AS5048A(encoderPins[j]);
       angleSensor[j].init();
 		}
-    //angle = 0;
 
     // Set init flag
     init_complete = true;
   }
-    // SPI.setClockDivider(SPI_CLOCK_DIV32);    // 1M Hz
-
-    // SPI.begin();
-
-    //encoderSingle.init();
 }
 
 /**
@@ -103,7 +91,6 @@ void hallEncoders::update()
 int hallEncoders::getStatus(uint8_t encoderNumber)
 {
   int tempMap;
-  //tempMap = map(hallEncoders::angles[encoderNumber], 0, 16384, 0, 359);
   int angleVal = (int)hallEncoders::angles[encoderNumber];
 
   if(angleVal <= 0){
@@ -111,19 +98,11 @@ int hallEncoders::getStatus(uint8_t encoderNumber)
   }else{
     tempMap = map(angleVal, 0, 8192, 360, 180);
   }
-  //tempMap = map(angleVal, -8192, 8192, 0, 360); //Mapping is changed to 0 360 for real arm, was -180 to 180
-    //tempMap = map(tempMap, 0, 359, -180, 180);
   
   return tempMap;
-  // float tempMap;
-  // tempMap = map(hallEncoders::angle, 0, 16384, 1, 360);
-  // return (int)tempMap;
 }
 
 void hallEncoders::setZeroFor(int encoder){
-
-  //Serial.println()
-
   angleSensor[encoder].setZeroPosition(angleSensor[encoder].getRotation());
   delay(500);
 }
