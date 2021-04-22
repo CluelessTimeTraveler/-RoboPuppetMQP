@@ -21,20 +21,18 @@ namespace SerialInterface
   int toSend[18];
   int prevAngle[18] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};            // Initialise the EWMA.
   int EWMF[18] = {};
+  int x[18] = {};
+  int y[18] = {};
 }
 bool SerialInterface::init() {
   Serial.begin(9600);
-  //Serial.println("0");
   return true;
 }
 void SerialInterface::update() {
-  // String msg = Serial.readString();
-  // if(msg != "101"){
-  //   return;
-  // }
+
   for(int i = 0; i < 20; i++){
       //Set each of these equal to the correct values coming from the arm
-      toSend[0] = 180; // Encoders::getStatus(0); // Servo One
+      toSend[0] = Encoders::getStatus(0); // Servo One
       toSend[1] = hallEncoders::getStatus(0); //Servo Two
       toSend[2] = Encoders::getStatus(1); //Servo Three
       toSend[3] = hallEncoders::getStatus(1);; //Encoder One
@@ -54,8 +52,11 @@ void SerialInterface::update() {
       toSend[16] = Buttons::getGripperStatus(); //Gripper Engaged
       toSend[17] = Buttons::getHoldStatus(); //Arm Locked
 
+      //Exponentially weighted moving average
       for(int j = 0; j < 18; j++){
-        EWMF[j] = ((1-a)* prevAngle[j] + a* toSend[j]);
+        x[j] = cos(toSend[j]);
+        y[j] = sin(toSend[j]);
+        EWMF[j] = ((1-a)* prevAngle[j] + a*atan2(y[j], x[j]);
         prevAngle[j] = EWMF[j];   // Prepare for next iteration.
       }
 
@@ -72,6 +73,7 @@ void SerialInterface::update() {
     String filterCompresseda = String(EWMF[0]) + ',' + String(EWMF[1]) + ',' + String(EWMF[2]); //String of Servo Data
     String filterCompressedb = String(EWMF[3]) + ',' + String(EWMF[4]) + ',' + String(EWMF[5]) + ',' + String(EWMF[6]); //String of Encoder Data
     
+    // Print for debugging:
     // Serial.println("---------------------------------------------");
     // Serial.println("Encoder 1: Absolute: " + String(toSend[0]));
     // Serial.println("Encoder 2: Hall: " + String(toSend[1]));

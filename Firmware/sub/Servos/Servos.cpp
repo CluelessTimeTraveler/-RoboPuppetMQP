@@ -92,9 +92,8 @@ void Servos::attachServos(){
     myServo[11].attach(servoPins[5], 553, 2270);
 }
 
-//Need to add second arm! 
+// Moves arm into completely upright position 
 void Servos::goToHomePosition(){
-    //Moves arm into completely upright position
     //InfoLCD::printToLCD("Going to home position");
     myServo[0].write(1500);
     //Serial.println("Lifting...");
@@ -104,12 +103,29 @@ void Servos::goToHomePosition(){
     // }   
     myServo[1].write(170);
     delay(1000);
-    //Serial.println("Servo 1 done");
-    //InfoLCD::printToLCD("Lift Complete");
     myServo[2].write(1500);
     myServo[3].write(45);
     delay(1000);
     myServo[4].write(1500);
     myServo[5].write(40);
+    delay(2000); //time to settle
+}
+
+void Servos::goToHomePosition2(){
+    //Moves arm into completely upright position
+    //InfoLCD::printToLCD("Going to home position");
+    myServo[6].write(1500);
+    //Serial.println("Lifting...");
+    // for(int i = 20; i < 170; i++){
+    //     myServo[1].write(i);
+    //     delay(100);
+    // }   
+    myServo[7].write(170);
+    delay(1000);
+    myServo[8].write(1500);
+    myServo[9].write(45);
+    delay(1000);
+    myServo[10].write(1500);
+    myServo[11].write(40);
     delay(2000); //time to settle
 }
