@@ -7,7 +7,7 @@ from std_msgs.msg import String
 from msg_arduino.msg import LeftArmPositions
 from msg_arduino.msg import RightArmPositions
 
-UDP_IP = "127.0.0.1"
+UDP_IP = "192.168.72.139"
 UDP_PORT = 5005
 
 def PuppetSerialComms():
